@@ -13,7 +13,7 @@
 
 5. Once you open it, open the terminal again, but this time, you need 2 terminal at once. You can activate the Split Terminal through the shortcut Ctrl + Shift + 5.
 
-6. Run these command at the terminal you opened :
+6. Run these command separately at the terminal you opened :
 
 ```bash
   npm install
@@ -44,6 +44,8 @@ then this
 
 ```bash
 php artisan config:clear
+```
+```bash
 php artisan migrate
 ```
 
