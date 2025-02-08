@@ -1,0 +1,92 @@
+.header {
+    margin-left: 240px; /* Initial margin for expanded sidebar width */
+    padding: 10px 20px; /* Padding around header */
+    background-color: #ffffff; /* Header background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center items vertically */
+    position: fixed; /* Keep header fixed at the top */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    right: 0; /* Align to right */
+    z-index: 0; /* Ensure it stays above other elements */
+    transition: margin-left 0.3s ease; /* Smooth transition for margin */
+}
+
+.left-container {
+    display: flex; /* Use flexbox for left items */
+    flex-grow: 1; /* Allow it to grow to fill space */
+}
+
+.right-container {
+    display: flex; /* Use flexbox for right items */
+    align-items: center; /* Center items vertically */
+}
+
+.button-group {
+    display: flex; /* Arrange buttons in a row */
+    margin-left: 15px; /* Add left margin for spacing from the left edge */
+}
+
+.header-button {
+    background: none; /* Transparent background */
+    border: none; /* No border */
+    color: #007bff; /* Text color for buttons */
+    margin-right: 15px; /* Space between buttons */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 1rem; /* Button text size */
+    transition: opacity 0.3s; /* Smooth transition for hover */
+}
+
+.header-button:hover {
+    opacity: 0.7; /* Slightly transparent on hover */
+}
+
+.login-button {
+    background-color: #007bff; /* Background for login button */
+    color: white; /* Text color */
+    border: none; /* No border */
+    padding: 8px 16px; /* Padding for the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+    margin-left: 10px; /* Space between search bar and login button */
+}
+
+.login-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Search Bar Styles */
+.search-container {
+    position: relative; /* Position context for the icon */
+}
+
+.search-input {
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 12px; /* Padding within the input */
+    padding-right: 30px; /* Space for the icon on the right */
+    font-size: 1rem; /* Font size */
+    width: 200px; /* Width of the input */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.search-input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.search-icon {
+    position: absolute; /* Position the icon absolutely */
+    right: 10px; /* Position from the right side */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for vertical alignment */
+    color: #007bff; /* Icon color */
+    pointer-events: none; /* Prevent interaction with the icon */
+}
+
+/* Adjust header margin for collapsed sidebar */
+.header.sidebar-collapsed {
+    margin-left: 100px; /* Adjust for collapsed sidebar */
+}

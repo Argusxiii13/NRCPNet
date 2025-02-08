@@ -1,0 +1,17 @@
+
+/* Add this to your main content wrapper */
+.main-content {
+    margin-top: 100px; /* Same as header height */
+    padding: 1rem;
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+    .middle-container {
+        display: none; /* Hide navigation on mobile */
+    }
+    
+    .header-container {
+        padding: 1rem;
+    }
+}

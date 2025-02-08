@@ -1,0 +1,106 @@
+/* Sidebar Styles */
+.sidebar {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 200px; /* Expanded width */
+    height: 100vh;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease; /* Smooth transition for width */
+    z-index: 1; 
+}
+
+.collapsed {
+    width: 60px; /* Adjust the width when collapsed */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Space below the header */
+    position: relative; /* Positioning context for the button */
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.sidebar-button {
+    background: #007bff; /* Background color */
+    border: none;
+    border-radius: 50%; /* Make it circular */
+    color: white; /* Icon color */
+    width: 40px; /* Button width */
+    height: 40px; /* Button height */
+    position: absolute;
+    top: 20px; /* Adjust vertical position */
+    right: -20px; /* Hang outside of the sidebar */
+    display: flex;
+    justify-content: center; /* Center icon horizontally */
+    align-items: center; /* Center icon vertically */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+.sidebar-button:hover {
+    background: #0056b3; /* Darker shade on hover */
+}
+
+.sidebar-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-items li {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.sidebar-items li:hover {
+    background-color: #ddd; /* Highlight on hover */
+}
+
+.item-icon {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.hidden-text {
+    display: none; /* Hide text when collapsed */
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 10px 0; /* Adjusted margins around the divider */
+}
+
+.profile-image {
+    width: 40px; /* Size of the image */
+    height: 40px; /* Size of the image */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between image and title */
+    object-fit: cover; /* Ensure the image covers the space without distortion */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100px; /* Adjust for smaller screens */
+    }
+    
+    .header {
+        margin-left: 100px; /* Adjust for the new sidebar width */
+    }
+}
