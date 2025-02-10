@@ -20,7 +20,7 @@
 
 .linklist {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     width: 100%;
     flex: 1;
@@ -31,6 +31,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     overflow-y: auto;
     width: 100%;
     gap: 0.5rem;
@@ -42,9 +43,8 @@
     width: 90%;
     height: 150px;
     display: flex;
-    flex-direction: row; /* Changed to row to place logo on the left */
     align-items: center;
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: center;
     background-color: #e7f0ff;
     border-radius: 8px;
     transition: all 0.2s;
@@ -56,23 +56,22 @@
 .link-item-logo {
     width: 80px;
     height: 80px;
-    margin-right: 1.5rem; /* Changed from margin-bottom to margin-right */
-    object-fit: cover; /* Changed to cover for better circular image display */
-    border-radius: 50%; /* Make the image circular */
-    border: 2px solid #007bff; /* Optional: adds a border around the circular image */
-    padding: 2px; /* Optional: adds some space between border and image */
-    background-color: white; /* Optional: adds white background behind the image */
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+    padding: 2px;
+    background-color: white;
+    margin-right: 1.5rem;
 }
 
 .linklist-item {
     text-decoration: none;
     color: #007bff;
     font-size: 1.2rem;
-    text-align: left; /* Align text to the left */
-    flex: 1; /* Take up remaining space */
-    display: flex;
+    text-align: center;
+    display: inline-flex;
     align-items: center;
-    justify-content: flex-start; /* Align text to the start */
+    justify-content: center;
     font-weight: 500;
 }
 

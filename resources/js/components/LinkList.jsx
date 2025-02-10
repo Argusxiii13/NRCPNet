@@ -2,13 +2,13 @@
 import React from 'react';
 import '../Styles/LinkList.css';
 
-const logo = '/image/CompanyLogo.jpg'; // Updated relative path for the logo
+const logo = '/image/CompanyLogo.jpg';
 
 const LinkList = () => {
     const links = [
-        { name: 'System 1', url: '#system1' },
-        { name: 'System 2', url: '#system2' },
-        { name: 'System 3', url: '#system3' },
+        { name: 'National Integrated Basic Research Agenda', url: '#system1' },
+        { name: 'Commissioned Research', url: '#system2' },
+        { name: 'Kapakanan Ng Tao Sa Oras Ng Pandemya - COVID', url: '#system3' },
         { name: 'System 4', url: '#system4' },
         { name: 'System 5', url: '#system5' },
         { name: 'System 6', url: '#system6' },
@@ -25,7 +25,7 @@ const LinkList = () => {
                                 src={logo} 
                                 alt="Company Logo" 
                                 className="link-item-logo" 
-                                onError={(e) => { e.target.src = '/image/placeholder.jpg'; }} // Update this to the correct path for your placeholder
+                                onError={(e) => { e.target.src = '/image/placeholder.jpg'; }}
                             />
                             <a href={link.url} className="linklist-item">
                                 {link.name}
