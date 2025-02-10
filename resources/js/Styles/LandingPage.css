@@ -2,7 +2,7 @@
 /* Add this to your main content wrapper */
 .main-content {
     margin-top: 100px; /* Same as header height */
-    padding: 1rem;
+    padding: 0.5rem 7rem;
 }
 
 /* Media query for responsive design */
@@ -14,4 +14,12 @@
     .header-container {
         padding: 1rem;
     }
+}
+
+/* LandingPage.css */
+.announcement-and-other-content {
+    display: flex;
+    margin-top: 20px; /* Space between carousels */
+    align-items: flex-start; /* Align items to the top */
+    gap: 20px; /* Space between AnnouncementCarousel and LinkList */
 }

@@ -1,0 +1,102 @@
+/* LinkList.css */
+.linklist-container {
+    width: 50%;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.linklist-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.linklist {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.linklist-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    width: 100%;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    height: 100%;
+}
+
+.link-item-container {
+    width: 90%;
+    height: 150px;
+    display: flex;
+    flex-direction: row; /* Changed to row to place logo on the left */
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    background-color: #e7f0ff;
+    border-radius: 8px;
+    transition: all 0.2s;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.link-item-logo {
+    width: 80px;
+    height: 80px;
+    margin-right: 1.5rem; /* Changed from margin-bottom to margin-right */
+    object-fit: cover; /* Changed to cover for better circular image display */
+    border-radius: 50%; /* Make the image circular */
+    border: 2px solid #007bff; /* Optional: adds a border around the circular image */
+    padding: 2px; /* Optional: adds some space between border and image */
+    background-color: white; /* Optional: adds white background behind the image */
+}
+
+.linklist-item {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2rem;
+    text-align: left; /* Align text to the left */
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align text to the start */
+    font-weight: 500;
+}
+
+.link-item-container:hover {
+    background-color: #d1e7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Add smooth scrolling */
+.linklist-items::-webkit-scrollbar {
+    width: 8px;
+}
+
+.linklist-items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.linklist-items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.linklist-items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

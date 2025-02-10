@@ -1,7 +1,10 @@
+// LandingPage.jsx
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import Header from './components/LandingHeader'; // Adjust the path if necessary
-import EventCarousel from './components/EventCarousel'; // Import the EventCarousel component
+import Header from './components/LandingHeader';
+import EventCarousel from './components/EventCarousel';
+import AnnouncementCarousel from './components/AnnouncementCarousel'; // Import the new component
+import LinkList from './components/LinkList'; // Import the LinkList component
 import './Styles/LandingPage.css';
 
 const LandingPage = () => {
@@ -17,7 +20,11 @@ const LandingPage = () => {
             <div className="main-content">
                 <h2>Welcome to NRCPNet</h2>
                 <p>This is the landing page content.</p>
-                <EventCarousel /> {/* Include the EventCarousel here */}
+                <EventCarousel />
+                <div className="announcement-and-other-content">
+                    <AnnouncementCarousel /> {/* Left side: Announcement */}
+                    <LinkList /> {/* Right side: Links and systems */}
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,18 @@
+/* AnnouncementCarousel.css */
+.announcement-container {
+    width: 70%; /* Takes half of the width */
+    background-color: #cce5ff; /* Lighter shade than #007bff */
+    padding: 1rem;
+    border: 1px solid #dee2e6; /* Optional border */
+    border-radius: 8px; /* Rounded corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Fixed height */
+}
+
+.announcement-item {
+    font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
+    color: #343a40; /* Dark text color */
+    text-align: center; /* Center text */
+}
