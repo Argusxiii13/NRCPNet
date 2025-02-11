@@ -1,6 +1,6 @@
 // Header.jsx
 import React from 'react';
-import '../Styles/LandingHeader.css';
+import '../../../css/styles/landing/LandingHeader.css';
 
 const LPHeader = () => {
     return (
@@ -13,8 +13,8 @@ const LPHeader = () => {
                     <h1 className="title">NRCPNet</h1>
                 </div>
                 <div className="middle-container">
-                    <a href="#nrcp-website" className="link">NRCP Website</a>
-                    <a href="#nrcp-facebook" className="link">NRCP Facebook</a>
+                    <a href="https://nrcp.dost.gov.ph/" className="link">NRCP Website</a>
+                    <a href="https://www.facebook.com/nationalresearchcouncil/" className="link">NRCP Facebook</a>
                     <a href="#other-services" className="link">Other Services</a>
                     <a href="#contact" className="link">Contact</a>
                 </div>

@@ -1,11 +1,11 @@
 // LandingPage.jsx
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import Header from './components/LandingHeader';
-import EventCarousel from './components/EventCarousel';
-import AnnouncementCarousel from './components/AnnouncementCarousel'; // Import the new component
-import LinkList from './components/LinkList'; // Import the LinkList component
-import './Styles/LandingPage.css';
+import Header from '../components/landing/LandingHeader';
+import EventCarousel from '../components/landing/EventCarousel';
+import AnnouncementCarousel from '../components/landing/AnnouncementCarousel'; // Import the new component
+import LinkList from '../components/Landing/LinkList'; // Import the LinkList component
+import '../../css/styles/landing/LandingPage.css';
 
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);

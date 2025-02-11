@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import ContentPanel from './components/ContentPanel';
-import Sidebar from './components/Sidebar';
-import Header from './components/LoggedHeader';
-import './Styles/ContentPanel.css';
+import ContentPanel from '../components/ContentPanel';
+import Sidebar from '../components/Sidebar';
+import Header from '../components/LoggedHeader';
+import '../../css/styles/ContentPanel.css';
 
 function Layout() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);

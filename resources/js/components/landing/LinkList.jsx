@@ -1,6 +1,6 @@
 // LinkList.jsx
 import React from 'react';
-import '../Styles/LinkList.css';
+import '../../../css/styles/landing/LinkList.css';
 
 const logo = '/image/CompanyLogo.jpg';
 

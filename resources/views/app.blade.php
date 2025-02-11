@@ -8,6 +8,6 @@
 <body>
     <div id="root"></div>
 @viteReactRefresh
-@vite('resources/js/LandingPage.jsx')
+@vite('resources/js/pages/LandingPage.jsx')
 </body>
 </html>

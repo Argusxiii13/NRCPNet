@@ -1,6 +1,6 @@
 // AnnouncementCarousel.jsx
 import React, { useState, useEffect } from 'react';
-import '../Styles/AnnouncementCarousel.css';
+import '../../.././css/styles/landing/AnnouncementCarousel.css'
 
 const AnnouncementCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
