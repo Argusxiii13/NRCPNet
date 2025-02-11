@@ -1,0 +1,36 @@
+.suggestion-container {
+    width: 30%; /* Takes half of the width */
+    background-color: #e2f0d9; /* Lighter shade */
+    padding: 1rem;
+    border: 1px solid #dee2e6; /* Optional border */
+    border-radius: 8px; /* Rounded corners */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 350px; /* Fixed height */
+}
+
+.suggestion-input {
+    width: 100%; /* Full width */
+    height: 190px; /* Adjust height as needed */
+    resize: none; /* Disable resizing */
+    font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
+    padding: 0.5rem; /* Padding for aesthetics */
+    border: 1px solid #ced4da; /* Border for the input */
+    border-radius: 4px; /* Rounded corners */
+    margin-bottom: 1rem; /* Space between input and button */
+}
+
+.suggestion-button {
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 0.5rem 1rem; /* Padding for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
+}
+
+.suggestion-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
