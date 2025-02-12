@@ -1,24 +1,26 @@
 .suggestion-container {
-    width: 30%; /* Takes half of the width */
+    width: 25%; /* Reduced width for a smaller box */
     background-color: #e2f0d9; /* Lighter shade */
-    padding: 1rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem; /* Reduced padding (top, right, bottom, left) */
+    padding-top: 0; /* Set top padding to 0 */
+    margin-top: 0; /* Remove any margin above the container */
     border: 1px solid #dee2e6; /* Optional border */
     border-radius: 8px; /* Rounded corners */
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 350px; /* Fixed height */
+    height: 200px; /* Reduced height */
 }
 
 .suggestion-input {
     width: 100%; /* Full width */
-    height: 190px; /* Adjust height as needed */
+    height: 80px; /* Reduced height */
     resize: none; /* Disable resizing */
-    font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
-    padding: 0.5rem; /* Padding for aesthetics */
+    font-size: clamp(14px, 1.5vw, 18px); /* Adjusted font size */
+    padding: 0.50rem; /* Reduced padding */
     border: 1px solid #ced4da; /* Border for the input */
     border-radius: 4px; /* Rounded corners */
-    margin-bottom: 1rem; /* Space between input and button */
+    margin-bottom: 0.20rem; /* Reduced space between input and button */
 }
 
 .suggestion-button {
@@ -26,9 +28,9 @@
     color: white; /* Text color */
     border: none; /* No border */
     border-radius: 4px; /* Rounded corners */
-    padding: 0.5rem 1rem; /* Padding for the button */
+    padding: 0.25rem 0.5rem; /* Reduced padding for the button */
     cursor: pointer; /* Pointer cursor on hover */
-    font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
+    font-size: clamp(14px, 1.5vw, 18px); /* Adjusted font size */
 }
 
 .suggestion-button:hover {

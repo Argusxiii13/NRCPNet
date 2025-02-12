@@ -10,14 +10,13 @@ const SuggestionBox = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle the suggestion submission logic here
         console.log('Suggestion submitted:', suggestion);
         setSuggestion(''); // Clear the input after submission
     };
 
     return (
         <div className="suggestion-container">
-            <h3>Suggestion Box</h3>
+            <h4>Suggestion Box</h4>
             <form onSubmit={handleSubmit}>
                 <textarea
                     className="suggestion-input"

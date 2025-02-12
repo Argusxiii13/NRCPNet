@@ -7,6 +7,7 @@ import AnnouncementCarousel from '../components/landing/AnnouncementCarousel'; /
 import LinkList from '../components/Landing/LinkList'; // Import the LinkList component
 import '../../css/styles/landing/LandingPage.css';
 import SuggestionBox from '../components/landing/SuggestionBox';
+import Calendar from '../components/landing/Calendar';
 
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -27,7 +28,8 @@ const LandingPage = () => {
                     <LinkList /> {/* Right side: Links and systems */}
                 </div>
                 <div className="announcement-and-other-content">
-                    <SuggestionBox /> {/* Add this below AnnouncementCarousel */}
+
+                    <Calendar />
                 </div>
             </div>
         </div>
