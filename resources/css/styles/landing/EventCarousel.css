@@ -1,6 +1,7 @@
 /* EventCarousel.css */
 .carousel-container {
     width: 100%; /* Takes full width of parent */
+    height: 450px;
     position: relative;
     margin: 20px 0;
 }
@@ -8,6 +9,7 @@
 .carousel {
     position: relative;
     width: 100%;
+    height: 240px;
     padding-top: 15%; /* This creates an aspect ratio of 2.5:1 */
     background-color: #007bff;
     border-radius: 8px;
