@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
 import EventCarousel from '../components/landing/EventCarousel';
-import AnnouncementCarousel from '../components/landing/AnnouncementCarousel'; // Import the new component
-import LinkList from '../components/Landing/LinkList'; // Import the LinkList component
+import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
+import LinkList from '../components/Landing/LinkList';
 import '../../css/styles/landing/LandingPage.css';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
@@ -20,16 +20,23 @@ const LandingPage = () => {
         <div className="app">
             <Header isSidebarExpanded={isSidebarExpanded} />
             <div className="main-content">
-                <h2>Welcome to NRCPNet</h2>
-                <p>This is the landing page content.</p>
-                <EventCarousel />
-                <div className="announcement-and-other-content">
-                    <AnnouncementCarousel /> {/* Left side: Announcement */}
-                    <LinkList /> {/* Right side: Links and systems */}
+                <div className="welcome-section">
+                    <h2>Welcome to NRCPNet</h2>
+                    <p>This is the landing page content.</p>
                 </div>
-                <div className="announcement-and-other-content">
-
-                    <Calendar />
+                <div className="content-grid">
+                    <div className="event-section">
+                        <EventCarousel />
+                    </div>
+                    <div className="announcement-section">
+                        <AnnouncementCarousel />
+                    </div>
+                    <div className="links-section">
+                        <LinkList />
+                    </div>
+                    <div className="calendar-section">
+                        <Calendar />
+                    </div>
                 </div>
             </div>
         </div>
