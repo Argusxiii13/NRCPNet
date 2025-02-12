@@ -5,6 +5,7 @@ import Header from '../components/landing/LandingHeader';
 import EventCarousel from '../components/landing/EventCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
 import LinkList from '../components/Landing/LinkList';
+import DownloadableForms from '../components/landing/DownloadableForms'; // New import
 import '../../css/styles/landing/LandingPage.css';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
@@ -33,6 +34,9 @@ const LandingPage = () => {
                     </div>
                     <div className="links-section">
                         <LinkList />
+                    </div>
+                    <div className="downloadable-forms-section"> {/* New section */}
+                        <DownloadableForms />
                     </div>
                     <div className="calendar-section">
                         <Calendar />

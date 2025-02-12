@@ -1,0 +1,53 @@
+/* DownloadableForms.css */
+.downloadable-forms-container {
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    height: 700px; /* Adjust height to fit two rows */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.downloadable-forms-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.downloadable-forms-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items */
+    overflow-y: auto;
+    width: 95%;
+    padding: 0.5rem;
+    height: 100%;
+}
+
+.downloadable-form-item-container {
+    width: 80%; /* Full width for the container */
+    margin: 0.5rem 0; /* Space between items */
+    padding: 0.5rem; /* Padding around the item */
+    background-color: #ffffff; /* Container background */
+    border: 1px solid #ccc; /* Border around each item */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s;
+}
+
+.downloadable-form-item-container:hover {
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.downloadable-form-item {
+    text-decoration: none;
+    color: #007bff; /* Link color */
+    display: block; /* Make the link block-level */
+    text-align: center; /* Center text inside the link */
+}
+
+.downloadable-form-item:hover {
+    background-color: #d1e7ff; /* Highlight on hover */
+}
