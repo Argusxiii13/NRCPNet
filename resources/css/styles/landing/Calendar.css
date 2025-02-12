@@ -1,12 +1,19 @@
-/* Calendar.css */
+.calendar-wrapper {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    width: fit-content;
+}
+
 .calendar-container {
     padding: 2rem;
     background-color: #f9f9f9;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    max-width: 400px;
-    height:450px;
-
+    width: 400px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-header {
@@ -23,19 +30,49 @@
     color: #007bff;
 }
 
+.weekdays-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 500;
+    color: #666;
+    padding: 0.5rem;
+}
+
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0.5rem;
+    flex-grow: 1;
 }
 
 .day-button {
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     border-radius: 4px;
     background-color: #fff;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+}
+
+.day-button:hover:not(.empty) {
+    background-color: #f0f0f0;
+    border-color: #dee2e6;
+}
+
+.day-button.empty {
+    background-color: transparent;
+    cursor: default;
 }
 
 .day-button.selected {
@@ -47,7 +84,49 @@
     background-color: #ffeb3b;
 }
 
-.schedule-container {
-    margin-top: 1rem;
+.schedule-panel {
+    position: absolute;
+    left: 470px; /* Positioned right after the calendar */
+    top: 0;
+    width: 300px;
+    height: 450px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-panel.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.schedule-header {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.schedule-content {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.no-schedule {
+    color: #6c757d;
     text-align: center;
+    margin-top: 2rem;
+}
+
+/* Optional: Add a subtle box shadow when the panel is visible */
+.schedule-panel.visible {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
