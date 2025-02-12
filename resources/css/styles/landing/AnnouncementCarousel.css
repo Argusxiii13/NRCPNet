@@ -1,6 +1,5 @@
 /* AnnouncementCarousel.css */
 .announcement-container {
-    width: 70%; /* Takes half of the width */
     background-color: #cce5ff; /* Lighter shade than #007bff */
     padding: 1rem;
     border: 1px solid #dee2e6; /* Optional border */
