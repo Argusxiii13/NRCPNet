@@ -9,6 +9,8 @@ import DownloadableForms from '../components/landing/DownloadableForms'; // New 
 import '../../css/styles/landing/LandingPage.css';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
+import ThursdayWellness from '../components/landing/ThursdayWellness';
+import SpecialEvents from '../components/landing/SpecialEvents';
 
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -38,8 +40,13 @@ const LandingPage = () => {
                     <div className="downloadable-forms-section"> {/* New section */}
                         <DownloadableForms />
                     </div>
+                    <div className="thursday-wellness-section">
+                        <ThursdayWellness />
+                        <SpecialEvents />
+                    </div>
                     <div className="calendar-section">
                         <Calendar />
+                        <SuggestionBox/>
                     </div>
                 </div>
             </div>

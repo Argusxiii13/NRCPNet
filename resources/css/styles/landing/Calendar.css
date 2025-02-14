@@ -86,7 +86,7 @@
 
 .schedule-panel {
     position: absolute;
-    left: 420px; /* Positioned right after the calendar */
+    left: -320px; /* Positioned right after the calendar */
     top: 0;
     width: 300px;
     height: 450px;

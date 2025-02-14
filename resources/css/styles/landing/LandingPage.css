@@ -20,11 +20,12 @@
 .announcement-section,
 .links-section,
 .calendar-section,
-.downloadable-forms-section { /* Include the new section */
+.downloadable-forms-section,
+.thursday-wellness-section { /* Added thursday-wellness-section */
     padding: 1.5rem;
-    background-color: #fff; /* Optional: adds visual separation */
-    border-radius: 8px; /* Optional: rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* First row: EventCarousel takes all 3 columns */
@@ -44,23 +45,55 @@
     grid-row: 2;
 }
 
-/* Third row: Downloadable Forms and Calendar */
+/* Third row: Downloadable Forms, Calendar, and Thursday Wellness */
 .downloadable-forms-section {
-    grid-column: 1; /* New section takes the first column */
-    grid-row: 3; /* Start in the third row */
+    grid-column: 1;
+    grid-row: 3;
 }
 
 .calendar-section {
-    grid-column: 2; /* Calendar section in the middle column */
-    grid-row: 3; /* Positioned in the same row */
+    grid-column: 3;
+    grid-row: 3;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 1.5rem; /* Optional padding */
+    background-color: #fff; /* Ensure background color matches */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow */
+}
+
+.thursday-wellness-section {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Creates space between the two components */
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height:750px;
+}
+
+.special-events-section {
+    grid-column: 3; /* Same column as Thursday Wellness */
+    grid-row: 4; /* New row below Thursday Wellness */
+}
+
+/* Adjust the container heights to fit nicely in the stack */
+.wellness-container,
+.special-events-container {
+    height: 300px; /* Reduced height to accommodate both */
+    min-height: 300px; /* Ensures minimum height */
+    flex: 1; /* Allow containers to grow equally */
 }
 
 /* Component styles */
-.announcement-container {
-    height: 350px;
-}
-
-.linklist-container {
+.announcement-container,
+.linklist-container,
+.wellness-container { /* Added wellness-container */
     height: 350px;
 }
 
@@ -77,16 +110,17 @@
     }
     
     .content-grid {
-        grid-template-columns: 1fr; /* Single column for mobile */
+        grid-template-columns: 1fr;
     }
     
     .event-section,
     .announcement-section,
     .links-section,
     .calendar-section,
-    .downloadable-forms-section { /* Ensure all sections adjust for mobile */
+    .downloadable-forms-section,
+    .thursday-wellness-section { /* Added thursday-wellness-section */
         grid-column: 1;
-        padding: 1rem; /* Slightly reduced padding for mobile */
+        padding: 1rem;
     }
     
     .event-section {
@@ -102,10 +136,22 @@
     }
     
     .downloadable-forms-section {
-        grid-row: 4; /* Ensure it stays in the correct order */
+        grid-row: 4;
     }
 
     .calendar-section {
-        grid-row: 5; /* Adjust to be the last */
+        grid-row: 6;
+    }
+
+    .thursday-wellness-section {
+        gap: 15px; /* Slightly reduced gap on mobile */
+        padding: 1rem;
+        grid-row: 5; /* Added to maintain flow in mobile view */
+    }
+
+    .wellness-container,
+    .special-events-container {
+        height: 250px; /* Slightly smaller on mobile */
+        min-height: 250px;
     }
 }

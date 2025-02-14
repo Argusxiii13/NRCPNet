@@ -20,7 +20,7 @@ const SuggestionBox = () => {
             <form onSubmit={handleSubmit}>
                 <textarea
                     className="suggestion-input"
-                    placeholder="Be responsible with your words..."
+                    placeholder="Place Suggestion Here :D"
                     value={suggestion}
                     onChange={handleChange}
                 />
