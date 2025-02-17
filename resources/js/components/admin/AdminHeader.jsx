@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react'; // Import the search icon
-import '../Styles/LoggedHeader.css'; // Import CSS for styling
+import '../../../css/styles/admin/AdminHeader.css'; // Import CSS for styling
 
 const Header = ({ isSidebarExpanded }) => {
     return (

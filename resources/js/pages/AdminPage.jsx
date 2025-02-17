@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import ContentPanel from '../components/ContentPanel';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/LoggedHeader';
-import '../../css/styles/ContentPanel.css';
+import ContentPanel from '../components/admin/ContentPanel';
+import Sidebar from '../components/admin/Sidebar';
+import Header from '../components/admin/AdminHeader';
+import '../../css/styles/admin/ContentPanel.css';
 
 function Layout() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -18,7 +18,6 @@ function Layout() {
             <div className="main-container">
                 <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
                 <div className="content">
-                    <ContentPanel />
                 </div>
             </div>
         </div>
@@ -26,6 +25,6 @@ function Layout() {
 }
 
 // Mount the application
-const container = document.getElementById('root');
+const container = document.getElementById('admin-root');
 const root = createRoot(container);
 root.render(<Layout />);

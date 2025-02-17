@@ -1,20 +1,10 @@
-import React from 'react';
 import { FileText, Download, Star, Bell, Settings, Headphones, CircleDollarSign, ShieldQuestion, Gem, AlignJustify } from 'lucide-react';
-import '../styles/Sidebar.css'; // Correct path to styles
+import '../../../css/styles/admin/Sidebar.css'; // Correct path to styles
 
 const Sidebar = ({ isExpanded, toggleSidebar }) => {
     return (
         <div className={`sidebar ${isExpanded ? '' : 'collapsed'}`}>
-            <div className="sidebar-header">
-                {isExpanded && (
-                    <img 
-                        src="/path/to/your/image.jpg" // Placeholder for the circular image
-                        alt="Logo"
-                        className="profile-image" // Class for styling
-                    />
-                )}
-                {isExpanded && <h2 className="sidebar-title">NRCP NET</h2>}
-            </div>
+
             <button className="sidebar-button" onClick={toggleSidebar} aria-label="Toggle Sidebar">
                 <AlignJustify />
             </button>
