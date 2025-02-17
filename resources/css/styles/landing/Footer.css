@@ -1,0 +1,18 @@
+/* footer.css */
+.footer {
+    background-color: #333; /* Dark background */
+    color: #fff; /* White text */
+    text-align: center; /* Centered text */
+    padding: 1rem; /* Padding around the text */
+    position: relative; /* Positioning for sticky footer */
+    bottom: 0; /* Align to the bottom */
+    width: 99%; /* Full width */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .footer {
+        font-size: 14px; /* Slightly smaller text on mobile */
+    }
+}

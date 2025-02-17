@@ -11,7 +11,7 @@ import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
 import SpecialEvents from '../components/landing/SpecialEvents';
-
+import Footer from '../components/landing/Footer';
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
@@ -50,6 +50,7 @@ const LandingPage = () => {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </div>
     );
 };
