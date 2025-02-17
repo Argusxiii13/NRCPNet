@@ -3,6 +3,10 @@ import React from 'react';
 import '../../../css/styles/landing/LandingHeader.css';
 
 const LPHeader = () => {
+    const handleLoginClick = () => {
+        window.location.href = '/login';
+    };
+
     return (
         <header className="header">
             <div className="header-container">
@@ -19,7 +23,7 @@ const LPHeader = () => {
                     <a href="#contact" className="link">Contact</a>
                 </div>
                 <div className="right-container">
-                    <button className="login-button">Login</button>
+                    <button className="login-button" onClick={handleLoginClick}>Login</button>
                 </div>
             </div>
         </header>
