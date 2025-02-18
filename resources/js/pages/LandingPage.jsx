@@ -21,7 +21,7 @@ const LandingPage = () => {
     
     return (
         <div className="app">
-            <Header isSidebarExpanded={isSidebarExpanded} />
+            <Header/>
             <div className="main-content">
                 <div className="welcome-section">
                     <h2>Welcome to NRCPNet</h2>

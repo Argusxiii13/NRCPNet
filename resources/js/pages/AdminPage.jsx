@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import ContentPanel from '../components/admin/ContentPanel';
-import Sidebar from '../components/admin/Sidebar';
 import Header from '../components/admin/AdminHeader';
-import '../../css/styles/admin/ContentPanel.css';
+import Sidebar from '../components/admin/AdminSidebar';
+import '../../css/styles/admin/AdminPage.css';
 
 function Layout() {
-    const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
-
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    
     const toggleSidebar = () => {
-        setIsSidebarExpanded(prevState => !prevState);
+        setSidebarCollapsed(!sidebarCollapsed);
     };
-
+    
     return (
         <div className="app">
-            <Header isSidebarExpanded={isSidebarExpanded} />
-            <div className="main-container">
-                <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar} />
-                <div className="content">
+            <Header onMenuClick={toggleSidebar} />
+            <Sidebar collapsed={sidebarCollapsed} />
+            <div className={`main-container ${!sidebarCollapsed ? 'with-sidebar' : 'with-collapsed-sidebar'}`}>
+                <div className="content-area">
+                    {/* Your page content goes here */}
+                    <h1>Welcome to Admin Dashboard</h1>
+                    <p>This is the main content area that will adjust based on sidebar visibility.</p>
                 </div>
             </div>
         </div>

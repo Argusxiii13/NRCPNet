@@ -1,0 +1,37 @@
+/* AdminPage.css */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-container {
+  flex: 1;
+  margin-top: 64px; /* Height of the header */
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  width: 100%;
+}
+
+.main-container.with-sidebar {
+  margin-left: 250px; /* Width of the expanded sidebar */
+  width: calc(100% - 250px);
+}
+
+.main-container.with-collapsed-sidebar {
+  margin-left: 60px; /* Width of the collapsed sidebar */
+  width: calc(100% - 60px);
+}
+
+.content-area {
+  padding: 2rem;
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  .main-container,
+  .main-container.with-sidebar,
+  .main-container.with-collapsed-sidebar {
+    margin-left: 0;
+    width: 100%;
+  }
+}
