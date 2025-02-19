@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import '../../../css/styles/admin/AdminHeader.css';
+import '../../../css/styles/admin/NavigationBar.css';
 const AdminHeader = () => {
     const departments = ['OP', 'OED', 'FAD', 'RDMD', 'RIDD'];
 

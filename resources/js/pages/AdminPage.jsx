@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Sidebar from '../../js/components/admin/AdminSidebar';
-import Header from '../../js/components/admin/AdminHeader';
+import Header from '../../js/components/admin/NavigationBar';
 import '../../css/styles/admin/AdminPage.css';
 
 function Layout({ children }) {

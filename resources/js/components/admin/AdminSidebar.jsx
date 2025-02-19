@@ -1,23 +1,39 @@
-// AdminSidebar.jsx
 import { useState } from 'react';
-import { Home, Mail, User, Calendar, Search, BarChart2, Folder, Settings, ChevronLeft } from 'lucide-react';
-import '../../../css/styles/admin/AdminSidebar.css';  // We'll keep styles separate to match your pattern
+import { 
+    Gauge, 
+    UserPlus, 
+    Newspaper, 
+    LibraryBig, 
+    Inbox, 
+    Megaphone, 
+    UserCog, 
+    Settings, 
+    List,
+    LogOut
+} from 'lucide-react';
+import '../../../css/styles/admin/AdminSidebar.css';
 
 const AdminSidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [activeMenu, setActiveMenu] = useState('Dashboard');
     const logo = '/image/NRCP_logo.png';
+    const profilePic = '/image/SampleProfile.jpg'; // Replace with actual profile picture path
 
     const menuItems = [
-        { title: "Dashboard", icon: <Home size={20} /> },
-        { title: "Messages", icon: <Mail size={20} /> },
-        { title: "Profile", icon: <User size={20} />, gap: true },
-        { title: "Schedule", icon: <Calendar size={20} /> },
-        { title: "Search", icon: <Search size={20} /> },
-        { title: "Analytics", icon: <BarChart2 size={20} /> },
-        { title: "Files", icon: <Folder size={20} />, gap: true },
-        { title: "Settings", icon: <Settings size={20} /> }
+        { title: "Dashboard", icon: <Gauge size={20} /> },
+        { title: "User Management", icon: <UserPlus size={20} /> },
+        { title: "Content Management", icon: <Newspaper size={20} /> },
+        { title: "Library Management", icon: <LibraryBig size={20} /> },
+        { title: "Suggestion Inbox", icon: <Inbox size={20} /> },
+        { title: "Announcement", icon: <Megaphone size={20} /> },
+        { title: "Profile", icon: <UserCog size={20} />, gap: true },
+        { title: "Settings", icon: <Settings size={20} /> },
     ];
+
+    const handleLogout = () => {
+        // Add your logout logic here
+        console.log('Logging out...');
+    };
 
     return (
         <div className="admin-root-container">
@@ -26,7 +42,7 @@ const AdminSidebar = () => {
                     className={`sidebar-toggle ${!isOpen ? 'rotate' : ''}`}
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    <ChevronLeft size={20} />
+                    <List size={20} />
                 </button>
 
                 <div className="sidebar-header">
@@ -58,6 +74,32 @@ const AdminSidebar = () => {
                         </li>
                     ))}
                 </ul>
+
+                <div className="sidebar-footer">
+                    <div className="profile-header">
+                        <div className="profile-image-container">
+                            <img 
+                                src={profilePic} 
+                                alt="Profile" 
+                                className={`profile-image ${!isOpen ? 'spin-reverse' : 'spin'}`}
+                            />
+                        </div>
+                        <div className={`profile-info ${!isOpen ? 'hide' : ''}`}>
+                            <h3 className="profile-name">John Doe</h3>
+                            <p className="profile-role">Admin</p>
+                        </div>
+                    </div>
+                    <div className="menu-item">
+                        <div className="menu-content" onClick={handleLogout}>
+                            <span className="menu-icon">
+                                <LogOut size={20} />
+                            </span>
+                            <span className={`menu-title ${!isOpen ? 'hide' : ''}`}>
+                                Logout
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="admin-main-content">
