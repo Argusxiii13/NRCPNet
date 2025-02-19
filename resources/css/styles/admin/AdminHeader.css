@@ -1,142 +1,157 @@
 /* AdminHeader.css */
-.header {
+.admin-header {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
-    background-color: white;
+    left: 0;
+    height: 80px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 100px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 100%; /* Ensure it spans full width */
+    z-index: 999;
 }
 
-.header-container {
-    width: 98%; /* Occupy full width */
-    display: flex;
-    justify-content: space-between; /* This will push items to edges */
-    align-items: center;
-    padding: 0.5rem 1rem; /* Reduced padding */
-    height: 64px;
-}   
-
-.left-container {
+.header-section {
     display: flex;
     align-items: center;
-    margin-right: auto; /* Push to the left edge */
+    height: 100%;
 }
 
-.logo-container {
-    width: 40px; /* Fixed size */
-    height: 40px; /* Fixed size */
-    border-radius: 50%; /* Makes it circular */
-    overflow: hidden; /* Hides overflow */
-    display: flex;
+.left-section {
+    width: 50px;
+}
+
+.middle-section {
+    flex: 1;
     justify-content: center;
+}
+
+.right-section {
+    width: 300px;
+    justify-content: flex-end;
+}
+
+.department-nav {
+    display: flex;
+    gap: 30px;
     align-items: center;
 }
 
-.logo {
-    width: 100%; /* Scale the logo to fit */
-    height: auto; /* Maintain aspect ratio */
+.department-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px;
 }
 
-.title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
+.department-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
 }
 
-.middle-container {
-    display: flex;
-    gap: 6rem;
-    /* No margin or position adjustment needed - it stays centered naturally */
-}
-
-.link {
-    text-decoration: none;
-    color: #4a5568;
-    transition: color 0.2s ease;
-}
-
-.link:hover {
-    color: #007bff;
-}
-
-.right-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto; /* Push to the right edge */
-}
-
-/* Search Bar Styles */
-.search-form {
-    display: flex;
-    align-items: center;
+.department-btn.active {
+    background: #1e293b;
+    color: #ffffff;
 }
 
 .search-container {
-    position: relative; /* Position context for the icon */
-}
-
-.search-input {
-    border: 1px solid #ccc; /* Border for input */
-    border-radius: 0.375rem; /* Rounded corners */
-    padding: 0.5rem 2rem 0.5rem 1rem; /* Padding for input */
-    width: 200px; /* Width of the input */
-    transition: border-color 0.3s; /* Smooth transition for border color */
-}
-
-.search-input:focus {
-    border-color: #007bff; /* Change border color on focus */
-    outline: none; /* Remove default outline */
+    position: relative;
+    width: 240px;
 }
 
 .search-icon {
-    position: absolute; /* Position the icon absolutely */
-    right: 10px; /* Position from the right side */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust for vertical alignment */
-    color: #007bff; /* Icon color */
-    pointer-events: none; /* Prevent interaction with the icon */
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
 }
 
-/* Add this to your main content wrapper */
-.main-content {
-    margin-top: 64px; /* Same as header height */
-    padding: 1rem;
+.search-input {
+    width: 100%;
+    height: 40px;
+    padding: 8px 12px 8px 44px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
-/* Media query for responsive design */
+.search-input:focus {
+    outline: none;
+    border-color: #1e293b;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+}
+
+.search-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Make sure header stays full width when sidebar is collapsed */
+.sidebar-collapsed .admin-header {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .left-section,
+    .right-section {
+        width: 160px;
+    }
+
+    .search-container {
+        width: 200px;
+    }
+}
+
 @media (max-width: 768px) {
-    .middle-container {
-        display: none; /* Hide navigation on mobile */
+    .admin-header {
+        padding: 0 16px;
     }
-    
-    .header-container {
-        padding: 1rem;
+
+    .left-section {
+        width: 120px;
+    }
+
+    .right-section {
+        width: 140px;
+    }
+
+    .search-container {
+        width: 160px;
+    }
+
+    .department-nav {
+        gap: 8px;
+    }
+
+    .department-btn {
+        padding: 6px 12px;
+        font-size: 13px;
     }
 }
 
-/* Add this to your existing AdminHeader.css */
-.menu-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.25rem;
-    margin-right: 1rem;
-    transition: transform 0.2s;
-}
+@media (max-width: 640px) {
+    .middle-section {
+        display: none;
+    }
 
-.menu-toggle:hover {
-    transform: scale(1.1);
-}
+    .left-section,
+    .right-section {
+        width: auto;
+    }
 
-/* Update this selector in your existing CSS */
-.left-container {
-    display: flex;
-    align-items: center;
-    margin-right: auto; /* Push to the left edge */
+    .search-container {
+        width: 200px;
+    }
 }

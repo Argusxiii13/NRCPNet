@@ -1,37 +1,34 @@
-/* AdminPage.css */
-.app {
-  display: flex;
-  flex-direction: column;
+/* AdminLayout.css */
+.admin-layout {
   min-height: 100vh;
+  background: #f1f5f9;
 }
 
-.main-container {
-  flex: 1;
-  margin-top: 64px; /* Height of the header */
-  transition: margin-left 0.3s ease, width 0.3s ease;
-  width: 100%;
+.admin-content {
+  margin-left: 260px; /* Width of expanded sidebar */
+  margin-top: 64px; /* Height of header */
+  min-height: calc(100vh - 64px);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.main-container.with-sidebar {
-  margin-left: 250px; /* Width of the expanded sidebar */
-  width: calc(100% - 250px);
+.admin-content-wrapper {
+  padding: 24px;
+  height: 100%;
 }
 
-.main-container.with-collapsed-sidebar {
-  margin-left: 60px; /* Width of the collapsed sidebar */
-  width: calc(100% - 60px);
+/* Adjust content margin when sidebar is collapsed */
+.sidebar-collapsed .admin-content {
+  margin-left: 45px;
 }
 
-.content-area {
-  padding: 2rem;
-}
-
-/* Media query for responsive design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .main-container,
-  .main-container.with-sidebar,
-  .main-container.with-collapsed-sidebar {
-    margin-left: 0;
-    width: 100%;
+  .admin-content {
+      margin-left: 45px;
+  }
+  
+  .sidebar-collapsed .admin-content {
+      margin-left: 45px;
   }
 }
