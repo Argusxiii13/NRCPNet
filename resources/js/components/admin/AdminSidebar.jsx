@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { 
     Gauge, 
     UserPlus, 
@@ -13,11 +12,9 @@ import {
 } from 'lucide-react';
 import '../../../css/styles/admin/AdminSidebar.css';
 
-const AdminSidebar = () => {
-    const [isOpen, setIsOpen] = useState(true);
-    const [activeMenu, setActiveMenu] = useState('Dashboard');
+const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const logo = '/image/NRCP_logo.png';
-    const profilePic = '/image/SampleProfile.jpg'; // Replace with actual profile picture path
+    const profilePic = '/image/SampleProfile.jpg';
 
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
@@ -31,79 +28,72 @@ const AdminSidebar = () => {
     ];
 
     const handleLogout = () => {
-        // Add your logout logic here
         console.log('Logging out...');
     };
 
     return (
-        <div className="admin-root-container">
-            <div className={`admin-sidebar ${!isOpen ? 'collapsed' : ''}`}>
-                <button 
-                    className={`sidebar-toggle ${!isOpen ? 'rotate' : ''}`}
-                    onClick={() => setIsOpen(!isOpen)}
-                >
-                    <ArrowRight size={20} />
-                </button>
+        <div className={`admin-sidebar ${!isExpanded ? 'collapsed' : ''}`}>
+            <button 
+                className={`sidebar-toggle ${!isExpanded ? 'rotate' : ''}`}
+                onClick={onToggle}
+            >
+                <ArrowRight size={20} />
+            </button>
 
-                <div className="sidebar-header">
-                    <div className="logo-container">
-                        <img 
-                            src={logo} 
-                            alt="NRCP Logo" 
-                            className={`logo ${!isOpen ? 'spin-reverse' : 'spin'}`}
-                        />
-                    </div>
-                    <h1 className={`sidebar-title ${!isOpen ? 'hide' : ''}`}>
-                        NRCP
-                    </h1>
+            <div className="sidebar-header">
+                <div className="logo-container">
+                    <img 
+                        src={logo} 
+                        alt="NRCP Logo" 
+                        className={`logo ${!isExpanded ? 'spin-reverse' : 'spin'}`}
+                    />
                 </div>
-
-                <ul className="menu-list">
-                    {menuItems.map((item, index) => (
-                        <li 
-                            key={index}
-                            className={`menu-item ${item.gap ? 'gap-top' : ''} ${activeMenu === item.title ? 'active' : ''}`}
-                            onClick={() => setActiveMenu(item.title)}
-                        >
-                            <div className="menu-content">
-                                <span className="menu-icon">{item.icon}</span>
-                                <span className={`menu-title ${!isOpen ? 'hide' : ''}`}>
-                                    {item.title}
-                                </span>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="sidebar-footer">
-                    <div className="profile-header">
-                        <div className="profile-image-container">
-                            <img 
-                                src={profilePic} 
-                                alt="Profile" 
-                                className={`profile-image`}
-                            />
-                        </div>
-                        <div className={`profile-info ${!isOpen ? 'hide' : ''}`}>
-                            <h3 className="profile-name">John Doe</h3>
-                            <p className="profile-role">Admin</p>
-                        </div>
-                    </div>
-                    <div className="menu-item">
-                        <div className="menu-content" onClick={handleLogout}>
-                            <span className="menu-icon">
-                                <LogOut size={20} />
-                            </span>
-                            <span className={`menu-title ${!isOpen ? 'hide' : ''}`}>
-                                Logout
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <h1 className={`sidebar-title ${!isExpanded ? 'hide' : ''}`}>
+                    NRCP
+                </h1>
             </div>
 
-            <div className="admin-main-content">
-                <h1>Welcome to {activeMenu}</h1>
+            <ul className="menu-list">
+                {menuItems.map((item, index) => (
+                    <li 
+                        key={index}
+                        className={`menu-item ${item.gap ? 'gap-top' : ''} ${activeMenu === item.title ? 'active' : ''}`}
+                        onClick={() => onMenuSelect(item.title)}
+                    >
+                        <div className="menu-content">
+                            <span className="menu-icon">{item.icon}</span>
+                            <span className={`menu-title ${!isExpanded ? 'hide' : ''}`}>
+                                {item.title}
+                            </span>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+
+            <div className="sidebar-footer">
+                <div className="profile-header">
+                    <div className="profile-image-container">
+                        <img 
+                            src={profilePic} 
+                            alt="Profile" 
+                            className="profile-image"
+                        />
+                    </div>
+                    <div className={`profile-info ${!isExpanded ? 'hide' : ''}`}>
+                        <h3 className="profile-name">John Doe</h3>
+                        <p className="profile-role">Admin</p>
+                    </div>
+                </div>
+                <div className="menu-item">
+                    <div className="menu-content" onClick={handleLogout}>
+                        <span className="menu-icon">
+                            <LogOut size={20} />
+                        </span>
+                        <span className={`menu-title ${!isExpanded ? 'hide' : ''}`}>
+                            Logout
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     );
