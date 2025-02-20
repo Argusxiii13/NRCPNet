@@ -36,19 +36,20 @@
 
 .department-nav {
     display: flex;
-    gap: 30px;
+    gap: 80px;
     align-items: center;
 }
 
 .department-btn {
+    font-family: 'Helvetica', sans-serif;
     padding: 8px 16px;
     border: none;
     background: transparent;
     color: #64748b;
-    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     border-radius: 6px;
+    font-weight: bold;
 }
 
 .department-btn:hover {

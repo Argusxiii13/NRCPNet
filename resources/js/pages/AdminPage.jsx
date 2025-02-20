@@ -7,7 +7,7 @@ import '../../css/styles/admin/AdminPage.css';
 
 function Layout({ children }) {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
-
+    
     const toggleSidebar = () => {
         setIsSidebarExpanded(!isSidebarExpanded);
     };

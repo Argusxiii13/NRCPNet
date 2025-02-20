@@ -8,7 +8,7 @@ import {
     Megaphone, 
     UserCog, 
     Settings, 
-    List,
+    ArrowRight,
     LogOut
 } from 'lucide-react';
 import '../../../css/styles/admin/AdminSidebar.css';
@@ -42,7 +42,7 @@ const AdminSidebar = () => {
                     className={`sidebar-toggle ${!isOpen ? 'rotate' : ''}`}
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    <List size={20} />
+                    <ArrowRight size={20} />
                 </button>
 
                 <div className="sidebar-header">
@@ -81,7 +81,7 @@ const AdminSidebar = () => {
                             <img 
                                 src={profilePic} 
                                 alt="Profile" 
-                                className={`profile-image ${!isOpen ? 'spin-reverse' : 'spin'}`}
+                                className={`profile-image`}
                             />
                         </div>
                         <div className={`profile-info ${!isOpen ? 'hide' : ''}`}>
