@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../../css/styles/login/LoginPage.css';
-import '../../css/app.css';
+import '../../css/font.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

@@ -12,7 +12,7 @@ import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
 import SpecialEvents from '../components/landing/SpecialEvents';
 import Footer from '../components/landing/Footer';
-import '../../css/app.css';
+import '../../css/font.css';
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
