@@ -8,13 +8,15 @@ export default {
         './resources/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
+        './resources/**/*.jsx',
     ],
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Helvetica', ...defaultTheme.fontFamily.sans],
             },
         },
     },
+    variants: {},
     plugins: [],
 };

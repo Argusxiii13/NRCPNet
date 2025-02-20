@@ -4,6 +4,7 @@ import Sidebar from '../../js/components/admin/AdminSidebar';
 import Header from '../../js/components/admin/NavigationBar';
 import ContentManagement from '../components/admin/ContentManagement';
 import '../../css/styles/admin/AdminPage.css';
+import '../../css/app.css';
 
 function Layout() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
