@@ -20,7 +20,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
         { title: "Calendar Management", icon: <CalendarCog size={20} /> },
-        { title: "Content Management", icon: <Newspaper size={20} /> },
+        { title: "Feature Management", icon: <Newspaper size={20} /> },
         { title: "Announcement Management", icon: <Megaphone size={20} /> },
         { title: "Suggestion Inbox", icon: <Inbox size={20} /> },
         { title: "Library Management", icon: <LibraryBig size={20} /> },
@@ -51,7 +51,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                     />
                 </div>
                 <h1 className={`sidebar-title ${!isExpanded ? 'hide' : ''}`}>
-                    NRCP
+                    NRCPNet
                 </h1>
             </div>
 

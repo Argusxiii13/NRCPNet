@@ -1,6 +1,6 @@
 // EventCarousel.jsx
 import React, { useState } from 'react';
-import '../../../css/styles/landing/EventCarousel.css';
+import '../../../css/styles/landing/FeatureCarousel.css';
 
 const EventCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);

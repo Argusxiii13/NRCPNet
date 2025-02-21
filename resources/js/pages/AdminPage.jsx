@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Sidebar from '../../js/components/admin/AdminSidebar';
 import Header from '../../js/components/admin/NavigationBar';
-import ContentManagement from '../components/admin/ContentManagement';
+import FeatureManagement from '../components/admin/FeatureManagement';
 import CalendarManagement from '../components/admin/CalendarManagement';
 import AnnouncementManagement from '../components/admin/AnnouncementManagement';
 import '../../css/styles/admin/AdminPage.css';
@@ -18,8 +18,8 @@ function Layout() {
 
     const renderContent = () => {
         switch(activeMenu) {
-            case 'Content Management':
-                return <ContentManagement />;
+            case 'Feature Management':
+                return <FeatureManagement />;
             case 'Dashboard':
                 return <h1>Welcome to Dashboard</h1>;
             case 'User Management':

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
-import EventCarousel from '../components/landing/EventCarousel';
+import EventCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
 import LinkList from '../components/Landing/LinkList';
 import DownloadableForms from '../components/landing/DownloadableForms'; // New import

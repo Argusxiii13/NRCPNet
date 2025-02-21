@@ -1,4 +1,4 @@
-.content-management {
+.Feature-management {
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
@@ -23,7 +23,7 @@
   border-bottom: 1px solid #e1e4e8;
 }
 
-.panel-content {
+.panel-Feature {
   padding: 32px;
 }
 
@@ -163,7 +163,7 @@
   margin: 0 8px;
 }
 
-.editor-content {
+.editor-Feature {
   min-height: 400px;
   padding: 24px;
   background-color: white;
@@ -191,4 +191,101 @@
 
 .save-button:hover {
   background-color: #0284c7;
+}
+
+/* Add these styles to your existing FeatureManagement.css */
+
+/* Features List Panel Styles */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-item {
+  padding: 16px;
+  background-color: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-item:hover {
+  border-color: #0ea5e9;
+  background-color: #f0f9ff;
+}
+
+.feature-item.selected {
+  border-color: #0ea5e9;
+  background-color: #f0f9ff;
+  box-shadow: 0 0 0 1px #0ea5e9;
+}
+
+.feature-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feature-title {
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 16px;
+}
+
+.feature-status {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.feature-status.published {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.feature-status.draft {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.feature-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.feature-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.action-button {
+  padding: 6px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  background: white;
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #f1f5f9;
+  border-color: #d1d5db;
+  color: #1a1a1a;
+}
+
+.action-button.delete:hover {
+  background-color: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
 }
