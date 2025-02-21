@@ -5,6 +5,7 @@ import Header from '../../js/components/admin/NavigationBar';
 import FeatureManagement from '../components/admin/FeatureManagement';
 import CalendarManagement from '../components/admin/CalendarManagement';
 import AnnouncementManagement from '../components/admin/AnnouncementManagement';
+import SuggestionInbox from '../components/admin/SuggestionInbox';
 import '../../css/styles/admin/AdminPage.css';
 import '../../css/font.css';
 
@@ -27,7 +28,7 @@ function Layout() {
             case 'Library Management':
                 return <h1>Library Management Panel</h1>;
             case 'Suggestion Inbox':
-                return <h1>Suggestion Inbox Panel</h1>;
+                return <SuggestionInbox />;
             case 'Announcement Management':
                 return <AnnouncementManagement/>
             case 'Profile':
