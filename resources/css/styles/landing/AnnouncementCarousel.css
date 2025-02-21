@@ -12,6 +12,6 @@
 
 .announcement-item {
     font-size: clamp(16px, 2vw, 24px); /* Responsive font size */
-    color: #343a40; /* Dark text color */
+    color: #000000; /* Dark text color */
     text-align: center; /* Center text */
 }

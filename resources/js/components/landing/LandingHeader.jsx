@@ -12,9 +12,10 @@ const LPHeader = () => {
             <div className="header-container">
                 <div className="left-container">
                     <div className="logo-container">
-                        <img src="/path/to/logo.png" alt="Logo" className="logo" />
+                        <img src="image/NRCP_logo----.png" alt="Logo" className="logo" />
                     </div>
                     <h1 className="title">NRCPNet</h1>
+                    
                 </div>
                 <div className="middle-container">
                     <a href="https://nrcp.dost.gov.ph/" className="link">NRCP Website</a>

@@ -13,7 +13,7 @@ import {
 import '../../../css/styles/admin/AdminSidebar.css';
 
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
-    const logo = '/image/NRCP_logo.png';
+    const logo = '/image/NRCP_logo----.png';
     const profilePic = '/image/SampleProfile.jpg';
 
     const menuItems = [
