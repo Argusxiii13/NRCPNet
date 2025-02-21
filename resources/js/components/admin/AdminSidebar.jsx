@@ -8,7 +8,8 @@ import {
     UserCog, 
     Settings, 
     ArrowRight,
-    LogOut
+    LogOut,
+    CalendarCog
 } from 'lucide-react';
 import '../../../css/styles/admin/AdminSidebar.css';
 
@@ -18,11 +19,12 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
 
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
-        { title: "User Management", icon: <UserPlus size={20} /> },
+        { title: "Calendar Management", icon: <CalendarCog size={20} /> },
         { title: "Content Management", icon: <Newspaper size={20} /> },
-        { title: "Library Management", icon: <LibraryBig size={20} /> },
+        { title: "Announcement Management", icon: <Megaphone size={20} /> },
         { title: "Suggestion Inbox", icon: <Inbox size={20} /> },
-        { title: "Announcement", icon: <Megaphone size={20} /> },
+        { title: "Library Management", icon: <LibraryBig size={20} /> },
+        { title: "User Management", icon: <UserPlus size={20} /> },
         { title: "Profile", icon: <UserCog size={20} />, gap: true },
         { title: "Settings", icon: <Settings size={20} /> },
     ];
