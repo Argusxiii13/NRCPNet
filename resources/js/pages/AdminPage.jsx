@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import Sidebar from '../../js/components/admin/AdminSidebar';
 import Header from '../../js/components/admin/NavigationBar';
 import ContentManagement from '../components/admin/ContentManagement';
+import CalendarManagement from '../components/admin/CalendarManagement';
+import AnnouncementManagement from '../components/admin/AnnouncementManagement';
 import '../../css/styles/admin/AdminPage.css';
 import '../../css/font.css';
 
@@ -26,12 +28,14 @@ function Layout() {
                 return <h1>Library Management Panel</h1>;
             case 'Suggestion Inbox':
                 return <h1>Suggestion Inbox Panel</h1>;
-            case 'Announcement':
-                return <h1>Announcement Panel</h1>;
+            case 'Announcement Management':
+                return <AnnouncementManagement/>
             case 'Profile':
                 return <h1>Profile Panel</h1>;
             case 'Settings':
                 return <h1>Settings Panel</h1>;
+            case 'Calendar Management':
+                return <CalendarManagement />;
             default:
                 return <h1>Welcome to Dashboard</h1>;
         }
