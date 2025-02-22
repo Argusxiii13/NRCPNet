@@ -27,12 +27,12 @@ const LandingPage = () => {
             <Header/>
             <div className="main-content">
             <div className="welcome-container">
-    <div className="welcome-section">
-        <h2>Welcome to NRCPNet</h2>
-        <p>This is the landing page content.</p>
-    </div>
-    <TimeDisplay />
-</div>
+                <div className="welcome-section">
+                    <h2>Welcome to NRCPNet</h2>
+                    <p>This is the landing page content.</p>
+                </div>
+                <TimeDisplay />
+            </div>
                 <div className="content-grid">
                     <div className="event-section">
                         <EventCarousel />
