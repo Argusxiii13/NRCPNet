@@ -6,8 +6,8 @@
 }
 
 .calendar-container {
-    padding: 2rem;
-    background-color: #f9f9f9;
+    padding: 2.6rem;
+    background-color: #ffffff;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     width: 350px;
@@ -27,7 +27,7 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    color: #007bff;
+    color: #2a388f;
 }
 
 .weekdays-grid {
@@ -40,7 +40,7 @@
 .weekday {
     text-align: center;
     font-weight: 500;
-    color: #666;
+    color: #000000;
     padding: 0.5rem;
 }
 
@@ -66,7 +66,7 @@
 }
 
 .day-button:hover:not(.empty) {
-    background-color: #f0f0f0;
+    background-color: #cce5ff;
     border-color: #dee2e6;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .day-button.today {
-    background-color: #ffeb3b;
+    background-color: #2a388f;
 }
 
 .schedule-panel {

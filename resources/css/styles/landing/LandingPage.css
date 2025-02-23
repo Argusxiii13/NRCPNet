@@ -117,12 +117,13 @@
 
 .time-zone {
     font-weight: bold;
+    font-size: small;
     color: #666;
     margin-bottom: 0.5rem;
 }
 
 .current-time {
-    font-size: 1.1rem;
+    font-size: small;
     color: #333;
 }
 

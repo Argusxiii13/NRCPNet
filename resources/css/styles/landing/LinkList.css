@@ -8,25 +8,25 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
-
-.linklist-title {
+  }
+  
+  .linklist-title {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     text-align: center;
     flex-shrink: 0;
-}
-
-.linklist {
+  }
+  
+  .linklist {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     flex: 1;
     overflow: hidden;
-}
-
-.linklist-items {
+  }
+  
+  .linklist-items {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,9 +36,9 @@
     gap: 0.5rem;
     padding: 0.5rem;
     height: 100%;
-}
-
-.link-item-container {
+  }
+  
+  .link-item-container {
     width: 90%;
     height: 150px;
     display: flex;
@@ -50,9 +50,9 @@
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
-}
-
-.link-item-logo {
+  }
+  
+  .link-item-logo {
     width: 80px;
     height: 80px;
     object-fit: cover;
@@ -61,40 +61,44 @@
     padding: 2px;
     background-color: rgb(255, 255, 255);
     margin-right: 1.5rem;
-}
-
-.linklist-item {
+  }
+  
+  .linklist-item {
     text-decoration: none;
-    color: #ffffff;
+    color: #ffffff; /* Default font color */
     font-size: 1.2rem;
     text-align: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 500;
-}
-
-.link-item-container:hover {
-    background-color: #007bff;
+  }
+  
+  .link-item-container:hover {
+    background-color: #cce5ff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Add smooth scrolling */
-.linklist-items::-webkit-scrollbar {
+  }
+  
+  .link-item-container:hover .linklist-item {
+    color: #000000; 
+  }
+  
+  /* Add smooth scrolling */
+  .linklist-items::-webkit-scrollbar {
     width: 8px;
-}
-
-.linklist-items::-webkit-scrollbar-track {
+  }
+  
+  .linklist-items::-webkit-scrollbar-track {
     background: #ffffff;
     border-radius: 4px;
-}
-
-.linklist-items::-webkit-scrollbar-thumb {
+  }
+  
+  .linklist-items::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
-}
-
-.linklist-items::-webkit-scrollbar-thumb:hover {
+  }
+  
+  .linklist-items::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
+  }
