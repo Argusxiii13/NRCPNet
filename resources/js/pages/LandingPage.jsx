@@ -13,6 +13,8 @@ import ThursdayWellness from '../components/landing/ThursdayWellness';
 import SpecialEvents from '../components/landing/SpecialEvents';
 import Footer from '../components/landing/Footer';
 import '../../css/font.css';
+import TimeDisplay from '../components/landing/TimeDisplay';
+
 const LandingPage = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
@@ -24,10 +26,13 @@ const LandingPage = () => {
         <div className="app">
             <Header/>
             <div className="main-content">
+            <div className="welcome-container">
                 <div className="welcome-section">
                     <h2>Welcome to NRCPNet</h2>
                     <p>This is the landing page content.</p>
                 </div>
+                <TimeDisplay />
+            </div>
                 <div className="content-grid">
                     <div className="event-section">
                         <EventCarousel />
