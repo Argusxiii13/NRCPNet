@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Search, Eye, Edit2, Trash2, Plus } from 'lucide-react';
+import AddUserModal from './AddUserModal';
 import '../../../css/styles/admin/UserManagement.css';
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 8;
 
   // Sample data - replace with your actual data fetching logic
-  const sampleUsers = Array(5).fill(null).map((_, index) => ({
+  const [users, setUsers] = useState(Array(5).fill(null).map((_, index) => ({
     id: index + 1,
     fullname: `User ${index + 1}`,
     position: 'Staff',
@@ -18,17 +20,28 @@ const UserManagement = () => {
     status: 'Active',
     lastLogin: '2024-02-24 10:00',
     role: 'User'
-  }));
+  })));
 
   // Create placeholder rows when data is less than itemsPerPage
-  const placeholderRows = Array(itemsPerPage - sampleUsers.length)
+  const placeholderRows = Array(itemsPerPage - users.length)
     .fill(null)
     .map((_, index) => ({ id: `placeholder-${index}` }));
 
-  const allRows = [...sampleUsers, ...placeholderRows];
+  const allRows = [...users, ...placeholderRows];
 
   const handleAddUser = () => {
-    console.log('Add new user');
+    setIsModalOpen(true);
+  };
+
+  const handleSaveUser = (userData) => {
+    // Create a new user with an ID and lastLogin time
+    const newUser = {
+      ...userData,
+      id: users.length + 1,
+      lastLogin: 'Never'
+    };
+    
+    setUsers([...users, newUser]);
   };
 
   const handleViewActivity = (userId) => {
@@ -41,6 +54,8 @@ const UserManagement = () => {
 
   const handleDelete = (userId) => {
     console.log('Delete user:', userId);
+    // Filter out the user with the specified ID
+    setUsers(users.filter(user => user.id !== userId));
   };
 
   return (
@@ -164,7 +179,7 @@ const UserManagement = () => {
           
           <div className="pagination">
             <div className="pagination-info">
-              <p>Showing {sampleUsers.length} of {sampleUsers.length} users</p>
+              <p>Showing {users.length} of {users.length} users</p>
             </div>
             <div className="pagination-buttons">
               <button
@@ -177,7 +192,7 @@ const UserManagement = () => {
               <button
                 className="filter-button"
                 onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={sampleUsers.length < itemsPerPage}
+                disabled={users.length < itemsPerPage}
               >
                 Next
               </button>
@@ -185,6 +200,13 @@ const UserManagement = () => {
           </div>
         </div>
       </div>
+      
+      {/* Add User Modal */}
+      <AddUserModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSave={handleSaveUser}
+      />
     </div>
   );
 };
