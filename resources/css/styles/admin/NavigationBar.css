@@ -100,7 +100,7 @@
 
 /* Make sure header stays full width when sidebar is collapsed */
 .sidebar-collapsed .admin-header {
-    width: 100%;
+    width: 90%;
 }
 
 /* Responsive adjustments */
