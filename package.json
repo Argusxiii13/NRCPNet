@@ -24,8 +24,10 @@
         "@mui/material": "^6.4.4",
         "date-fns": "^4.1.0",
         "date-fns-tz": "^3.2.0",
+        "draggable": "^4.2.0",
         "framer-motion": "^12.1.0",
         "lucide-react": "^0.474.0",
+        "react-draggable": "^4.4.6",
         "react-router-dom": "^7.1.5"
     }
 }

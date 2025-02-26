@@ -7,10 +7,9 @@ import {
     Megaphone, 
     UserCog, 
     Settings, 
-    ArrowRight,
     LogOut,
     CalendarCog,
-    ChevronRight
+    ChevronLeft
 } from 'lucide-react';
 import '../../../css/styles/admin/AdminSidebar.css';
 
@@ -40,7 +39,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                 className={`sidebar-toggle ${!isExpanded ? 'rotate' : ''}`}
                 onClick={onToggle}
             >
-                <ChevronRight size={20} />
+                <ChevronLeft size={20} />
             </button>
 
             <div className="sidebar-header">

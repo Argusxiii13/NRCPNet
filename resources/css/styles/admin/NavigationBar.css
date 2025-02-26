@@ -40,16 +40,38 @@
     align-items: center;
 }
 
+.department-container {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    padding: 10px; /* Add padding for spacing */
+}
+
 .department-btn {
     font-family: 'Helvetica', sans-serif;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border: none;
     background: transparent;
     color: #64748b;
     cursor: pointer;
     transition: all 0.2s ease;
-    border-radius: 6px;
+    border-radius: 0px;
     font-weight: bold;
+    position: relative; /* Allow positioning of the pseudo-element */
+}
+
+.department-btn:not(:last-child) {
+    margin-right: 10px; /* Space between buttons */
+}
+
+.department-btn:not(:last-child)::after {
+    content: ''; /* Create a line */
+    position: absolute;
+    right: -5px; /* Position it to the right of the button */
+    top: 50%; /* Center it vertically */
+    transform: translateY(-50%); /* Center alignment */
+    width: 1px; /* Width of the line */
+    height: 75px; /* Height of the line */
+    background-color: #94a3b8; /* Color of the line */
 }
 
 .department-btn:hover {

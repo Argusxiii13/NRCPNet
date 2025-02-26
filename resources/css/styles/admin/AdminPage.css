@@ -12,6 +12,11 @@
   position: relative;
 }
 
+.dashboard-title {
+  text-align: left;
+  margin-left: 40px; /* Adjust for spacing if needed */
+}
+
 .admin-content-wrapper {
   padding: 24px;
   height: 100%;
@@ -31,4 +36,6 @@
   .sidebar-collapsed .admin-content {
       margin-left: 45px;
   }
+
+  
 }

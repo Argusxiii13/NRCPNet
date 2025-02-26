@@ -8,7 +8,7 @@
 }
 
 .admin-sidebar {
-  background: #1e293b;
+  background: #2a388f;
   width: 260px;
   min-width: 260px;
   height: 96vh;
@@ -33,7 +33,7 @@
   height: 30px;
   border-radius: 50%;
   background: #fff;
-  border: 2px solid #1e293b;
+  border: 2px solid #2a388f;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -85,6 +85,8 @@
   height: 40px;
   object-fit: contain;
   transition: transform 0.5s ease;
+  min-width: 60px;
+  height: 60px;
 }
 
 .logo.spin {
@@ -107,11 +109,12 @@
 
 .sidebar-title {
   color: #fff;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   transition: all 0.3s ease;
   white-space: nowrap;
   margin: 0;
+  height: 25px;
 }
 
 .sidebar-title.hide {
@@ -180,7 +183,7 @@
   left: 0;
   right: 0;
   padding: 20px;
-  background: #1e293b;
+  background: #2a388f;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -261,14 +264,14 @@
   background: transparent;
   border: none;
   border-radius: 8px;
-  color: #cbd5e1;
+  color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .logout-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background:#2a388f;
+  color: #ffffff;
 }
 
 .logout-text {
