@@ -22,8 +22,8 @@ function Layout() {
         switch(activeMenu) {
             case 'Feature Management':
                 return <FeatureManagement />;
-            case 'Dashboard':
-                return <h1>Welcome to Dashboard</h1>;
+            //case 'Dashboard':
+                //return <h1>Welcome to Dashboard</h1>;
             case 'User Management':
                 return <UserManagement/>
             case 'Library Management':
