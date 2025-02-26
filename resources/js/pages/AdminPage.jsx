@@ -7,6 +7,7 @@ import CalendarManagement from '../components/admin/CalendarManagement';
 import AnnouncementManagement from '../components/admin/AnnouncementManagement';
 import SuggestionInbox from '../components/admin/SuggestionInbox';
 import UserManagement from '../components/admin/UserManagement';
+import DivisionManagement from '../components/admin/DivisionManagement';
 import '../../css/styles/admin/AdminPage.css';
 import '../../css/font.css';
 
@@ -27,7 +28,7 @@ function Layout() {
             case 'User Management':
                 return <UserManagement/>
             case 'Library Management':
-                return <h1>Library Management Panel</h1>;
+                return <DivisionManagement/>;
             case 'Suggestion Inbox':
                 return <SuggestionInbox />;
             case 'Announcement Management':
