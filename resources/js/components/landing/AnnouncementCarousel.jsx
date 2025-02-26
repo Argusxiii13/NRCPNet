@@ -4,27 +4,69 @@ import '../../.././css/styles/landing/AnnouncementCarousel.css'
 
 const AnnouncementCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    
+    // Enhanced announcements array with different content types
     const announcements = [
-        'Announcement 1: Welcome to NRCPNet!',
-        'Announcement 2: New features coming soon!',
-        'Announcement 3: Check out our latest updates!',
+        {
+            type: 'text',
+            content: 'Announcement 1: Welcome to NRCPNet!'
+        },
+        {
+            type: 'text',
+            content: 'Announcement 2: New features coming soon!'
+        },
+        {
+            type: 'image',
+            content: '/image/Announcement1.jpg',
+            altText: 'Announcement 3: Check out our latest updates!'
+        }
     ];
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-        }, 4000); // Change every second
+        }, 4000); // Change every 4 seconds
 
         return () => clearInterval(interval); // Cleanup on unmount
     }, [announcements.length]);
 
+    // Function to navigate to a specific slide when indicator is clicked
+    const goToSlide = (index) => {
+        setCurrentIndex(index);
+    };
+
     return (
-        <div className="announcement-container">
-            <div className="announcement-item">
-                {announcements[currentIndex]}
+        <div className="announcement-wrapper">
+            <div className="announcement-container">
+                {announcements[currentIndex].type === 'text' ? (
+                    <div className="text-announcement">
+                        {announcements[currentIndex].content}
+                    </div>
+                ) : (
+                    <div className="image-announcement">
+                        <img 
+                            src={announcements[currentIndex].content} 
+                            alt={announcements[currentIndex].altText}
+                            className="announcement-image"
+                        />
+                        {/* Removed the image-caption div here */}
+                    </div>
+                )}
+                
+                {/* Indicators now inside the container */}
+                <div className="indicators-container">
+                    {announcements.map((_, index) => (
+                        <button 
+                            key={index}
+                            className={`indicator ${index === currentIndex ? 'active' : ''}`}
+                            onClick={() => goToSlide(index)}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
 };
 
-export default AnnouncementCarousel;
+export default AnnouncementCarousel;    
