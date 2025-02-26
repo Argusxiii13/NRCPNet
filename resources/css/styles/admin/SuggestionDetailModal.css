@@ -1,0 +1,216 @@
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+  }
+  
+  .modal-container {
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
+  }
+  
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e1e4e8;
+    background-color: #f8f9fa;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .modal-close-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .modal-close-btn:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+  
+  .modal-content {
+    padding: 24px 32px;
+  }
+  
+  .form-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  /* Suggestion info styles */
+  .suggestion-info {
+    margin-bottom: 24px;
+  }
+  
+  .info-row {
+    display: flex;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+  
+  .info-label {
+    width: 120px;
+    font-weight: 500;
+    color: #4b5563;
+    font-size: 14px;
+  }
+  
+  .info-value {
+    color: #111827;
+    font-size: 14px;
+  }
+  
+  .suggestion-content-box {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+    color: #1f2937;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  
+  .suggestion-actions {
+    margin-bottom: 24px;
+  }
+  
+  .status-dropdown,
+  .assignee-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563;
+    font-size: 14px;
+    min-width: 200px;
+  }
+  
+  .admin-notes {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 24px;
+  }
+  
+  .admin-notes:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .modal-button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .modal-button.cancel {
+    background-color: #f3f4f6;
+    border: 1px solid #e1e4e8;
+    color: #4b5563;
+  }
+  
+  .modal-button.cancel:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .modal-button.submit {
+    background-color: #0ea5e9;
+    border: 1px solid #0ea5e9;
+    color: white;
+  }
+  
+  .modal-button.submit:hover {
+    background-color: #0284c7;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .modal-container {
+      width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .modal-content {
+      padding: 20px;
+    }
+    
+    .info-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .info-label {
+      margin-bottom: 4px;
+    }
+    
+    .status-dropdown,
+    .assignee-dropdown {
+      width: 100%;
+      min-width: unset;
+    }
+  }
