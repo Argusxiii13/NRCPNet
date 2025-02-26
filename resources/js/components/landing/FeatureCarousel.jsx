@@ -2,12 +2,27 @@
 import React, { useState } from 'react';
 import '../../../css/styles/landing/FeatureCarousel.css';
 
+// Image path constants
+const Feature1 = '/image/Feature1.png';
+const Feature2 = '/image/Feature2.png';
+const Feature3 = '/image/Feature3.png';
+const Feature4 = '/image/Feature4.png';
+const Feature5 = '/image/Feature5.png';
+const Feature6 = '/image/Feature6.png';
+
+
 const EventCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isHovering, setIsHovering] = useState(false);
+    
+    // Updated slides to only include images
     const slides = [
-        'Slide 1 Content',
-        'Slide 2 Content',
-        'Slide 3 Content',
+        Feature1,
+        Feature2,
+        Feature3,
+        Feature4,
+        Feature5,
+        Feature6,
     ];
 
     const nextSlide = () => {
@@ -21,26 +36,45 @@ const EventCarousel = () => {
     };
 
     return (
-        <div className="carousel-container">
+        <div 
+            className="carousel-container"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+        >
             <div className="carousel">
-                <button 
+                {/* Left half click area for previous slide */}
+                <div 
+                    className="carousel-nav-area carousel-nav-left"
                     onClick={prevSlide}
-                    className="nav-button nav-button-left"
                     aria-label="Previous slide"
                 >
-                    ❮
-                </button>
+                    {isHovering && (
+                        <button className="nav-button nav-button-left">
+                            ❮
+                        </button>
+                    )}
+                </div>
                 
-                <button 
+                {/* Right half click area for next slide */}
+                <div 
+                    className="carousel-nav-area carousel-nav-right"
                     onClick={nextSlide}
-                    className="nav-button nav-button-right"
                     aria-label="Next slide"
                 >
-                    ❯
-                </button>
+                    {isHovering && (
+                        <button className="nav-button nav-button-right">
+                            ❯
+                        </button>
+                    )}
+                </div>
 
                 <div className="carousel-item">
-                    {slides[currentIndex]}
+                    <div className="carousel-image">
+                        <img 
+                            src={slides[currentIndex]} 
+                            alt={`Slide ${currentIndex + 1}`} 
+                        />
+                    </div>
                 </div>
 
                 <div className="slide-indicators">

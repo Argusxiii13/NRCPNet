@@ -23,13 +23,47 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
-    font-size: clamp(16px, 3vw, 24px); /* Responsive font size */
 }
 
-/* Navigation buttons */
+/* Image container */
+.carousel-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Image styling with object-fit: fill as requested */
+.carousel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Navigation areas */
+.carousel-nav-area {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.carousel-nav-left {
+    left: 0;
+}
+
+.carousel-nav-right {
+    right: 0;
+}
+
+/* Navigation buttons - only visible on hover */
 .nav-button {
     position: absolute;
     top: 50%;
@@ -40,7 +74,6 @@
     width: clamp(30px, 5vw, 40px); /* Responsive button size */
     height: clamp(30px, 5vw, 40px);
     border-radius: 50%;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,6 +102,7 @@
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
+    z-index: 10;
 }
 
 .indicator {
