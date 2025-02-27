@@ -20,7 +20,7 @@ const ThursdayWellness = () => {
             <div className="wellness-content">
                 <div className="wellness-items">
                     {activities.map((activity, index) => (
-                        <div key={index} className="wellness-item">
+                        <div key={index} className="wellness-item-container">
                             <div className="wellness-date">
                                 {new Date(activity.date).toLocaleDateString('en-US', {
                                     month: 'short',

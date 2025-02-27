@@ -25,8 +25,8 @@
 }
 
 .event-header {
-    background-color: #d62424;
-    color: white;
+    background-color: #2a388f;
+    color: rgb(255, 255, 255);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -39,8 +39,8 @@
 }
 
 .event-date {
-    font-size: 0.9rem;
-    opacity: 0.9;
+    font-size: 1rem;
+    opacity: 1;
 }
 
 .event-timeline {
@@ -53,7 +53,7 @@
     display: flex;
     gap: 1rem;
     padding: 0.5rem;
-    background-color: white;
+    background-color: #ffffff;
     border-radius: 6px;
     transition: all 0.2s;
 }
@@ -71,8 +71,8 @@
 }
 
 .time {
-    font-size: 0.8rem;
-    color: #666;
+    font-size: 1rem;
+    color: #000000;
     text-align: center;
 }
 
@@ -85,18 +85,19 @@
 }
 
 .event-details {
-    flex: 1;
+    flex: 1rem;
 }
 
 .activity {
     font-weight: 500;
-    color: #2c3e50;
+    color: #000000;
     margin-bottom: 0.2rem;
+    text-align: left;
 }
 
 .location {
     font-size: 0.9rem;
-    color: #666;
+    color: #2a388f;
 }
 
 /* Scrollbar styling */

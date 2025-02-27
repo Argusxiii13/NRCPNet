@@ -1,4 +1,3 @@
-/* ThursdayWellness.css */
 .wellness-container {
     background-color: #ffffff;
     padding: 1rem;
@@ -15,7 +14,7 @@
     margin-bottom: 0.5rem;
     text-align: center;
     flex-shrink: 0;
-    color: #2c3e50;
+    color: #000000;
 }
 
 .wellness-content {
@@ -38,12 +37,12 @@
     padding: 0.5rem;
 }
 
-.wellness-item {
+.wellness-item-container { 
     width: 90%;
     min-height: 120px;
     display: flex;
     align-items: center;
-    background-color: #cce5ff;
+    background-color: #2a388f;
     border-radius: 8px;
     transition: all 0.2s;
     padding: 1rem;
@@ -52,8 +51,8 @@
 }
 
 .wellness-date {
-    background-color: #2a388f;
-    color: white;
+    background-color: #ffffff;
+    color: #2a388f;
     padding: 0.5rem;
     border-radius: 6px;
     min-width: 80px;
@@ -64,29 +63,42 @@
 
 .wellness-details {
     flex: 1;
+    font-size: 1.2rem;
 }
 
 .sport-title {
-    font-size: 1.2rem;
-    color: #2a388f;
+    font-size: 1.5rem;
+    color: #ffffff;
     margin: 0 0 0.5rem 0;
+    font-weight: bolder;
 }
 
 .time-info,
 .location-info,
 .participant-info {
-    margin: 0.2rem 0;
-    color: #495057;
-    font-size: 0.9rem;
+    margin: 0.1rem 0;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
-.wellness-item:hover {
-    background-color: #ffffff;
+.wellness-item-container:hover { 
+    background-color: #cce5ff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Scrollbar styling */
+.wellness-item-container:hover .time-info,
+.wellness-item-container:hover .location-info,
+.wellness-item-container:hover .participant-info {
+    color: #2a388f;  
+}
+
+.wellness-item-container:hover .sport-title {
+    color: #2a388f; 
+}
+
+
 .wellness-items::-webkit-scrollbar {
     width: 8px;
 }

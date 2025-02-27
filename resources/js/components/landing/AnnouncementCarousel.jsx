@@ -1,6 +1,7 @@
 // AnnouncementCarousel.jsx
 import React, { useState, useEffect } from 'react';
 import '../../.././css/styles/landing/AnnouncementCarousel.css'
+import { body } from 'framer-motion/client';
 
 const AnnouncementCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,18 +9,21 @@ const AnnouncementCarousel = () => {
     // Enhanced announcements array with different content types
     const announcements = [
         {
-            type: 'text',
-            content: 'Announcement 1: Welcome to NRCPNet!'
+            type: 'image',
+            content: '/image/Announcement1.png',
+            altText: 'Announcement 1: Check out our latest updates!'
         },
+        {
+            type: 'text',
+            title: 'Accepted Poster Entries',
+            content: 'Annual Scientific Conference & 92nd General Membership Assembly Poster Exhibit & Competition!'
+        }, 
         {
             type: 'text',
             content: 'Announcement 2: New features coming soon!'
         },
-        {
-            type: 'image',
-            content: '/image/Announcement1.png',
-            altText: 'Announcement 3: Check out our latest updates!'
-        }
+        
+        
     ];
 
     useEffect(() => {
