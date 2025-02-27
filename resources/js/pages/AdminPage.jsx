@@ -9,6 +9,7 @@ import SuggestionInbox from '../components/admin/SuggestionInbox';
 import UserManagement from '../components/admin/UserManagement';
 import DivisionManagement from '../components/admin/DivisionManagement';
 import RoleManagement from '../components/admin/RoleManagement';
+import Dashboard from '../components/admin/Dashboard';
 
 import '../../css/styles/admin/AdminPage.css';
 import '../../css/font.css';
@@ -45,7 +46,7 @@ function Layout() {
             case 'Feature Management':
                 return <FeatureManagement />;
             case 'Dashboard':
-                return <h1 className="dashboard-title">Welcome to Dashboard</h1>;
+                return <Dashboard/>;
             case 'User Management':
                 return <UserManagement />;
             case 'Library Management':

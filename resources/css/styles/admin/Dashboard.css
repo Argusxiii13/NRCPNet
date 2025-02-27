@@ -1,0 +1,92 @@
+.dashboard {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Panel Styles */
+.panel {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 20px 32px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+/* Header Content */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Panel Content */
+.panel-content {
+    padding: 32px;
+}
+
+/* Chart Grid Styles - Updated to 3x2 grid */
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.chart-container {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e1e4e8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    height: 280px;
+    position: relative;
+}
+
+/* Style for the empty chart container */
+.empty-chart {
+    background-color: #f8f9fa;
+    border: 1px dashed #e1e4e8;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .chart-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 16px;
+    }
+
+    .panel-content {
+        padding: 16px;
+    }
+    
+    .chart-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 1fr);
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+    
+    .empty-chart {
+        display: none;
+    }
+}
