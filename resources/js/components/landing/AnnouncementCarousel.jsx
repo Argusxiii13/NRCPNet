@@ -17,7 +17,7 @@ const AnnouncementCarousel = () => {
         },
         {
             type: 'image',
-            content: '/image/Announcement1.jpg',
+            content: '/image/Announcement1.png',
             altText: 'Announcement 3: Check out our latest updates!'
         }
     ];
