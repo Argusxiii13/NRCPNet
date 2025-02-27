@@ -149,11 +149,19 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Fix for menu content alignment */
 .menu-content {
   display: flex;
   align-items: center;
   padding: 12px;
   gap: 15px;
+  width: 100%; /* Ensure full width */
+  justify-content: flex-start; /* Align to the left by default */
+}
+
+/* Only use space-between for items with submenu */
+.menu-item.has-submenu .menu-content {
+  justify-content: space-between;
 }
 
 .menu-icon {
@@ -285,11 +293,9 @@
   overflow: hidden;
 }
 
-
 .profile-image.spin {
   animation: spinAnimation 0.5s ease-out;
 }
-
 
 .profile-image.spin-reverse {
   animation: spinReverseAnimation 0.5s ease-out;
@@ -305,6 +311,57 @@
 
 .admin-sidebar.collapsed + .admin-main-content {
   margin-left: 45px;
+}
+
+/* Submenu styling */
+.submenu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0 35px;
+}
+
+.submenu-item {
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 2px;
+  transition: all 0.2s ease;
+}
+
+.submenu-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.submenu-item.active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.submenu-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 10px;
+}
+
+.submenu-icon {
+  color: #a5b4fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+}
+
+.submenu-title {
+  color: #a5b4fc;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.submenu-arrow {
+  margin-left: auto; /* Push to the right */
+  margin-right: auto; /* Push to the right */
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
 }
 
 /* Responsive Design */
