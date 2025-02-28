@@ -22,11 +22,11 @@ function GaugePointer() {
   
   return (
     <g>
-      <circle cx={cx} cy={cy} r={6} fill="#666" />
+      <circle cx={cx} cy={cy} r={8} fill="#666" />
       <path
         d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
         stroke="#666"
-        strokeWidth={2}
+        strokeWidth={3}
       />
     </g>
   );
@@ -59,21 +59,20 @@ const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        marginBottom: '16px'
+
       }}>
         <UserCheck size={20} />
         <h3 style={{
           fontSize: '16px',
           fontWeight: 600,
           color: '#495057',
-          margin: 0
+
         }}>Current Attendance</h3>
       </div>
       
       <div className="gauge-container" style={{
         flex: 1,
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
@@ -81,21 +80,23 @@ const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
         minHeight: '0'
       }}>
         <GaugeContainer
-          width={200}
-          height={120}
+          width={325} // Enlarged from 200 to 250 (25% increase)
+          height={225} // Enlarged from 120 to 150 (25% increase)
           startAngle={-90}
           endAngle={90}
           value={percentage}
           valueMin={0}
           valueMax={100}
-          cornerRadius={6}
+          cornerRadius={8} // Slightly increased for proportion
           sx={{
             '& .MuiChartsGauge-valueArc': {
               fill: getGaugeColor(),
-              transition: 'all 0.5s ease'
+              transition: 'all 0.5s ease',
+              strokeWidth: 12 // Thicker arc
             },
             '& .MuiChartsGauge-referenceArc': {
-              fill: '#f0f0f0'
+              fill: '#f0f0f0',
+              strokeWidth: 12 // Thicker arc
             }
           }}
         >
@@ -103,27 +104,27 @@ const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
           <GaugeValueArc />
           <GaugePointer />
         </GaugeContainer>
-        
-        <div className="gauge-stats" style={{
+      </div>
+      
+      <div className="gauge-stats" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+      }}>
+        <div className="current-value" style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          marginTop: '10px'
+          alignItems: 'center'
         }}>
-          <div className="current-value" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-            <strong style={{
-              fontSize: '24px',
-              color: '#212529'
-            }}>{currentUsers}</strong>
-            <span style={{
-              fontSize: '12px',
-              color: '#6c757d'
-            }}>users online</span>
-          </div>
+          <strong style={{
+            fontSize: '28px', // Enlarged from 24px
+            color: '#212529'
+          }}>{currentUsers}</strong>
+          <span style={{
+            fontSize: '14px', // Enlarged from 12px
+            color: '#6c757d'
+          }}>users online</span>
         </div>
       </div>
     </div>
