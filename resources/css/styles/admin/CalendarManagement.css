@@ -59,7 +59,7 @@
 .admin-weekday {
   text-align: center;
   font-weight: 500;
-  color: #6b7280;
+  color: #000000;
   padding: 0.5rem;
 }
 
@@ -67,6 +67,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
+  color: #000000;
 }
 
 .admin-day-cell {
@@ -80,6 +81,11 @@
   border-radius: 4px;
   background: none;
   cursor: pointer;
+  color: #000000;
+}
+.admin-day-cell.selected,
+.admin-day-cell.today {
+  color: black;
 }
 
 .admin-day-cell:hover:not(.empty) {
@@ -88,7 +94,6 @@
 
 .admin-day-cell.selected {
   background-color: #2a388f;
-  color: white;
 }
 
 .admin-day-cell.today {
@@ -129,6 +134,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+  color: #000000;
 }
 
 .toggle-button.active {
@@ -155,7 +161,7 @@
 }
 
 .event-time {
-  color: #6b7280;
+  color: #050505;
   font-size: 0.875rem;
   white-space: nowrap;
 }
@@ -166,7 +172,7 @@
 }
 
 .event-content p {
-  color: #6b7280;
+  color: #0e0e0e;
   font-size: 0.875rem;
 }
 
@@ -205,7 +211,7 @@
 .form-group textarea {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #000000;
   border-radius: 4px;
 }
 
