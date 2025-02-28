@@ -108,7 +108,7 @@
 }
 
 .sidebar-title {
-  color: #fff;
+  color: #ffffff;
   font-size: 25px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -138,7 +138,7 @@
 }
 
 .menu-item:hover {
-  background: #0000004f;
+  background: #cce5ff;
 }
 
 .menu-item.gap-top {
@@ -146,20 +146,18 @@
 }
 
 .menu-item.active {
-  background: rgba(0, 0, 0, 0.219);
+  background: #ffffff;
 }
 
-/* Fix for menu content alignment */
 .menu-content {
   display: flex;
   align-items: center;
   padding: 12px;
   gap: 15px;
-  width: 100%; /* Ensure full width */
-  justify-content: flex-start; /* Align to the left by default */
+  width: 100%; 
+  justify-content: flex-start; 
 }
 
-/* Only use space-between for items with submenu */
 .menu-item.has-submenu .menu-content {
   justify-content: space-between;
 }
@@ -179,10 +177,26 @@
   white-space: nowrap;
 }
 
+.menu-item.active .menu-title {
+  color: #000000; /* Change font color to black for active menu item */
+}
+.menu-item.active .menu-icon {
+  color: #000000; /* Change font color to black for active menu item */
+}
 .menu-title.hide {
   opacity: 0;
   width: 0;
   overflow: hidden;
+}
+
+.menu-item:hover .menu-title {
+  color: #000000;
+}
+.menu-item:hover .menu-icon {
+  color: #000000;
+}
+.menu-item:hover .submenu-title{
+  color: #000000;
 }
 
 .sidebar-footer {
