@@ -1,0 +1,39 @@
+.line-graph {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e1e4e8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  height: 400px;
+  width: 100%; /* Change from fixed 800px to 100% to fit container */
+  box-sizing: border-box; /* Include padding in width/height calculation */
+}
+
+.line-graph-header {
+  margin-bottom: 16px;
+}
+
+.line-graph-header h3 {
+  font-size: 16px;
+  color: #495057;
+  margin: 0;
+}
+
+.line-graph-container {
+  height: calc(100% - 40px);
+  position: relative;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 900px) {
+  .line-graph {
+    height: 350px; /* Slightly reduce height on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .line-graph {
+    padding: 16px; /* Reduce padding on very small screens */
+    height: 300px; /* Further reduce height on very small screens */
+  }
+}
