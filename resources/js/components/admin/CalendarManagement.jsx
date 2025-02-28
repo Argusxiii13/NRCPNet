@@ -125,7 +125,7 @@ const AdminCalendar = () => {
                             >
                                 Cancel
                             </button>
-                            <button className="save-button">Save Event</button>
+                            <button className="save-button-cal">Save Event</button>
                         </div>
                     </div>
                 ) : (
