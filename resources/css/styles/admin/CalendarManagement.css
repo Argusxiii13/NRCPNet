@@ -83,22 +83,22 @@
 }
 
 .admin-day-cell:hover:not(.empty) {
-  background-color: #f3f4f6;
+  background-color: #cce5ff;
 }
 
 .admin-day-cell.selected {
-  background-color: #3b82f6;
+  background-color: #2a388f;
   color: white;
 }
 
 .admin-day-cell.today {
-  background-color: #fef3c7;
+  background-color: #2a388f;
 }
 
 .event-dot {
   width: 4px;
   height: 4px;
-  background-color: #3b82f6;
+  background-color: #2a388f;
   border-radius: 50%;
 }
 
@@ -132,9 +132,9 @@
 }
 
 .toggle-button.active {
-  background-color: #3b82f6;
+  background-color: #2a388f;
   color: white;
-  border-color: #3b82f6;
+  border-color: #2a388f;
 }
 
 /* Events List Styles */
@@ -233,17 +233,19 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #2a388f;
 }
 
 .cancel-button {
-  background-color: #f3f4f6;
+  background-color: #a3a3a3;
   border: 1px solid #d1d5db;
 }
 
 .save-button {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
+    padding: 8px 16px;
+    background-color: #2a388f;
+    color: white;
+    border: none;
 }
 
 /* Responsive Design */
