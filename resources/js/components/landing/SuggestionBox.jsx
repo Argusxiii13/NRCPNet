@@ -108,13 +108,11 @@ const SuggestionBox = () => {
         
         const suggestionData = {
             content: suggestion,
-            division: selectedDivision,
+            division: String(selectedDivision), // Convert to string for varchar
             section: selectedSection || null // Ensure null when empty
         };
     
         try {
-            // Update the URL to use the full path including /api prefix
-            // This is important in Laravel as /api routes are defined in api.php
             const response = await axios.post('http://localhost:8000/api/suggestion', suggestionData);
             console.log('Suggestion submitted:', response.data);
     
@@ -123,7 +121,7 @@ const SuggestionBox = () => {
                 message: 'Suggestion submitted successfully!',
                 type: 'success'
             });
-            
+    
             // Clear form after submission
             setSuggestion('');
             setSelectedDivision('');
@@ -131,10 +129,10 @@ const SuggestionBox = () => {
             setAvailableSections([]);
         } catch (error) {
             console.error('Error submitting suggestion:', error);
-            
-            // Show error message
+            const errorMessage = error.response?.data?.message || error.message || 'An unexpected error occurred.';
+    
             setSubmitStatus({
-                message: `Error: ${error.response?.data?.message || error.message}`,
+                message: errorMessage,
                 type: 'error'
             });
         }
