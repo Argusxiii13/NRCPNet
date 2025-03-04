@@ -164,13 +164,13 @@
 }
 
 .modal-button.submit {
-    background-color: #0ea5e9;
+    background-color: #2a388f;
     border: 1px solid #0ea5e9;
     color: white;
 }
 
 .modal-button.submit:hover {
-    background-color: #0284c7;
+    background-color: #5aa6f8;
 }
 
 /* Responsive Adjustments */
