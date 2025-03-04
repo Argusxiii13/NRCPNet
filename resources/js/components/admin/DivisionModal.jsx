@@ -1,7 +1,9 @@
+// ... other imports
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
+import axios from 'axios';
 
-const DivisionModal = ({ isOpen, onClose, division }) => {
+const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
   const [formData, setFormData] = useState({
     code: '',
     name: '',
@@ -16,7 +18,7 @@ const DivisionModal = ({ isOpen, onClose, division }) => {
       setFormData({
         code: division.code || '',
         name: division.name || '',
-        hasSections: division.hasSections || false,
+        hasSections: division.has_sections || false,
         sections: division.sections || []
       });
     } else {
@@ -47,7 +49,7 @@ const DivisionModal = ({ isOpen, onClose, division }) => {
         ...formData,
         sections: [
           ...formData.sections,
-          { id: Date.now(), name: newSection.trim() }
+          { id: Date.now(), name: newSection.trim() } // Temporary ID
         ]
       });
       setNewSection('');
@@ -61,11 +63,28 @@ const DivisionModal = ({ isOpen, onClose, division }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // This would send data to API in production
-    console.log('Submitting:', formData);
-    onClose();
+
+    // Prepare data for submission
+    const submissionData = {
+        code: formData.code,
+        name: formData.name,
+        has_sections: formData.hasSections,
+        sections: formData.hasSections ? formData.sections.map(section => ({ name: section.name })) : [],
+    };
+
+    try {
+        const response = division 
+            ? await axios.put(`/api/divisions/${division.id}`, submissionData)
+            : await axios.post('/api/divisions', submissionData);
+
+        console.log('Success:', response.data);
+        onDivisionUpdated(); // Call this to refresh the divisions
+        onClose(); // Close modal after success
+    } catch (error) {
+        console.error('Error submitting:', error.response.data);
+    }
   };
 
   if (!isOpen) return null;
@@ -147,19 +166,20 @@ const DivisionModal = ({ isOpen, onClose, division }) => {
                 </div>
                 
                 <div className="sections-list-modal">
-                  {formData.sections.map((section) => (
-                    <div key={section.id} className="section-item-modal">
-                      <span>{section.name}</span>
-                      <button 
-                        type="button"
-                        className="remove-section-btn"
-                        onClick={() => removeSection(section.id)}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  ))}
-                  {formData.sections.length === 0 && (
+                  {formData.sections.length > 0 ? (
+                    formData.sections.map((section) => (
+                      <div key={section.id} className="section-item-modal">
+                        <span>{section.name}</span>
+                        <button 
+                          type="button"
+                          className="remove-section-btn"
+                          onClick={() => removeSection(section.id)}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
                     <p className="no-sections">No sections added yet</p>
                   )}
                 </div>

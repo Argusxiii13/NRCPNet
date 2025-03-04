@@ -1,64 +1,30 @@
-import React, { useState } from 'react';
-import { Search, Filter, Edit, Trash2, Plus, ChevronDown } from 'lucide-react';
+// ... other imports
+import React, { useState, useEffect } from 'react';
+import { Search, Edit, Trash2, Plus } from 'lucide-react';
 import '../../../css/styles/admin/DivisionManagement.css';
 import DivisionModal from '../admin/DivisionModal';
+import axios from 'axios';
 
 const DivisionManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [currentDivision, setCurrentDivision] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [divisions, setDivisions] = useState([]);
+  const [divisionToDelete, setDivisionToDelete] = useState(null);
 
-  // Sample data - will be replaced with API calls
-  const [divisions, setDivisions] = useState([
-    {
-      id: 1,
-      code: 'OP',
-      name: 'Office of the President',
-      hasSections: false,
-      sections: []
-    },
-    {
-      id: 2,
-      code: 'OED',
-      name: 'Office of the Executive Directory',
-      hasSections: false,
-      sections: []
-    },
-    {
-      id: 3,
-      code: 'FAD',
-      name: 'Finance and Administrative Division',
-      hasSections: true,
-      sections: [
-        { id: 1, name: 'Budget Section' },
-        { id: 2, name: 'Accounting Section' },
-        { id: 3, name: 'Cash Section' },
-        { id: 4, name: 'HR Section' },
-        { id: 5, name: 'Records Section' }
-      ]
-    },
-    {
-      id: 4,
-      code: 'RDMD',
-      name: 'Research and Development Management Division',
-      hasSections: true,
-      sections: [
-        { id: 6, name: 'REMS' },
-        { id: 7, name: 'TCDS' }
-      ]
-    },
-    {
-      id: 5,
-      code: 'RIDD',
-      name: 'Research Information and Data Division',
-      hasSections: true,
-      sections: [
-        { id: 8, name: 'IDS' },
-        { id: 9, name: 'LS' },
-        { id: 10, name: 'MIS' }
-      ]
+  const fetchDivisions = async () => {
+    try {
+      const response = await axios.get('/api/divisions');
+      setDivisions(response.data);
+    } catch (error) {
+      console.error('Error fetching divisions:', error);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchDivisions();
+  }, []);
 
   const handleOpenModal = (division = null) => {
     setCurrentDivision(division);
@@ -79,10 +45,25 @@ const DivisionManagement = () => {
     division.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDeleteDivision = (id, e) => {
-    e.stopPropagation();
-    // In production, this would be an API call
-    setDivisions(divisions.filter(division => division.id !== id));
+  const handleDeleteDivision = (id) => {
+    setDivisionToDelete(id);
+    setIsConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`/api/divisions/${divisionToDelete}`);
+      await fetchDivisions(); // Refetch divisions after deletion
+      setIsConfirmOpen(false);
+      setDivisionToDelete(null);
+    } catch (error) {
+      console.error('Error deleting division:', error);
+    }
+  };
+
+  // Function to refresh divisions can be passed to the modal
+  const handleDivisionUpdate = async () => {
+    await fetchDivisions(); // Refetch divisions after addition or update
   };
 
   return (
@@ -100,7 +81,6 @@ const DivisionManagement = () => {
         </div>
         
         <div className="panel-content">
-          {/* Search and Filters */}
           <div className="filters-container">
             <div className="search-box">
               <Search size={20} className="search-icon" />
@@ -114,7 +94,6 @@ const DivisionManagement = () => {
             </div>
           </div>
 
-          {/* Divisions List */}
           <div className="divisions-list">
             {filteredDivisions.map((division) => (
               <div key={division.id} className="division-card">
@@ -132,37 +111,26 @@ const DivisionManagement = () => {
                     </button>
                     <button 
                       className="delete-button"
-                      onClick={(e) => handleDeleteDivision(division.id, e)}
+                      onClick={() => handleDeleteDivision(division.id)}
                     >
                       <Trash2 size={18} />
                     </button>
                   </div>
                 </div>
                 
-                {division.hasSections && (
+                {division.has_sections && division.sections && division.sections.length > 0 ? (
                   <div className="sections-container">
                     <h4 className="sections-title">Sections</h4>
                     <div className="sections-list">
                       {division.sections.map((section) => (
                         <div key={section.id} className="section-item">
                           <span className="section-name">{section.name}</span>
-                          <div className="section-actions">
-                            <button className="edit-button-sm">
-                              <Edit size={14} />
-                            </button>
-                            <button className="delete-button-sm">
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
                         </div>
                       ))}
-                      <button className="add-section-button">
-                        <Plus size={14} />
-                        <span>Add Section</span>
-                      </button>
+
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             ))}
           </div>
@@ -174,7 +142,27 @@ const DivisionManagement = () => {
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
         division={currentDivision}
+        onDivisionUpdated={handleDivisionUpdate} // Pass the update function
       />
+
+      {/* Confirmation Modal */}
+      {isConfirmOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h4 className="modal-title">Confirm Deletion</h4>
+              <button className="close-button" onClick={() => setIsConfirmOpen(false)}>✖</button>
+            </div>
+            <div className="modal-content">
+              <p>Are you sure you want to delete this division? This action cannot be undone.</p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={() => setIsConfirmOpen(false)}>Cancel</button>
+              <button className="save-button" onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
