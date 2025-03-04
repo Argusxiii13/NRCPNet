@@ -85,11 +85,11 @@
 }
 .admin-day-cell.selected,
 .admin-day-cell.today {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .admin-day-cell:hover:not(.empty) {
-  background-color: #cce5ff;
+  background-color: #cce5ff; /* do not replace this */
 }
 
 .admin-day-cell.selected {

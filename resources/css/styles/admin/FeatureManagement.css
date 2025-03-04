@@ -53,12 +53,12 @@
 }
 
 .upload-zone:hover {
-  border-color: #0ea5e9;
+  border-color: #5aa6f8;
   background-color: #f0f9ff;
 }
 
 .upload-zone svg {
-  color: #0ea5e9;
+  color: #2a388f;
 }
 
 .upload-zone p {
@@ -105,7 +105,7 @@
 
 .upload-button {
   padding: 10px 20px;
-  background-color: #0ea5e9;
+  background-color: #2a388f;
   color: white;
   border: none;
   border-radius: 6px;
@@ -115,7 +115,7 @@
 }
 
 .upload-button:hover {
-  background-color: #0284c7;
+  background-color: #0778f1;
 }
 
 /* Editor Panel Styles */
@@ -181,7 +181,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background-color: #0ea5e9;
+  background-color: #2a388f;
   color: white;
   border: none;
   border-radius: 6px;
@@ -190,7 +190,7 @@
 }
 
 .save-button:hover {
-  background-color: #0284c7;
+  background-color: #0778f1;
 }
 
 /* Add these styles to your existing FeatureManagement.css */
@@ -215,13 +215,13 @@
 }
 
 .feature-item:hover {
-  border-color: #0ea5e9;
+  border-color: #0778f1;
   background-color: #f0f9ff;
 }
 
 .feature-item.selected {
   border-color: #0ea5e9;
-  background-color: #f0f9ff;
+  background-color: #2a388f;
   box-shadow: 0 0 0 1px #0ea5e9;
 }
 

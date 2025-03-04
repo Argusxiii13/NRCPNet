@@ -35,11 +35,6 @@ then this
 php artisan key:generate
 ```
 
-9. Run these command after the creation of key :
-```bash
-New-Item -ItemType File -Path "database/database.sqlite"
-```
-
 then this
 
 ```bash
