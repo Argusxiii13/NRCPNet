@@ -1,6 +1,7 @@
 .suggestion-container {
-    width: 90%; /* Width for the box */
-    background-color: #cce5ff; /* Lighter shade */
+    width: 83%; /* Width for the box */
+    background-color: #2a388f; /* Lighter shade */
+    color: white;
     padding: 1rem; /* Reduced padding */
     padding-top: 0.5rem; /* Slightly reduced top padding */
     margin-top: 1.5rem;
@@ -32,7 +33,7 @@
 }
 
 .suggestion-input {
-    width: 100%; /* Full width */
+    width: 95%; /* Full width */
     height: 80px; /* Reduced height */
     resize: none; /* Disable resizing */
     font-size: clamp(14px, 1.5vw, 18px); /* Adjusted font size */
@@ -49,8 +50,8 @@
 }
 
 .suggestion-button {
-    background-color: #2a388f; /* Button color */
-    color: white; /* Text color */
+    background-color: #ffffff; /* Button color */
+    color: #2a388f; /* Text color */
     border: none; /* No border */
     border-radius: 4px; /* Rounded corners */
     padding: 0.25rem 0.5rem; /* Padding for the button */
