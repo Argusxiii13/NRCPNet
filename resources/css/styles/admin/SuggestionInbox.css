@@ -90,7 +90,6 @@
   border: none;
   border-radius: 6px;
   font-weight: 500;
-  transition: background-color 0.2s ease;
 }
 
 .filter-button:hover {
@@ -126,7 +125,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: rgba(14, 165, 233, 0.9);
+  background-color: #2a388f;
   color: white;
   padding: 4px 10px;
   font-size: 12px;
