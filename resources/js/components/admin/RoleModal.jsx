@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const RoleModal = ({ isOpen, onClose, role, onSave }) => {
   const [formData, setFormData] = useState({

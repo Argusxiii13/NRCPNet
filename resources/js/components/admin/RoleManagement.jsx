@@ -1,60 +1,38 @@
-import React, { useState } from 'react';
-import { Search, Filter, Edit, Trash2, Plus, ChevronDown, Check, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Search, Plus, X, Check, SquarePen, Trash } from 'lucide-react'; 
 import '../../../css/styles/admin/RoleManagement.css';
 import RoleModal from './RoleModal.jsx';
 
 const RoleManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [currentRole, setCurrentRole] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [roles, setRoles] = useState([]);
+  const [roleToDelete, setRoleToDelete] = useState(null);
 
-  // Sample data - will be replaced with API calls
-  const [roles, setRoles] = useState([
-    {
-      id: 1,
-      name: 'Superadmin',
-      description: 'Full system access with all permissions',
-      permissions: {
-        users: { create: true, read: true, update: true, delete: true },
-        divisions: { create: true, read: true, update: true, delete: true },
-        roles: { create: true, read: true, update: true, delete: true },
-        reports: { create: true, read: true, update: true, delete: true }
-      }
-    },
-    {
-      id: 2,
-      name: 'Admin',
-      description: 'Administrative access with limited system configuration',
-      permissions: {
-        users: { create: true, read: true, update: true, delete: false },
-        divisions: { create: true, read: true, update: true, delete: false },
-        roles: { create: false, read: true, update: false, delete: false },
-        reports: { create: true, read: true, update: true, delete: true }
-      }
-    },
-    {
-      id: 3,
-      name: 'Contributor',
-      description: 'Can create and modify content but cannot delete',
-      permissions: {
-        users: { create: false, read: true, update: false, delete: false },
-        divisions: { create: false, read: true, update: false, delete: false },
-        roles: { create: false, read: true, update: false, delete: false },
-        reports: { create: true, read: true, update: true, delete: false }
-      }
-    },
-    {
-      id: 4,
-      name: 'Visitor',
-      description: 'Read-only access to system content',
-      permissions: {
-        users: { create: false, read: true, update: false, delete: false },
-        divisions: { create: false, read: true, update: false, delete: false },
-        roles: { create: false, read: true, update: false, delete: false },
-        reports: { create: false, read: true, update: false, delete: false }
-      }
+  // Fetch roles from API
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get('/api/roles');
+      const rolesWithPermissions = response.data.map(role => ({
+        ...role,
+        permissions: typeof role.permissions === 'string' 
+          ? JSON.parse(role.permissions) 
+          : role.permissions
+      }));
+      setRoles(rolesWithPermissions);
+      console.log('Fetched roles:', response.data);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
     }
-  ]);
+  };
+
+  // Fetch roles on component mount
+  useEffect(() => {
+    fetchRoles();
+  }, []);
 
   const handleOpenModal = (role = null) => {
     setCurrentRole(role);
@@ -74,22 +52,35 @@ const RoleManagement = () => {
     role.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDeleteRole = (id, e) => {
-    e.stopPropagation();
-    // In production, this would be an API call
-    setRoles(roles.filter(role => role.id !== id));
+  const handleDeleteRole = (id) => {
+    setRoleToDelete(id);
+    setIsConfirmOpen(true);
   };
 
-  // For saving updated or new role data
-  const handleSaveRole = (roleData) => {
-    if (roleData.id) {
-      // Update existing role
-      setRoles(roles.map(role => role.id === roleData.id ? roleData : role));
-    } else {
-      // Add new role
-      setRoles([...roles, { ...roleData, id: roles.length + 1 }]);
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`/api/roles/${roleToDelete}`); // Adjust the URL according to your API
+      await fetchRoles(); // Refetch roles after deletion
+      setIsConfirmOpen(false);
+      setRoleToDelete(null);
+    } catch (error) {
+      console.error('Error deleting role:', error);
     }
-    handleCloseModal();
+  };
+
+  const handleSaveRole = async (roleData) => {
+    try {
+      if (roleData.id) {
+        const response = await axios.put(`/api/roles/${roleData.id}`, roleData); // Update existing role
+        setRoles(roles.map(role => role.id === roleData.id ? response.data : role));
+      } else {
+        const response = await axios.post('/api/roles', roleData); // Add new role
+        setRoles([...roles, response.data]);
+      }
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving role:', error);
+    }
   };
 
   return (
@@ -107,7 +98,7 @@ const RoleManagement = () => {
         </div>
         
         <div className="panel-content">
-          {/* Search and Filters */}
+          {/* Search Box */}
           <div className="filters-container">
             <div className="search-box">
               <Search size={20} className="search-icon" />
@@ -133,21 +124,19 @@ const RoleManagement = () => {
                   <div className="role-actions">
                     <button 
                       className="edit-button"
-                      onClick={() => handleOpenModal(role)}
+                      onClick={() => handleOpenModal(role)} // Open the modal for editing
                     >
-                      <Edit size={18} />
+                      <SquarePen size={18} />
                     </button>
-                    {role.name !== 'Superadmin' && (
-                      <button 
-                        className="delete-button"
-                        onClick={(e) => handleDeleteRole(role.id, e)}
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    )}
+                    <button 
+                      className="delete-button"
+                      onClick={() => handleDeleteRole(role.id)} // Open confirmation modal
+                    >
+                      <Trash size={18} />
+                    </button>
                   </div>
                 </div>
-                
+
                 <div className="permissions-container">
                   <h4 className="permissions-title">Access Permissions</h4>
                   <div className="permissions-table">
@@ -196,6 +185,25 @@ const RoleManagement = () => {
         role={currentRole}
         onSave={handleSaveRole}
       />
+
+      {/* Confirmation Modal */}
+      {isConfirmOpen && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h4 className="modal-title">Confirm Deletion</h4>
+              <button className="close-button" onClick={() => setIsConfirmOpen(false)}>✖</button>
+            </div>
+            <div className="modal-content">
+              <p>Are you sure you want to delete this role? This action cannot be undone.</p>
+            </div>
+            <div className="modal-footer">
+              <button className="cancel-button" onClick={() => setIsConfirmOpen(false)}>Cancel</button>
+              <button className="save-button" onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

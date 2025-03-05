@@ -4,14 +4,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\SuggestionController;
 use App\Http\Controllers\api\DivisionController;
-
+use App\Http\Controllers\api\RoleController; // Import RoleController
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Suggestion routes
 Route::post('/suggestion', [SuggestionController::class, 'store']);
 
-Route::get('/divisions', [DivisionController::class, 'index']);
-
+// Division routes
 Route::apiResource('divisions', DivisionController::class);
+
+// Role routes
+Route::apiResource('roles', RoleController::class); // Add this line for RoleController
