@@ -19,7 +19,11 @@
 
 .admin-content-wrapper {
   padding: 24px;
-  height: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  margin-left: 60px;
 }
 
 /* Adjust content margin when sidebar is collapsed */
