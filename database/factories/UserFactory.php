@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Division;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,23 +20,32 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // Get all divisions and roles
+        $divisions = Division::all();
+        $roles = Role::all();
+
+        // Randomly select a division and its section, if available
+        $selectedDivision = $divisions->random();
+        $selectedSection = $selectedDivision->has_sections 
+            ? $selectedDivision->sections->random()->name 
+            : null; // No section if `has_sections` is false
+
         return [
             'first_name' => $this->faker->firstName(),
             'middle_name' => $this->faker->lastName(), // Optional middle name
             'surname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(), // Unique email
             'position' => $this->faker->jobTitle(),
-            'section' => $this->faker->word(),
-            'division' => $this->faker->word(),
-            'status' => $this->faker->randomElement(['active', 'inactive', 'suspended']),
+            'section' => $selectedSection,
+            'division' => $selectedDivision->name,
+            'status' => $this->faker->randomElement(['Active', 'Inactive', 'Suspended']),
             'last_login' => $this->faker->optional()->dateTime(), // Optional last login time
             'user_activity' => $this->faker->text(),
-            'role' => $this->faker->randomElement(['admin', 'user', 'editor']),
+            'role' => $roles->random()->name, // Randomly select a role
             'password' => Hash::make('password'), // Default password
             'remember_token' => Str::random(10),
         ];
     }
-
     /**
      * Indicate that the model's email address should be unverified.
      */
@@ -44,7 +55,6 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
-
     /**
      * Indicate that the user should have a specific role.
      *

@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a test user with randomly generated values
-        User::factory()->create();
+        
 
         // Call the DivisionSeeder
         $this->call(DivisionSeeder::class);
         $this->call(RolesSeeder::class);
+        User::factory()->count(10)->create();
     }
 }
