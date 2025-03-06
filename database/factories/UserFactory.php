@@ -2,19 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected $model = User::class;
 
     /**
      * Define the model's default state.
@@ -24,10 +19,18 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'first_name' => $this->faker->firstName(),
+            'middle_name' => $this->faker->lastName(), // Optional middle name
+            'surname' => $this->faker->lastName(),
+            'email' => $this->faker->unique()->safeEmail(), // Unique email
+            'position' => $this->faker->jobTitle(),
+            'section' => $this->faker->word(),
+            'division' => $this->faker->word(),
+            'status' => $this->faker->randomElement(['active', 'inactive', 'suspended']),
+            'last_login' => $this->faker->optional()->dateTime(), // Optional last login time
+            'user_activity' => $this->faker->text(),
+            'role' => $this->faker->randomElement(['admin', 'user', 'editor']),
+            'password' => Hash::make('password'), // Default password
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +42,19 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user should have a specific role.
+     *
+     * @param string $role
+     * @return static
+     */
+    public function withRole(string $role): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => $role,
         ]);
     }
 }

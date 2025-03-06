@@ -6,10 +6,6 @@ use App\Http\Controllers\api\SuggestionController;
 use App\Http\Controllers\api\DivisionController;
 use App\Http\Controllers\api\RoleController; // Import RoleController
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 // Suggestion routes
 Route::post('/suggestion', [SuggestionController::class, 'store']);
 
