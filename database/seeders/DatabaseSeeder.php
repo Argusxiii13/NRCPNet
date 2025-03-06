@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
 
         // Call the DivisionSeeder
         $this->call(DivisionSeeder::class);
-        $this->call(RolesSeeder::class);
-        User::factory()->count(10)->create();
+        $this->call(RoleSeeder::class);
+        User::factory()->count(13)->create();
     }
 }

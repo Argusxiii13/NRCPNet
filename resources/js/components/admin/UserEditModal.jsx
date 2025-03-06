@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
-import '../../../css/styles/admin/AddUserModal.css';
+import '../../../css/styles/admin/AddUserModal.css'; // Reusing the same styles
 
-const AddUserModal = ({ isOpen, onClose, onSave }) => {
+const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
     lastName: '',
     position: '',
     email: '',
-    password: 'NRCPNETEmployee',  // Default password
     section: '',
     division: '',
     role: 'User',
-    status: 'Active',  // Default status
+    status: 'Active',
   });
 
   const [divisions, setDivisions] = useState([]);
   const [roles, setRoles] = useState([]);
   const [sections, setSections] = useState([]);
-  const [selectedDivisionCode, setSelectedDivisionCode] = useState('');
+
+  // Prefill form data when userData changes
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        firstName: userData.first_name || '',
+        middleName: userData.middle_name || '',
+        lastName: userData.surname || '',
+        position: userData.position || '',
+        email: userData.email || '',
+        section: userData.section || '',
+        division: userData.division || '', // This should be the division code
+        role: userData.role || 'User',
+        status: userData.status || 'Active',
+      });
+    }
+  }, [userData]);
 
   // Fetch data when modal opens
   useEffect(() => {
@@ -30,19 +45,31 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
     }
   }, [isOpen]);
 
+  // Update sections when form data changes
+  useEffect(() => {
+    if (formData.division && divisions.length > 0) {
+      const selectedDivision = divisions.find(div => div.code === formData.division);
+      if (selectedDivision && selectedDivision.has_sections) {
+        setSections(selectedDivision.sections || []);
+      } else {
+        setSections([]);
+      }
+    }
+  }, [formData.division, divisions]);
+
   const fetchDivisions = async () => {
-    const response = await fetch('/api/divisions'); // Adjust endpoint as necessary
+    const response = await fetch('/api/divisions');
     const data = await response.json();
     setDivisions(data);
   };
 
   const fetchRoles = async () => {
-    const response = await fetch('/api/roles'); // Adjust endpoint as necessary
+    const response = await fetch('/api/roles');
     const data = await response.json();
-  
-    // Assuming data is an array of objects and each object has a 'name' property
+    
+    // Filter out Superadmin role
     const filteredRoles = data.filter(role => role.name !== 'Superadmin');
-  
+    
     setRoles(filteredRoles);
   };
 
@@ -50,12 +77,9 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
     const divId = parseInt(e.target.value);
     const selectedDivision = divisions.find(div => div.id === divId);
     
-    // Store the division code instead of the ID
-    setSelectedDivisionCode(selectedDivision?.code || '');
-    
     setFormData(prev => ({
       ...prev,
-      division: selectedDivision?.code || '', // Use division code here
+      division: selectedDivision?.code || '', // Store division code
       section: '', // Reset section when division changes
     }));
     
@@ -72,11 +96,12 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userData = {
+    const updatedUserData = {
       ...formData,
+      id: userData.id,
       fullname: `${formData.firstName} ${formData.middleName ? formData.middleName + ' ' : ''}${formData.lastName}`,
     };
-    onSave(userData);
+    onSave(updatedUserData);
     onClose();
   };
 
@@ -86,7 +111,7 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2>Add New User</h2>
+          <h2>Edit User</h2>
           <button className="modal-close-btn" onClick={onClose}>
             <X size={20} />
           </button>
@@ -168,7 +193,7 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                   value={formData.section}
                   onChange={handleChange}
                   required
-                  disabled={sections.length === 0} // Disable if no sections are available
+                  disabled={sections.length === 0}
                 >
                   <option value="">Select Section</option>
                   {sections.map(sec => (
@@ -252,7 +277,7 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
               Cancel
             </button>
             <button type="submit" className="modal-button submit">
-              Save User
+              Update User
             </button>
           </div>
         </form>
@@ -262,4 +287,4 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
   );
 };
 
-export default AddUserModal;
+export default UserEditModal;

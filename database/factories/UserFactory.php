@@ -32,14 +32,14 @@ class UserFactory extends Factory
 
         return [
             'first_name' => $this->faker->firstName(),
-            'middle_name' => $this->faker->lastName(), // Optional middle name
+            'middle_name' => $this->faker->lastName(), 
             'surname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(), // Unique email
             'position' => $this->faker->jobTitle(),
             'section' => $selectedSection,
-            'division' => $selectedDivision->name,
+            'division' => $selectedDivision->code,
             'status' => $this->faker->randomElement(['Active', 'Inactive', 'Suspended']),
-            'last_login' => $this->faker->optional()->dateTime(), // Optional last login time
+            'last_login' => $this->faker->dateTime(), 
             'user_activity' => $this->faker->text(),
             'role' => $roles->random()->name, // Randomly select a role
             'password' => Hash::make('password'), // Default password
