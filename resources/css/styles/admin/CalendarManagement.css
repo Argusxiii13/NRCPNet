@@ -201,47 +201,30 @@
   margin-bottom: 1rem;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
 .form-group label {
   margin-bottom: 0.5rem;
   display: block; /* Ensure labels stack correctly */
   font-weight: 250; /* Default weight for all labels */
+  font-size: 14px;
 }
 
-.time-input {
-  margin-bottom: 1rem; /* Space between time inputs */
-}
-
-.time-input label {
-  font-weight: 400; /* Lighter weight for time labels */
-}
-
-.form-group label[for="eventDescription"] {
-  font-weight: 700; /* Increased weight for Description label */
-}
-
-.time-label {
-  font-size: 0.875rem; /* Smaller font size for additional labels */
-  color: #6c757d; /* Optional: lighter color for a subtle look */
-  font-weight: 400; /* Lighter weight for time labels */
-}
-
-.form-group input,
-.form-group textarea {
+.form-group input {
   width: 100%;
-  height: fit-content;
-  padding: 1.1rem;
+  padding: 0.9rem;
   border: 1px solid #000000;
   border-radius: 4px;
+  justify-content: center;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.light-input {
-  font-weight: 400; /* Lighter weight for time inputs */
-  border-color: #ccc; /* Change border color for lighter appearance */
+.form-group textarea {
+  width: 100%;
+  height: fit-content;
+  padding: 5rem;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 0;
 }
 
 .form-row {
@@ -255,23 +238,11 @@
   margin-right: 1rem;
 }
 
-.time-input:last-child {
-  margin-right: 0;
-}
-
 .event-start-time {
   display: flex;
   align-items: center;
 }
 
-.event-start-time input {
-  width: auto;
-  margin-right: 0.5rem;
-}
-
-.event-start-time span {
-  margin: 0 0.5rem;
-}
 
 .form-buttons {
   display: flex;
