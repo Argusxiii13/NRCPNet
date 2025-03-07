@@ -1,48 +1,206 @@
-import React, { useState } from 'react';
-import { Search, Filter, Trash2, ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Search, Filter, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import '../../../css/styles/admin/SuggestionInbox.css';
 import SuggestionDetailModal from './SuggestionDetailModal';
+import axios from 'axios';
 
 const SuggestionInbox = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
   const [selectedSection, setSelectedSection] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [divisions, setDivisions] = useState([]);
+  const [sections, setSections] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
 
-  // Sample data - replace with your actual data
-  const divisions = {
-    'Division 1': ['Section 1', 'Section 2'],
-    'Division 2': ['Section 1', 'Section 2', 'Section 3'],
-    'Division 3': ['Section 1', 'Section 2', 'Section 3', 'Section 4']
+  // Function to fetch suggestions with optional filters and pagination
+  const fetchSuggestions = async (filters = {}, page = 1) => {
+    try {
+      let url = `/api/suggestion?page=${page}&per_page=${perPage}`;
+      if (filters.division) url += `&division=${encodeURIComponent(filters.division)}`;
+      if (filters.section) url += `&section=${encodeURIComponent(filters.section)}`;
+      if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`;
+      
+      const response = await axios.get(url);
+      
+      // Use data returned from Laravel pagination
+      setSuggestions(response.data.data);
+      setCurrentPage(response.data.current_page);
+      setTotalPages(response.data.last_page);
+      setTotalItems(response.data.total);
+      
+      return response.data.data;
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+      return [];
+    }
   };
 
-  const [suggestions] = useState([
-    {
-      id: 1,
-      division: 'Division 1',
-      section: 'Section 1',
-      time: '2024-02-21 09:30',
-      content: 'We need more collaborative spaces in the office. The current layout makes it difficult for teams to work together effectively. Perhaps we could redesign some of the common areas to facilitate better team interactions.',
-      status: 'new'
-    },
-    {
-      id: 2,
-      division: 'Division 2',
-      section: 'Section 3',
-      time: '2024-02-21 10:15',
-      content: 'The current scheduling system could be more efficient. It often leads to double bookings and confusion about meeting room availability. We should consider implementing a more robust scheduling solution with automated notifications.',
-      status: 'in-progress'
-    },
-    // Add more sample suggestions as needed
-  ]);
+  // Initial data loading
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch suggestions with pagination
+        const suggestionData = await fetchSuggestions({}, currentPage);
+        
+        // Fetch divisions with their sections
+        const divisionsResponse = await axios.get('/api/divisions');
+        setDivisions(divisionsResponse.data);
+        
+        setInitialDataLoaded(true);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        
+        // If divisions API fails, extract divisions from suggestions
+        if (suggestionData && suggestionData.length > 0) {
+          const uniqueDivisions = getUniqueDivisionsFromSuggestions(suggestionData);
+          setDivisions(uniqueDivisions);
+        }
+        
+        setInitialDataLoaded(true);
+      }
+    };
 
+    fetchData();
+  }, [refreshTrigger, currentPage, perPage]); // Add pagination dependencies
+
+  // Get unique divisions from suggestions
+  const getUniqueDivisionsFromSuggestions = (suggestionData) => {
+    const uniqueDivisionNames = [...new Set(suggestionData.map(s => s.division))];
+    return uniqueDivisionNames.map(name => ({
+      name,
+      id: name, // Using name as ID for simplicity
+      code: name.substring(0, 3).toUpperCase(),
+      has_sections: true
+    }));
+  };
+
+  // Get unique sections for a division from suggestions
+  const getUniqueSectionsForDivision = (suggestionData, divisionName) => {
+    const relevantSuggestions = suggestionData.filter(s => s.division === divisionName);
+    const uniqueSectionNames = [...new Set(relevantSuggestions
+      .map(s => s.section)
+      .filter(s => s && s.trim() !== '')
+    )];
+    
+    return uniqueSectionNames.map(name => ({
+      name,
+      id: name // Using name as ID for simplicity
+    }));
+  };
+
+  // Update available sections when division changes
+  useEffect(() => {
+    if (!selectedDivision || !initialDataLoaded) return;
+    
+    // Find selected division in our data
+    const selectedDivisionData = divisions.find(div => div.name === selectedDivision);
+    
+    if (selectedDivisionData) {
+      // If we have sections from the API
+      if (selectedDivisionData.sections && selectedDivisionData.sections.length > 0) {
+        setSections(selectedDivisionData.sections);
+      } 
+      // Otherwise try to extract from suggestions
+      else if (suggestions.length > 0) {
+        const extractedSections = getUniqueSectionsForDivision(suggestions, selectedDivision);
+        setSections(extractedSections);
+      }
+      else {
+        setSections([]);
+      }
+    } else {
+      setSections([]);
+    }
+    
+    // Reset selected section when division changes
+    setSelectedSection('');
+  }, [selectedDivision, initialDataLoaded, suggestions]);
+
+  // Handler for modal opening
   const handleOpenModal = (suggestion) => {
     setSelectedSuggestion(suggestion);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  // Handler for modal closing with refresh support
+  const handleCloseModal = (refreshNeeded = false) => {
     setIsModalOpen(false);
+    
+    // If changes were made, refresh the suggestions list
+    if (refreshNeeded) {
+      setRefreshTrigger(prev => prev + 1);
+    }
+  };
+
+  // Handler for suggestion deletion
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/suggestion/${id}`);
+      // Refresh the current page after deletion
+      await fetchSuggestions({
+        division: selectedDivision,
+        section: selectedSection,
+        search: searchTerm
+      }, currentPage);
+    } catch (error) {
+      console.error('Error deleting suggestion:', error);
+    }
+  };
+
+  // Handler for filtering
+  const handleFilter = async () => {
+    // Reset to page 1 when applying new filters
+    setCurrentPage(1);
+    await fetchSuggestions({
+      division: selectedDivision,
+      section: selectedSection,
+      search: searchTerm
+    }, 1);
+  };
+
+  // Handle search input changes with debounce
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Apply search filter when search term changes (with debounce)
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (initialDataLoaded) {
+        // Reset to page 1 when search term changes
+        setCurrentPage(1);
+        fetchSuggestions({
+          division: selectedDivision,
+          section: selectedSection,
+          search: searchTerm
+        }, 1);
+      }
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, initialDataLoaded]);
+
+  // Handle pagination navigation
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+  };
+
+  // Handle per page selection change
+  const handlePerPageChange = (e) => {
+    const newPerPage = parseInt(e.target.value);
+    setPerPage(newPerPage);
+    setCurrentPage(1); // Reset to first page when changing items per page
   };
 
   return (
@@ -61,6 +219,8 @@ const SuggestionInbox = () => {
                 type="text" 
                 placeholder="Search suggestions..." 
                 className="search-input"
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
             </div>
 
@@ -71,8 +231,10 @@ const SuggestionInbox = () => {
                 onChange={(e) => setSelectedDivision(e.target.value)}
               >
                 <option value="">All Divisions</option>
-                {Object.keys(divisions).map((division) => (
-                  <option key={division} value={division}>{division}</option>
+                {divisions.map((division) => (
+                  <option key={division.id || division.name} value={division.name}>
+                    {division.name}
+                  </option>
                 ))}
               </select>
 
@@ -83,12 +245,14 @@ const SuggestionInbox = () => {
                 disabled={!selectedDivision}
               >
                 <option value="">All Sections</option>
-                {selectedDivision && divisions[selectedDivision].map((section) => (
-                  <option key={section} value={section}>{section}</option>
+                {sections.map((section) => (
+                  <option key={section.id || section.name} value={section.name}>
+                    {section.name}
+                  </option>
                 ))}
               </select>
 
-              <button className="filter-button">
+              <button className="filter-button" onClick={handleFilter}>
                 <Filter size={20} />
                 <span>Filter</span>
               </button>
@@ -97,41 +261,84 @@ const SuggestionInbox = () => {
 
           {/* Suggestions List */}
           <div className="suggestions-list">
-            {suggestions.map((suggestion) => (
-              <div 
-                key={suggestion.id} 
-                className="suggestion-card"
-                onClick={() => handleOpenModal(suggestion)}
-              >
-                <div className="suggestion-header">
-                  <div className="suggestion-meta">
-                    <span className="division-badge">{suggestion.division}</span>
-                    <span className="section-badge">{suggestion.section}</span>
-                    <span className="time-stamp">{suggestion.time}</span>
-                    {suggestion.status && (
-                      <span className={`status-badge status-${suggestion.status}`}>
-                        {suggestion.status}
+            {suggestions.length === 0 ? (
+              <div className="no-suggestions">No suggestions found</div>
+            ) : (
+              suggestions.map((suggestion) => (
+                <div 
+                  key={suggestion.id} 
+                  className="suggestion-card"
+                  onClick={() => handleOpenModal(suggestion)}
+                >
+                  <div className="suggestion-header">
+                    <div className="suggestion-meta">
+                      <span className="division-badge">
+                        {suggestion.division}
                       </span>
-                    )}
+                      {suggestion.section && (
+                        <span className="section-badge">
+                          {suggestion.section}
+                        </span>
+                      )}
+                      <span className="time-stamp">
+                        {new Date(suggestion.created_at).toLocaleString()}
+                      </span>
+                      {suggestion.status && (
+                        <span className={`status-badge status-${suggestion.status.toLowerCase()}`}>
+                          {suggestion.status}
+                        </span>
+                      )}
+                    </div>
+                    <button 
+                      className="delete-button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent opening the modal
+                        handleDelete(suggestion.id);
+                      }}
+                    >
+                      <Trash2 size={18} />
+                    </button>
                   </div>
-                  <button 
-                    className="delete-button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent opening the modal
-                      // Handle delete logic here
-                    }}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  <div className="suggestion-content">
+                    {suggestion.content.length > 100 
+                      ? suggestion.content.substring(0, 100) + '...' 
+                      : suggestion.content}
+                  </div>
                 </div>
-                <div className="suggestion-content">
-                  {suggestion.content.length > 100 
-                    ? suggestion.content.substring(0, 100) + '...' 
-                    : suggestion.content}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
+          
+
+{/* Pagination Controls */}
+{suggestions.length > 0 && (
+  <div className="pagination">
+    <div className="pagination-info">
+      <p>
+        {initialDataLoaded ? 
+          `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
+          'Loading...'
+        }
+      </p>
+    </div>
+    <div className="pagination-buttons">
+      <button
+        className="filter-button"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1 || !initialDataLoaded}
+      >
+        Previous
+      </button>
+      <button
+        className="filter-button"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage * perPage >= totalItems || !initialDataLoaded}
+      >
+        Next
+      </button>
+    </div>
+  </div>
+)}
         </div>
       </div>
 
@@ -140,6 +347,7 @@ const SuggestionInbox = () => {
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
         suggestion={selectedSuggestion}
+        onSave={() => handleCloseModal(true)} // Pass refreshNeeded=true when saved
       />
     </div>
   );

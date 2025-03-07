@@ -4,76 +4,26 @@ import '../../../css/styles/landing/SuggestionBox.css';
 
 const SuggestionBox = () => {
     const [suggestion, setSuggestion] = useState('');
-    const [selectedDivision, setSelectedDivision] = useState('');
-    const [selectedSection, setSelectedSection] = useState('');
+    const [selectedDivisionCode, setSelectedDivisionCode] = useState('');
+    const [selectedSectionName, setSelectedSectionName] = useState('');
     const [availableSections, setAvailableSections] = useState([]);
     const [submitStatus, setSubmitStatus] = useState({ 
         message: '', 
         type: '' // 'success' or 'error'
     });
+    const [divisions, setDivisions] = useState([]);
 
-    // Sample data - will be replaced with API calls
-    const [divisions, setDivisions] = useState([
-        {
-            id: 1,
-            code: 'OP',
-            name: 'Office of the President',
-            hasSections: false,
-            sections: []
-        },
-        {
-            id: 2,
-            code: 'OED',
-            name: 'Office of the Executive Directory',
-            hasSections: false,
-            sections: []
-        },
-        {
-            id: 3,
-            code: 'FAD',
-            name: 'Finance and Administrative Division',
-            hasSections: true,
-            sections: [
-                { id: 1, name: 'Budget Section' },
-                { id: 2, name: 'Accounting Section' },
-                { id: 3, name: 'Cash Section' },
-                { id: 4, name: 'HR Section' },
-                { id: 5, name: 'Records Section' }
-            ]
-        },
-        {
-            id: 4,
-            code: 'RDMD',
-            name: 'Research and Development Management Division',
-            hasSections: true,
-            sections: [
-                { id: 6, name: 'REMS' },
-                { id: 7, name: 'TCDS' }
-            ]
-        },
-        {
-            id: 5,
-            code: 'RIDD',
-            name: 'Research Information and Data Division',
-            hasSections: true,
-            sections: [
-                { id: 8, name: 'IDS' },
-                { id: 9, name: 'LS' },
-                { id: 10, name: 'MIS' }
-            ]
-        }
-    ]);
-
-    // Configure axios to work with Laravel
     useEffect(() => {
-        // Get the CSRF token from the meta tag if it exists
-        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        if (token) {
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-        }
-        
-        // Set up axios to include credentials in requests
-        axios.defaults.withCredentials = true;
+        const fetchDivisions = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/divisions');
+                setDivisions(response.data); // Assuming the response is directly the divisions array
+            } catch (error) {
+                console.error('Error fetching divisions:', error);
+            }
+        };
+
+        fetchDivisions();
     }, []);
 
     const handleChange = (e) => {
@@ -81,17 +31,17 @@ const SuggestionBox = () => {
     };
 
     const handleDivisionChange = (e) => {
-        const divisionId = parseInt(e.target.value);
-        setSelectedDivision(divisionId);
+        const divisionCode = e.target.value;
+        setSelectedDivisionCode(divisionCode);
         
         // Reset section when division changes
-        setSelectedSection('');
+        setSelectedSectionName('');
         
         // Find the selected division
-        const division = divisions.find(div => div.id === divisionId);
+        const division = divisions.find(div => div.code === divisionCode);
         
         // Update available sections based on selected division
-        if (division && division.hasSections) {
+        if (division && division.has_sections) {
             setAvailableSections(division.sections);
         } else {
             setAvailableSections([]);
@@ -99,7 +49,7 @@ const SuggestionBox = () => {
     };
 
     const handleSectionChange = (e) => {
-        setSelectedSection(e.target.value);
+        setSelectedSectionName(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -108,8 +58,8 @@ const SuggestionBox = () => {
         
         const suggestionData = {
             content: suggestion,
-            division: String(selectedDivision), // Convert to string for varchar
-            section: selectedSection || null // Ensure null when empty
+            division: selectedDivisionCode, // Send division code
+            section: selectedSectionName || null // Send section name
         };
     
         try {
@@ -124,8 +74,8 @@ const SuggestionBox = () => {
     
             // Clear form after submission
             setSuggestion('');
-            setSelectedDivision('');
-            setSelectedSection('');
+            setSelectedDivisionCode('');
+            setSelectedSectionName('');
             setAvailableSections([]);
         } catch (error) {
             console.error('Error submitting suggestion:', error);
@@ -137,7 +87,6 @@ const SuggestionBox = () => {
             });
         }
     };
-    
 
     return (
         <div className="suggestion-container">
@@ -151,13 +100,13 @@ const SuggestionBox = () => {
                 <div className="dropdown-container">
                     <select 
                         className="suggestion-dropdown"
-                        value={selectedDivision}
+                        value={selectedDivisionCode}
                         onChange={handleDivisionChange}
                         required
                     >
                         <option value="">Select Division</option>
                         {divisions.map(division => (
-                            <option key={division.id} value={division.id}>
+                            <option key={division.id} value={division.code}>
                                 {division.code} - {division.name}
                             </option>
                         ))}
@@ -165,14 +114,14 @@ const SuggestionBox = () => {
                     
                     <select 
                         className="suggestion-dropdown"
-                        value={selectedSection}
+                        value={selectedSectionName}
                         onChange={handleSectionChange}
                         disabled={!availableSections.length}
                         required={availableSections.length > 0}
                     >
                         <option value="">Select Section</option>
                         {availableSections.map(section => (
-                            <option key={section.id} value={section.id}>
+                            <option key={section.id} value={section.name}>
                                 {section.name}
                             </option>
                         ))}

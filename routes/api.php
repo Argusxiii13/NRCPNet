@@ -7,8 +7,7 @@ use App\Http\Controllers\api\DivisionController;
 use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\UserController;
 
-// Suggestion routes
-Route::post('/suggestion', [SuggestionController::class, 'store']);
+Route::apiResource('suggestion', SuggestionController::class);
 
 // Division routes
 Route::apiResource('divisions', DivisionController::class);

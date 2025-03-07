@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import '../../../css/styles/admin/SuggestionDetailModal.css';
 
-const SuggestionDetailModal = ({ isOpen, onClose, suggestion }) => {
+const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
+  // Use adminnote to match the database field name
+  const [adminNotes, setAdminNotes] = useState('');
+  const [status, setStatus] = useState('new');
+
   // Prevent scroll on body when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -17,7 +22,37 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion }) => {
     };
   }, [isOpen]);
 
+  // Update state when suggestion changes
+  useEffect(() => {
+    if (suggestion) {
+      setAdminNotes(suggestion.adminnote || '');
+      setStatus(suggestion.status || 'new');
+    }
+  }, [suggestion]);
+
   if (!isOpen || !suggestion) return null;
+
+  const handleSaveChanges = async () => {
+    try {
+        const updatedSuggestion = {
+            ...suggestion,
+            adminnote: adminNotes,
+            status: status,
+        };
+
+        const response = await axios.put(`http://localhost:8000/api/suggestion/${suggestion.id}`, updatedSuggestion);
+        console.log('Suggestion updated successfully:', response.data);
+        
+        // Call onSave to trigger a refresh in the parent component
+        if (onSave) {
+          onSave();
+        } else {
+          onClose(); // Fallback to just closing if onSave isn't provided
+        }
+    } catch (error) {
+        console.error('Error updating suggestion:', error);
+    }
+  };
 
   return ReactDOM.createPortal(
     <div className="modal-overlay">
@@ -44,8 +79,10 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion }) => {
             </div>
             
             <div className="info-row">
-              <div className="info-label">Submitted:</div>
-              <div className="info-value">{suggestion.time}</div>
+              <div className="info-label">Date Created:</div>
+              <div className="info-value">
+                {new Date(suggestion.created_at).toLocaleString()}
+              </div>
             </div>
           </div>
           
@@ -58,22 +95,16 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion }) => {
           <div className="suggestion-actions">
             <div className="info-row">
               <div className="info-label">Status:</div>
-              <select className="status-dropdown">
+              <select 
+                className="status-dropdown"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
                 <option value="new">New</option>
-                <option value="in-progress">In Consideration</option>
+                <option value="in-consideration">In Consideration</option>
                 <option value="in-progress">In Progress</option>
                 <option value="resolved">Resolved</option>
                 <option value="dismissed">Dismissed</option>
-              </select>
-            </div>
-            
-            <div className="info-row">
-              <div className="info-label">Assigned To:</div>
-              <select className="assignee-dropdown">
-                <option value="">Select Assignee</option>
-                <option value="john-doe">John Doe</option>
-                <option value="jane-smith">Jane Smith</option>
-                <option value="alex-johnson">Alex Johnson</option>
               </select>
             </div>
           </div>
@@ -83,13 +114,15 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion }) => {
             className="admin-notes" 
             placeholder="Add internal notes about this suggestion..."
             rows={4}
+            value={adminNotes}
+            onChange={(e) => setAdminNotes(e.target.value)}
           ></textarea>
           
           <div className="modal-footer">
             <button className="modal-button cancel" onClick={onClose}>
               Close
             </button>
-            <button className="modal-button submit">
+            <button className="modal-button submit" onClick={handleSaveChanges}>
               Save Changes
             </button>
           </div>
