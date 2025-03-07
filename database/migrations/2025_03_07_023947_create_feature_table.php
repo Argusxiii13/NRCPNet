@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('feature', function (Blueprint $table) {
             $table->id(); // Creates bigint(20) unsigned auto_increment primary key
             $table->string('title'); // Creates a VARCHAR field for title
-            $table->mediumText('content'); // For TEXT type with medium size (can store up to 16MB)
+            $table->string('content'); // Changed to VARCHAR to store image path
             $table->string('author'); // Creates a VARCHAR field for author
+            $table->string('status'); // New column for status
             $table->timestamps(); // Creates created_at and updated_at timestamp fields with default precision
         });
     }

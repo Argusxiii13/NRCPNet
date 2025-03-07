@@ -1,0 +1,90 @@
+.panel {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  .panel-header {
+    padding: 20px 32px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .panel-Feature {
+    padding: 32px;
+  }
+  
+  .editor-wrapper {
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .editor-toolbar {
+    display: flex;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+    gap: 8px;
+  }
+  
+  .toolbar-group {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .toolbar-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    background: white;
+    border-radius: 6px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+  }
+  
+  .toolbar-button:hover {
+    background-color: #f1f5f9;
+    border-color: #e1e4e8;
+    color: #1a1a1a;
+  }
+  
+  .toolbar-divider {
+    width: 1px;
+    background-color: #e1e4e8;
+    margin: 0 8px;
+  }
+  
+  .editor-Feature {
+    min-height: 400px;
+    padding: 24px;
+    background-color: white;
+  }
+  
+  .button-container {
+    padding: 16px;
+    border-top: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .save-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #2a388f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  
+  .save-button:hover {
+    background-color: #0778f1;
+  }

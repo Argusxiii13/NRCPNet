@@ -1,0 +1,216 @@
+/* FeatureListPanel.css */
+
+/* Panel Styles */
+.panel {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  .panel-header {
+    padding: 20px 32px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .panel-Feature {
+    padding: 32px;
+  }
+  
+  /* Features List Panel Styles */
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .feature-item {
+    padding: 16px;
+    background-color: white;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .feature-item:hover {
+    border-color: #0778f1;
+    background-color: #f0f9ff;
+  }
+  
+  .feature-item.selected {
+    border-color: #0ea5e9;
+    background-color: #2a388f;
+    box-shadow: 0 0 0 1px #0ea5e9;
+  }
+  
+  /* Feature Info Styles */
+  .feature-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .feature-title {
+    font-weight: 500;
+    color: #1a1a1a;
+    font-size: 16px;
+  }
+  
+  .feature-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: capitalize;
+  }
+  
+  .feature-status.published {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .feature-status.draft {
+    background-color: #f3f4f6;
+    color: #4b5563;
+  }
+  
+  /* Feature Meta Styles */
+  .feature-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  /* Feature Actions Styles */
+  .feature-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e1e4e8;
+  }
+  
+  .action-button {
+    padding: 6px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    background: white;
+    color: #4b5563;
+    transition: all 0.2s ease;
+  }
+  
+  .action-button:hover {
+    background-color: #f1f5f9;
+    border-color: #d1d5db;
+    color: #1a1a1a;
+  }
+  
+  .action-button.delete:hover {
+    background-color: #fee2e2;
+    border-color: #fecaca;
+    color: #dc2626;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 400px; /* Adjust width as needed */
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-title {
+    margin: 0;
+  }
+  
+  .modal-content {
+    margin: 20px 0;
+  }
+  
+  .modal-field {
+    margin-bottom: 15px; /* Space between fields */
+  }
+  
+  .modal-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .modal-input,
+  .modal-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .modal-input:focus,
+  .modal-select:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* Space between buttons */
+  }
+  
+  .cancel-button,
+  .save-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cancel-button {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .save-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e0e0e0; /* Darken on hover */
+  }
+  
+  .save-button:hover {
+    background-color: #0056b3; /* Darken on hover */
+  }
+
+  .image-viewer {
+    max-width: 100%;
+    max-height: 80vh; /* Limit height for better visibility */
+    object-fit: contain; /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto; /* Center the image */
+  }

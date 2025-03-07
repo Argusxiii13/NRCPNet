@@ -15,7 +15,8 @@ class Feature extends Model
     // Specify the fillable properties
     protected $fillable = [
         'title',
-        'content', // This will store the image data
+        'content', // This will store the image path
         'author',
+        'status', // Added status to fillable properties
     ];
 }
