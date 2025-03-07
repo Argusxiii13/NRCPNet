@@ -101,22 +101,24 @@ const AdminCalendar = () => {
                     <div className="event-management-form">
                         <h4>Add New Event</h4>
                         <div className="form-group">
-                            <label>Event Title</label>
+                            <label></label>
                             <input type="text" placeholder="Enter event title" />
                         </div>
                         <div className="form-group">
-                            <label>Description</label>
+                            <label></label>
                             <textarea placeholder="Enter event description"></textarea>
                         </div>
                         <div className="form-row">
-                            <div className="form-group">
-                                <label>Start Time</label>
-                                <input type="time" />
-                            </div>
-                            <div className="form-group">
-                                <label>End Time</label>
-                                <input type="time" />
-                            </div>
+                        <div className="form-group">
+                        <div className="time-input">
+                            <label htmlFor="startTime">Start Time</label>
+                            <input type="time" id="startTime" />
+                        </div>
+                        <div className="time-input">
+                            <label htmlFor="endTime">End Time</label>
+                            <input type="time" id="endTime" />
+                        </div>
+                    </div>
                         </div>
                         <div className="form-buttons">
                             <button 

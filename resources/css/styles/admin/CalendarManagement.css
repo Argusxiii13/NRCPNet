@@ -202,36 +202,58 @@
 }
 
 .form-group label {
-  display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  display: block; /* Ensure labels stack correctly */
+  font-weight: 250; /* Default weight for all labels */
+  font-size: 14px;
 }
 
-.form-group input,
-.form-group textarea {
+.form-group input {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.9rem;
   border: 1px solid #000000;
   border-radius: 4px;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .form-group textarea {
-  height: 100px;
-  resize: vertical;
+  width: 100%;
+  height: fit-content;
+  padding: 5rem;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 0;
 }
 
 .form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
+.time-input {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.event-start-time {
+  display: flex;
+  align-items: center;
+}
+
+
 .form-buttons {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .cancel-button,
@@ -248,10 +270,10 @@
 }
 
 .save-button-cal {
-    padding: 8px 16px;
-    background-color: #2a388f;
-    color: white;
-    border: none;
+  padding: 8px 16px;
+  background-color: #2a388f;
+  color: white;
+  border: none;
 }
 
 /* Responsive Design */
