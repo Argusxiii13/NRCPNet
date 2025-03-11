@@ -11,7 +11,7 @@
     width: 100%;
     height: 240px;
     padding-top: 15%; /* This creates an aspect ratio of 2.5:1 */
-    background-color: #4e91fd;
+    background-image: linear-gradient( #4f709c , #213555);
     border-radius: 8px;
     overflow: hidden;
 }
