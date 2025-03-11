@@ -27,7 +27,7 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    color: #022163;
+    color: #4e91fd;
 }
 
 .weekdays-grid {
@@ -76,12 +76,12 @@
 }
 
 .day-button.selected {
-    background-color: #007bff;
+    background-color: #a1a1a1;
     color: white;
 }
 
 .day-button.today {
-    background-color: #022163;
+    background-color: #4e91fd;
 }
 
 .schedule-panel {

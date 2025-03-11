@@ -7,10 +7,10 @@
     height: 100%; /* Ensure full height */
     position: relative;
     flex: 1;  /* Add this to allow expansion */
-}
+}   
 
 .announcement-container {
-    background-color: #022163;
+    background-color: #c44e0b;
     padding: 0;
     border: 1px solid #dee2e6;
     border-radius: 8px;
