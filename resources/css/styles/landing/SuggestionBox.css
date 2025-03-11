@@ -1,6 +1,6 @@
 .suggestion-container {
     width: 83%; /* Width for the box */
-    background-color: #2a388f; /* Lighter shade */
+    background-color: #022163; /* Lighter shade */
     color: white;
     padding: 1rem; /* Reduced padding */
     padding-top: 0.5rem; /* Slightly reduced top padding */
@@ -62,8 +62,8 @@
 
 .suggestion-button:hover {
     background-color: #fcfcfc; /* Lighter shade on hover */
-    color: #2a388f; 
-    border: 1px solid #2a388f;
+    color: #022163; 
+    border: 1px solid #022163;
 }
 
 .status-message {

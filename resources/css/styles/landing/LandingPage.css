@@ -22,7 +22,6 @@
     padding: 1.5rem;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* First row: EventCarousel takes all 3 columns */
@@ -61,7 +60,6 @@
     padding: 1.5rem; /* Optional padding */
     background-color: #fff; /* Ensure background color matches */
     border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow */
 }
 
 .thursday-wellness-section {
@@ -73,7 +71,6 @@
     padding: 1.5rem;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: 827px;
 }
 
@@ -114,7 +111,6 @@
     background-color: #fff;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: right;
 }
 
