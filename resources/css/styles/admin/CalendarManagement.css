@@ -89,15 +89,16 @@
 }
 
 .admin-day-cell:hover:not(.empty) {
-  background-color: #cce5ff; /* do not replace this */
+  background-color: #448ece; /* do not replace this */
+  color: white;
 }
 
 .admin-day-cell.selected {
-  background-color: #2a388f;
+  background-image: linear-gradient( #448ece , #11326a);
 }
 
 .admin-day-cell.today {
-  background-color: #2a388f;
+  background-image: linear-gradient( #448ece , #11326a);
 }
 
 .event-dot {
@@ -138,9 +139,18 @@
 }
 
 .toggle-button.active {
-  background-color: #2a388f;
+  background-color: #11326a;
   color: white;
-  border-color: #2a388f;
+}
+
+.toggle-button:hover {
+  background-color:  #448ece;
+  color: whitesmoke;
+}
+
+.toggle-button.active:hover {
+  background-color:  #448ece;
+  color: whitesmoke;
 }
 
 /* Events List Styles */
@@ -178,8 +188,7 @@
 
 .edit-button {
   padding: 0.375rem 0.75rem;
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  background-color: #448ece;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -263,19 +272,24 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #2a388f;
+  background-color: #11326a;
 }
 
 .cancel-button {
-  background-color: #a3a3a3;
+  background-color: #666666;
   border: 1px solid #d1d5db;
 }
 
 .save-button-cal {
   padding: 8px 16px;
-  background-color: #2a388f;
+  background-color: #11326a;
   color: white;
   border: none;
+}
+
+.save-button-cal:hover {
+  background-color:  #448ece;
+  color: whitesmoke;
 }
 
 /* Responsive Design */

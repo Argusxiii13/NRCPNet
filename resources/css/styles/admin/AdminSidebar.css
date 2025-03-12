@@ -8,7 +8,7 @@
 }
 
 .admin-sidebar {
-  background: #2a388f;
+  background-image: linear-gradient( #448ece , #11326a);
   width: 260px;
   min-width: 260px;
   height: 96vh;
@@ -33,7 +33,7 @@
   height: 30px;
   border-radius: 50%;
   background: #fff;
-  border: 2px solid #2a388f;
+  border: 2px solid #448ece;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -138,7 +138,8 @@
 }
 
 .menu-item:hover {
-  background: #cce5ff;
+  background: #448ece;
+  color: #ffffff;
 }
 
 .menu-item.gap-top {
@@ -178,10 +179,10 @@
 }
 
 .menu-item.active .menu-title {
-  color: #000000; /* Change font color to black for active menu item */
+  color: #11326a; /* Change font color to black for active menu item */
 }
 .menu-item.active .menu-icon {
-  color: #000000; /* Change font color to black for active menu item */
+  color: #11326a; /* Change font color to black for active menu item */
 }
 .menu-title.hide {
   opacity: 0;
@@ -190,13 +191,13 @@
 }
 
 .menu-item:hover .menu-title {
-  color: #000000;
+  color: #ffffff;
 }
 .menu-item:hover .menu-icon {
-  color: #000000;
+  color: #ffffff;
 }
 .menu-item:hover .submenu-title{
-  color: #000000;
+  color: #ffffff;
 }
 
 .sidebar-footer {
@@ -205,7 +206,7 @@
   left: 0;
   right: 0;
   padding: 20px;
-  background: #2a388f;
+  background-color: #11326a;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -292,7 +293,7 @@
 }
 
 .logout-button:hover {
-  background:#2a388f;
+  background:#11326a;
   color: #ffffff;
 }
 
