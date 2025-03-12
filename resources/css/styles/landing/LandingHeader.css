@@ -71,7 +71,7 @@
 }
 
 .login-button {
-    background-color: #213555;
+    background-color: #11326a;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -81,7 +81,7 @@
 }
 
 .login-button:hover {
-    background-color: #022163;
+    background-color: #448ece;
 }
 
 /* Add this to your main content wrapper */
