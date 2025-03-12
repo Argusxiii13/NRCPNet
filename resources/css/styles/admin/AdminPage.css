@@ -1,7 +1,7 @@
 /* AdminLayout.css */
 .admin-layout {
   min-height: 100vh;
-  background: #f1f5f9;
+  background: #f8f9fa;;
 }
 
 .admin-content {
@@ -10,6 +10,7 @@
   min-height: calc(100vh - 64px);
   transition: all 0.3s ease;
   position: relative;
+  
 }
 
 .dashboard-title {
@@ -21,7 +22,7 @@
   padding: 24px;
   max-width: 1800px;
   margin: 0 auto;
-  background-color: #f1f5f9;
+  background-color: #f8f9fa;
   min-height: 100vh;
   margin-left: 60px;
 }

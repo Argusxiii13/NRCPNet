@@ -4,7 +4,7 @@
     right: 0;
     left: 0;
     height: 80px;
-    background: #ffffff;
+    background-color: #11326a;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -44,7 +44,7 @@
     padding: 8px 16px;
     border: none;
     background: transparent;
-    color: #64748b;
+    color: #ffffff; 
     cursor: pointer;
     transition: all 0.2s ease;
     border-radius: 6px;

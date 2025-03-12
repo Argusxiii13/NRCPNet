@@ -29,10 +29,10 @@
 
 /* Panel Content */
 .panel-content {
-    padding: 32px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
 }
 
 /* Stat Cards Container */
