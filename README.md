@@ -35,7 +35,18 @@ then this
 php artisan key:generate
 ```
 
-then this
+9. then this go to .env file, look for the DB variables, it should look like this :
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nrcpnet
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+10. then execute these commands :
 
 ```bash
 php artisan config:clear
@@ -44,7 +55,7 @@ php artisan config:clear
 php artisan migrate
 ```
 
-10. After all these, run these command each at the terminal :
+11. After all these, run these command each at the terminal :
 
 ```bash
 npm run dev
