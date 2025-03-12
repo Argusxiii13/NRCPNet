@@ -42,7 +42,7 @@
     min-height: 120px;
     display: flex;
     align-items: center;
-    background-color: #213555;
+    background-image: linear-gradient( #448ece , #11326a);
     border-radius: 8px;
     transition: all 0.2s;
     padding: 1rem;
@@ -83,7 +83,7 @@
 }
 
 .wellness-item-container:hover { 
-    background-color: #748dad;
+    background-color: #448ece;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -91,11 +91,11 @@
 .wellness-item-container:hover .time-info,
 .wellness-item-container:hover .location-info,
 .wellness-item-container:hover .participant-info {
-    color: #213555;     
+    color: #ffffff;     
 }
 
 .wellness-item-container:hover .sport-title {
-    color: #213555; 
+    color: #ffffff; 
 }
 
 

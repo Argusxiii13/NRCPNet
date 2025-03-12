@@ -27,7 +27,7 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    color: #4e91fd;
+    color: #11326a;
 }
 
 .weekdays-grid {
@@ -66,8 +66,8 @@
 }
 
 .day-button:hover:not(.empty) {
-    background-color: #cce5ff;
-    border-color: #dee2e6;
+    background-color: #448ece;
+    color: white;
 }
 
 .day-button.empty {
@@ -76,12 +76,13 @@
 }
 
 .day-button.selected {
-    background-color: #a1a1a1;
+    background-color: #11326a;
     color: white;
 }
 
 .day-button.today {
-    background-color: #4e91fd;
+    background-color: #11326a;
+    color: white;
 }
 
 .schedule-panel {
@@ -92,7 +93,6 @@
     height: 450px;
     background-color: white;
     border-radius: 8px;
-    border: 1px solid #dee2e6;
     opacity: 0;
     transform: translateX(-20px);
     transition: all 0.3s ease;
