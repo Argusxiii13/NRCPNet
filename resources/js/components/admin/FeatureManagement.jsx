@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FeatureListPanel from './FeatureListPanel';
-import FileUploadPanel from '../reusable/FileUploadPanel';
-import FeatureEditorPanel from '../reusable/EditorPanel';
+import FileUploadPanel from '../reusable/PngUploadPanel';
 import '../../../css/styles/admin/FeatureManagement.css';
 
 const FeatureManagement = () => {

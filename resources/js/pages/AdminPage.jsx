@@ -10,6 +10,7 @@ import UserManagement from '../components/admin/UserManagement';
 import DivisionManagement from '../components/admin/DivisionManagement';
 import RoleManagement from '../components/admin/RoleManagement';
 import Dashboard from '../components/admin/Dashboard';
+import FormsManagement from '../components/admin/FormsManagement';
 
 import '../../css/styles/admin/AdminPage.css';
 import '../../css/font.css';
@@ -61,6 +62,8 @@ function Layout() {
                 return <h1>Settings Panel</h1>;
             case 'Calendar Management':
                 return <CalendarManagement />;
+            case 'Downloadable Forms':
+                return <FormsManagement />;
             default:
                 return <h1>Welcome to Dashboard</h1>;
         }

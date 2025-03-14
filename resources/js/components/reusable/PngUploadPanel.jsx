@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
-import '../../../css/styles/reusable/FileUploadPanel.css';
+import '../../../css/styles/reusable/PngUploadPanel.css';
 
 const FileUploadPanel = ({ refreshFeatures }) => {
   const [file, setFile] = useState(null);
@@ -14,18 +14,19 @@ const FileUploadPanel = ({ refreshFeatures }) => {
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      setFile(selectedFile);
-      // Only create preview for images
-      if (selectedFile.type.startsWith('image/')) {
+      // Check if the file is a PNG image
+      if (selectedFile.type === 'image/png') {
+        setFile(selectedFile);
         setImagePreview(URL.createObjectURL(selectedFile));
+        setUploadError(null); // Clear any previous errors
       } else {
-        setImagePreview(''); // Clear preview for non-image files
+        setUploadError('Only PNG files are allowed.');
+        setImagePreview(''); // Clear preview for non-PNG files
       }
     }
   };
 
   const handleUpload = async (e) => {
-    
     e.preventDefault();
     
     if (!file) {
@@ -51,7 +52,6 @@ const FileUploadPanel = ({ refreshFeatures }) => {
       const response = await fetch('/api/features', {
         method: 'POST',
         body: formData,
-        // No Content-Type header needed; it will be set automatically with FormData
       });
       
       if (!response.ok) {
@@ -61,10 +61,9 @@ const FileUploadPanel = ({ refreshFeatures }) => {
       
       const result = await response.json();
       console.log('Upload successful:', result);
-      // Inside handleUpload function
-if (refreshFeatures) {
-  refreshFeatures(); // This refreshes the feature list
-}
+      if (refreshFeatures) {
+        refreshFeatures(); // This refreshes the feature list
+      }
       
       // Reset form
       setFile(null);
@@ -72,11 +71,6 @@ if (refreshFeatures) {
       setTitle('');
       setStatus('active');
       setUploadSuccess(true);
-      
-      // Refresh the feature list
-      if (refreshFeatures) {
-        refreshFeatures();
-      }
       
     } catch (error) {
       console.error('Upload error:', error);
@@ -86,12 +80,10 @@ if (refreshFeatures) {
     }
   };
 
-  // Determine what to display in the preview area
   const renderPreview = () => {
     if (imagePreview) {
       return <img src={imagePreview} alt="Preview" className="preview-image" />;
     } else if (file) {
-      // For non-image files, show file name
       return (
         <div className="file-info">
           <p className="file-name">{file.name}</p>
@@ -111,7 +103,6 @@ if (refreshFeatures) {
       <div className="panel-Feature">
         <div className="upload-section">
           <div className="upload-area">
-            {/* Image/File preview area */}
             <div className="image-holder">
               {renderPreview()}
             </div>
@@ -119,10 +110,10 @@ if (refreshFeatures) {
             <div className="upload-zone">
               <Upload size={24} />
               <p>Drag & drop files here or click to browse</p>
-              <span className="upload-info">Supports JPG, PNG, PDF, DOC, DOCX, TXT</span>
+              <span className="upload-info">Only PNG files are allowed</span>
               <input 
                 type="file" 
-                accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" 
+                accept="image/png" 
                 onChange={handleFileChange}
                 style={{ display: 'none' }} 
                 id="file-upload"
@@ -130,7 +121,6 @@ if (refreshFeatures) {
               <label htmlFor="file-upload" className="upload-label">Browse Files</label>
             </div>
             
-            {/* Form controls - Only title and status */}
             <div className="form-controls">
               <input 
                 type="text" 
@@ -149,7 +139,6 @@ if (refreshFeatures) {
               </select>
             </div>
             
-            {/* Status messages */}
             {uploadError && (
               <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>
                 {uploadError}
@@ -162,7 +151,6 @@ if (refreshFeatures) {
               </div>
             )}
             
-            {/* Upload button */}
             <div className="publish-controls">
               <button 
                 className="upload-button"
