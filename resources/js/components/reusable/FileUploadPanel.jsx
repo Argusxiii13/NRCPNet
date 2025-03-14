@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import '../../../css/styles/reusable/FileUploadPanel.css';
 
-const FileUploadPanel = ({ publishTo, setPublishTo, selectedDivision, setSelectedDivision, divisions }) => {
+const FileUploadPanel = () => {
+  const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const [title, setTitle] = useState('');
+  const [status, setStatus] = useState('active');
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setImagePreview(URL.createObjectURL(selectedFile));
+    }
+  };
+
   return (
     <div className="panel upload-panel">
       <div className="panel-header">
@@ -14,44 +27,42 @@ const FileUploadPanel = ({ publishTo, setPublishTo, selectedDivision, setSelecte
             <div className="upload-zone">
               <Upload size={24} />
               <p>Drag & drop files here or click to browse</p>
-              <span className="upload-info">Supports PDF, DOC, DOCX, TXT</span>
+              <span className="upload-info">Supports JPG, PNG, PDF, DOC, DOCX, TXT</span>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileChange}
+                style={{ display: 'none' }} 
+                id="file-upload"
+              />
+              <label htmlFor="file-upload" className="upload-label">Browse Files</label>
             </div>
-            
-            <div className="publish-controls">
-              <div className="dropdowns-container">
-                <select
-                  className="publish-dropdown"
-                  value={publishTo}
-                  onChange={(e) => setPublishTo(e.target.value)}
-                >
-                  <option value="">Select Publishing Option</option>
-                  <option value="everyone">Publish To Everyone</option>
-                  <option value="specific">Publish To Specific Division</option>
-                </select>
 
-                <select
-                  className="publish-dropdown"
-                  disabled={publishTo !== 'specific'}
-                  value={selectedDivision}
-                  onChange={(e) => setSelectedDivision(e.target.value)}
-                >
-                  <option value="">Select Division</option>
-                  {Object.keys(divisions).map((division) => (
-                    <option key={division} value={division}>{division}</option>
-                  ))}
-                </select>
-
-                <select 
-                  className="publish-dropdown"
-                  disabled={!selectedDivision}
-                >
-                  <option value="">Select Section</option>
-                  {selectedDivision && divisions[selectedDivision].map((section) => (
-                    <option key={section} value={section}>{section}</option>
-                  ))}
-                </select>
+            {imagePreview && (
+              <div className="image-preview">
+                <img src={imagePreview} alt="Preview" className="preview-image" />
               </div>
+            )}
 
+            <div className="form-controls">
+              <input 
+                type="text" 
+                placeholder="Title" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                className="title-input"
+              />
+              <select 
+                value={status} 
+                onChange={(e) => setStatus(e.target.value)} 
+                className="status-dropdown"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div className="publish-controls">
               <button className="upload-button">
                 Upload
               </button>

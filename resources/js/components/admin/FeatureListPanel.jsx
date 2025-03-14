@@ -3,8 +3,7 @@ import { Eye, Edit2, Trash2 } from 'lucide-react';
 import Pagination from '../reusable/Pagination'; // Adjust the import path as necessary
 import '../../../css/styles/admin/FeatureListPanel.css';
 
-const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, currentPage, setCurrentPage, refreshFeatures }) => {
-  const [selectedFeature, setSelectedFeature] = useState(null);
+const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, currentPage, setCurrentPage, refreshFeatures, selectedFeature, setSelectedFeature }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [featureToDelete, setFeatureToDelete] = useState(null);
   
@@ -17,11 +16,7 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
   const [imageUrl, setImageUrl] = useState('');
 
   const handleFeatureClick = (feature) => {
-    if (selectedFeature?.id === feature.id) {
-      setSelectedFeature(null); // Deselect if already selected
-    } else {
-      setSelectedFeature(feature);
-    }
+    setSelectedFeature(selectedFeature?.id === feature.id ? null : feature);
   };
 
   const openConfirmModal = (feature) => {
@@ -30,9 +25,13 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
   };
 
   const openEditModal = (feature) => {
-    setEditedFeature({ title: feature.title, status: feature.status });
+    setEditedFeature({
+        id: feature.id,  // Store the ID in the editedFeature state
+        title: feature.title, 
+        status: feature.status 
+    });
     setIsEditOpen(true);
-  };
+};
 
   const openImageModal = (feature) => {
     setImageUrl(`http://localhost:8000${feature.content}`); // Correctly set the image URL
@@ -59,30 +58,36 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
   };
 
   const handleEditSubmit = async () => {
-    console.log('Submitting edited feature:', editedFeature); // Log the data being sent
-    try {
-      const response = await fetch(`/api/features/${selectedFeature.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editedFeature),
-      });
-      if (response.ok) {
-        console.log('Feature updated successfully');
-        refreshFeatures(); // Refresh the features list
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to update feature:', errorData);
-      }
-    } catch (error) {
-      console.error('Error updating feature:', error);
-    } finally {
-      setIsEditOpen(false);
-      setEditedFeature({ title: '', status: '' });
-      setSelectedFeature(null);
+    if (!editedFeature || !editedFeature.id) {
+        console.error('No feature selected for editing.');
+        return;
     }
-  };
+
+    try {
+        const response = await fetch(`/api/features/${editedFeature.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: editedFeature.title,
+                status: editedFeature.status
+            }),
+        });
+        if (response.ok) {
+            console.log('Feature updated successfully');
+            refreshFeatures(); // Refresh the features list
+        } else {
+            const errorData = await response.json();
+            console.error('Failed to update feature:', errorData);
+        }
+    } catch (error) {
+        console.error('Error updating feature:', error);
+    } finally {
+        setIsEditOpen(false);
+        setEditedFeature({ id: null, title: '', status: '' });
+    }
+};
 
   return (
     <div className="panel features-list-panel">
@@ -111,7 +116,7 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
                 <button className="action-button" title="View" onClick={() => openImageModal(feature)}>
                   <Eye size={16} />
                 </button>
-                <button className="action-button" title="Edit" onClick={() => openEditModal(feature)}>
+                <button className="action-button" title="Edit" onClick={() => { openEditModal(feature); setSelectedFeature(feature); }}>
                   <Edit2 size={16} />
                 </button>
                 <button className="action-button delete" title="Delete" onClick={() => openConfirmModal(feature)}>

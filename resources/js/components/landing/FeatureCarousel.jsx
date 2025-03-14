@@ -4,29 +4,6 @@ import '../../../css/styles/landing/FeatureCarousel.css';
 const EventCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovering, setIsHovering] = useState(false);
-    // Image path constants
- const Feature1 = '/image/Feature1.png';
- const Feature2 = '/image/Feature2.png';
- const Feature3 = '/image/Feature3.png';
- const Feature4 = '/image/Feature4.png';
- const Feature5 = '/image/Feature5.png';
- const Feature6 = '/image/Feature6.png';
- 
- 
- const EventCarousel = () => {
-     const [currentIndex, setCurrentIndex] = useState(0);
-     const [isHovering, setIsHovering] = useState(false);
-     
-     // Updated slides to only include images
-     const slides = [
-         Feature1,
-         Feature2,
-         Feature3,
-         Feature4,
-         Feature5,
-         Feature6,
-     ];
-    }
     const [slides, setSlides] = useState([]);
 
     useEffect(() => {
@@ -34,8 +11,9 @@ const EventCarousel = () => {
             try {
                 const response = await fetch('/api/features');
                 const data = await response.json();
-                // Map the data to get the image paths
-                setSlides(data.map(feature => feature.content));
+                // Filter to include only active features
+                const activeSlides = data.filter(feature => feature.status === 'Active').map(feature => feature.content);
+                setSlides(activeSlides);
             } catch (error) {
                 console.error('Error fetching features:', error);
             }
@@ -61,7 +39,6 @@ const EventCarousel = () => {
             onMouseLeave={() => setIsHovering(false)}
         >
             <div className="carousel">
-                {/* Left half click area for previous slide */}
                 <div 
                     className="carousel-nav-area carousel-nav-left"
                     onClick={prevSlide}
@@ -73,8 +50,7 @@ const EventCarousel = () => {
                         </button>
                     )}
                 </div>
-                
-                {/* Right half click area for next slide */}
+
                 <div 
                     className="carousel-nav-area carousel-nav-right"
                     onClick={nextSlide}
@@ -114,4 +90,5 @@ const EventCarousel = () => {
         </div>
     );
 };
-export default EventCarousel; 
+
+export default EventCarousel;

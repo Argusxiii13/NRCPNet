@@ -108,3 +108,37 @@
   .upload-button:hover {
     background-color: #0778f1;
   }
+
+  .image-preview {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .preview-image {
+    max-width: 100%;
+    max-height: 300px; /* Adjust height as needed */
+    border-radius: 8px;
+    border: 1px solid #e1e4e8;
+  }
+
+  .form-controls {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .title-input {
+    padding: 10px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .status-dropdown {
+    padding: 10px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+  }
