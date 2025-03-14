@@ -103,13 +103,13 @@ const FeatureManagement = () => {
         refreshFeatures={refreshFeatures} // Pass the refresh function
       />
       <FileUploadPanel 
+        refreshFeatures={refreshFeatures} // Ensure this line is present
         publishTo={publishTo} 
         setPublishTo={setPublishTo} 
         selectedDivision={selectedDivision} 
         setSelectedDivision={setSelectedDivision} 
         divisions={divisions} 
       />
-      <FeatureEditorPanel selectedFeature={selectedFeature} />
     </div>
   );
 };
