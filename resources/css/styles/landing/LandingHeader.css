@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: white;
+    background-image: linear-gradient(#11326a, #448ece);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
@@ -16,6 +16,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem; /* Reduced padding */
+    background-image: linear-gradient(#11326a, #448ece);
     height: 64px;
 }   
 
@@ -43,7 +44,7 @@
 .title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #11326a;
+    color: #ffffff;
     display: inline-block;
     font-family:helvetica;
     margin-left: 7px;
@@ -57,7 +58,7 @@
 
 .link {
     text-decoration: none;
-    color: #4a5568;
+    color: #ffffff;
     transition: color 0.2s ease;
 }
 
@@ -71,8 +72,8 @@
 }
 
 .login-button {
-    background-color: #11326a;
-    color: white;
+    background-color: #ffffff;
+    color: #022163;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
@@ -82,6 +83,7 @@
 
 .login-button:hover {
     background-color: #448ece;
+    color: white;
 }
 
 /* Add this to your main content wrapper */
