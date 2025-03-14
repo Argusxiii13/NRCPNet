@@ -3,6 +3,7 @@ import {
   Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight,
   List, Link2, Image, FileText, Type, Brush, Download, Upload
 } from 'lucide-react';
+import '../../../css/styles/admin/AnnouncementManagement.css';
 
 const AnnouncementManagement = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
