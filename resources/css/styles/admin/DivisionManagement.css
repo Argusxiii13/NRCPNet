@@ -336,6 +336,8 @@
   .form-checkbox {
     width: 16px;
     height: 16px;
+    margin-left: 50px;
+    align-items: end;
   }
   
   .sections-form {
