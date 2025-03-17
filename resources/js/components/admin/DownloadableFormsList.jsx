@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Download, Edit2, Trash2, Eye } from 'lucide-react';
-import Pagination from '../reusable/Pagination'; // Adjust the import path as necessary
-import '../../../css/styles/admin/DownloadableFormsList.css'
+import Pagination from '../reusable/Pagination';
+import '../../../css/styles/admin/DownloadableFormsList.css';
 
 const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, currentPage, setCurrentPage, refreshForms, selectedForm, setSelectedForm }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -14,6 +14,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
   // PDF viewer modal state
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
+  const [pdfError, setPdfError] = useState(null);
 
   const handleFormClick = (form) => {
     setSelectedForm(selectedForm?.id === form.id ? null : form);
@@ -39,27 +40,89 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
   const openPdfModal = (form, e) => {
     e.stopPropagation();
-    // Just for design, no actual functionality
-    setPdfUrl('#');
+    setPdfError(null);
+    
+    // Use the content field from the form data, which contains the PDF path
+    const fileUrl = form.content || null;
+    
+    if (!fileUrl) {
+      setPdfError("No PDF file available for this form.");
+      setIsPdfOpen(true);
+      return;
+    }
+    
+    setPdfUrl(fileUrl);
     setIsPdfOpen(true);
   };
 
   const handleDownload = (form, e) => {
-    e.stopPropagation();
-    // Just for design, no functionality
-    console.log(`Design mock: Download button clicked for ${form.title}`);
+    if (e) e.stopPropagation();
+    // Get the file path from the content field
+    const fileUrl = form?.content;
+    if (fileUrl) {
+      // Create a temporary anchor element and trigger download
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = form?.title || 'document.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error('No file URL available for download');
+    }
   };
 
-  const confirmDelete = () => {
-    // Just for design, no functionality
-    setIsConfirmOpen(false);
-    setFormToDelete(null);
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(`/api/downloadables/${formToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any authentication headers if required
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      
+      // Close the modal and refresh the forms list
+      setIsConfirmOpen(false);
+      setFormToDelete(null);
+      refreshForms();
+    } catch (error) {
+      console.error('Error deleting form:', error);
+      // You might want to show an error message to the user
+    }
   };
 
-  const handleEditSubmit = () => {
-    // Just for design, no functionality
-    setIsEditOpen(false);
-    setEditedForm({ id: null, title: '', status: '', division: '', section: '' });
+  const handleEditSubmit = async () => {
+    try {
+      const response = await fetch(`/api/downloadables/${editedForm.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any authentication headers if required
+        },
+        body: JSON.stringify({
+          title: editedForm.title,
+          status: editedForm.status
+          // Removed division and section fields
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      
+      // Close the modal and refresh the forms list
+      setIsEditOpen(false);
+      setEditedForm({ id: null, title: '', status: '' });
+      refreshForms();
+    } catch (error) {
+      console.error('Error updating form:', error);
+      // You might want to show an error message to the user
+    }
   };
 
   return (
@@ -82,9 +145,9 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
                 </span>
               </div>
               <div className="form-meta">
-                <span className="form-division">{form.division}</span>
+                <span className="form-division">{form.division || 'General'}</span>
                 {form.section && <span className="form-section">{form.section}</span>}
-                <span className="form-date">{form.uploadDate}</span>
+                <span className="form-date">{form.created_at || 'N/A'}</span>
               </div>
               <div className="form-actions">
                 <button className="action-button" title="Download" onClick={(e) => handleDownload(form, e)}>
@@ -174,17 +237,6 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
-              <div className="modal-field">
-                <label htmlFor="division">Division:</label>
-                <input
-                  id="division"
-                  type="text"
-                  value={editedForm.division}
-                  onChange={(e) => setEditedForm({ ...editedForm, division: e.target.value })}
-                  className="modal-input"
-                  readOnly
-                />
-              </div>
               {editedForm.section && (
                 <div className="modal-field">
                   <label htmlFor="section">Section:</label>
@@ -207,7 +259,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         </div>
       )}
 
-      {/* PDF Viewer Modal */}
+      {/* PDF Viewer Modal with iframe */}
       {isPdfOpen && (
         <div className="modal-overlay">
           <div className="modal-container pdf-modal">
@@ -216,12 +268,34 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
               <button className="close-button" onClick={() => setIsPdfOpen(false)}>✖</button>
             </div>
             <div className="modal-content pdf-viewer">
-              <div className="pdf-placeholder">
-                <p>PDF preview would appear here</p>
-              </div>
+              {pdfError ? (
+                <div className="pdf-error">
+                  <p>{pdfError}</p>
+                </div>
+              ) : !pdfUrl ? (
+                <div className="pdf-placeholder">
+                  <p>No PDF available for this form.</p>
+                </div>
+              ) : (
+                <div className="iframe-container" style={{ height: '70vh', width: '100%' }}>
+                  <iframe 
+                    src={pdfUrl} 
+                    title="PDF Viewer" 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 'none' }}
+                    onError={() => setPdfError("Failed to load PDF file.")}
+                  />
+                </div>
+              )}
             </div>
             <div className="modal-footer">
               <button className="cancel-button" onClick={() => setIsPdfOpen(false)}>Close</button>
+              {pdfUrl && !pdfError && (
+                <button className="download-button" onClick={() => handleDownload({content: pdfUrl, title: selectedForm?.title || 'document.pdf'})}>
+                  Download
+                </button>
+              )}
             </div>
           </div>
         </div>

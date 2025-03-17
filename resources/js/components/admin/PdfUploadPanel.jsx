@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 
-const PdfUploadPanel = ({ refreshForms, publishTo, setPublishTo, selectedDivision, setSelectedDivision, divisions }) => {
+const PdfUploadPanel = ({ refreshForms }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState('');
   const [title, setTitle] = useState('');
-  const [status, setStatus] = useState('active');
+  const [status, setStatus] = useState('Active'); 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -25,7 +25,7 @@ const PdfUploadPanel = ({ refreshForms, publishTo, setPublishTo, selectedDivisio
     }
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
     
     // Basic form validation for UI design
@@ -39,24 +39,59 @@ const PdfUploadPanel = ({ refreshForms, publishTo, setPublishTo, selectedDivisio
       return;
     }
 
-    // Design-only mock of upload process
     setIsUploading(true);
     setUploadError(null);
     
-    // Simulate upload delay for design purposes
-    setTimeout(() => {
-      setIsUploading(false);
-      setUploadSuccess(true);
+    // Create form data for file upload
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('title', title);
+    formData.append('status', status);
+    
+    try {
+      // Fixed endpoint to match Laravel API route (plural 'downloadables')
+      const response = await fetch('/api/downloadables', {
+        method: 'POST',
+        body: formData,
+        // Don't set Content-Type header when sending FormData
+      });
       
-      // Reset form after "success"
+      // First check if response is OK before trying to parse JSON
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          // If we got JSON, parse the error
+          const errorData = await response.json();
+          throw new Error(errorData.message || `Upload failed with status: ${response.status}`);
+        } else {
+          // If not JSON (like HTML error page), just use status text
+          throw new Error(`Upload failed with status: ${response.status} ${response.statusText}`);
+        }
+      }
+      
+      const data = await response.json();
+      
+      setUploadSuccess(true);
+      console.log('Upload successful:', data);
+      
+      // Reset form after success
       setTimeout(() => {
         setFile(null);
         setFilePreview('');
         setTitle('');
-        setStatus('active');
+        setStatus('Active');
         setUploadSuccess(false);
+        
+        // Refresh the forms list to show the new upload
+        refreshForms();
       }, 2000);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadError(error.message || 'Upload failed');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const renderPreview = () => {
@@ -113,45 +148,10 @@ const PdfUploadPanel = ({ refreshForms, publishTo, setPublishTo, selectedDivisio
                 onChange={(e) => setStatus(e.target.value)} 
                 className="status-dropdown"
               >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
             </div>
-            
-            {divisions && Object.keys(divisions).length > 0 && (
-              <div className="division-controls">
-                <select
-                  value={selectedDivision}
-                  onChange={(e) => {
-                    setSelectedDivision(e.target.value);
-                    setPublishTo('');
-                  }}
-                  className="division-dropdown"
-                >
-                  <option value="">Select Division</option>
-                  {Object.keys(divisions).map((division) => (
-                    <option key={division} value={division}>
-                      {division}
-                    </option>
-                  ))}
-                </select>
-                
-                {selectedDivision && divisions[selectedDivision] && divisions[selectedDivision].length > 0 && (
-                  <select
-                    value={publishTo}
-                    onChange={(e) => setPublishTo(e.target.value)}
-                    className="section-dropdown"
-                  >
-                    <option value="">Select Section</option>
-                    {divisions[selectedDivision].map((section) => (
-                      <option key={section} value={section}>
-                        {section}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-            )}
             
             {uploadError && (
               <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>

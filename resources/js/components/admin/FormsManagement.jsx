@@ -4,8 +4,6 @@ import PdfUploadPanel from '../admin/PdfUploadPanel';
 import '../../../css/styles/admin/FormsManagement.css';
 
 const FormsManagement = () => {
-  const [selectedDivision, setSelectedDivision] = useState('');
-  const [publishTo, setPublishTo] = useState('');
   const [selectedForm, setSelectedForm] = useState(null);
   const [forms, setForms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,14 +17,16 @@ const FormsManagement = () => {
   // Fetch downloadable forms from the API
   const fetchDownloadableForms = async () => {
     try {
-      const response = await fetch('/api/downloadables'); // Adjust the API endpoint as necessary
+      // Updated to use 'downloadables' (plural) endpoint
+      const response = await fetch(`/api/downloadables?per_page=${itemsPerPage}&page=${currentPage}`);
       if (!response.ok) {
         throw new Error('Error fetching forms');
       }
       const data = await response.json();
-      setForms(data);
-      setTotalForms(data.length);
+      setForms(data.data);
+      setTotalForms(data.total);
     } catch (err) {
+      console.error('Error fetching forms:', err);
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -35,9 +35,10 @@ const FormsManagement = () => {
 
   useEffect(() => {
     fetchDownloadableForms();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   const refreshForms = () => {
+    setIsLoading(true);
     fetchDownloadableForms();
   };
 
@@ -61,10 +62,6 @@ const FormsManagement = () => {
       />
       <PdfUploadPanel 
         refreshForms={refreshForms}
-        publishTo={publishTo} 
-        setPublishTo={setPublishTo} 
-        selectedDivision={selectedDivision} 
-        setSelectedDivision={setSelectedDivision} 
       />
     </div>
   );

@@ -21,6 +21,10 @@ class DownloadableSeeder extends Seeder
             '/downloadable/Document3.pdf',
             '/downloadable/Document4.pdf',
             '/downloadable/Document5.pdf',
+            '/downloadable/Document6.pdf',
+            '/downloadable/Document7.pdf',
+            '/downloadable/Document8.pdf',
+            '/downloadable/Document9.pdf',
         ];
 
         foreach ($files as $filePath) {
