@@ -1,0 +1,190 @@
+.admin-events-section {
+    width: 100%;
+}
+
+.panel-sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-sub-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.toggle-button {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toggle-button:hover {
+    background-color: #e9ecef;
+}
+
+.toggle-button.active {
+    background-color: #339af0;
+    border-color: #339af0;
+    color: white;
+}
+
+.events-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+/* Event List Styles */
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.event-item {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: box-shadow 0.2s;
+}
+
+.event-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.event-time {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.event-content h4 {
+    margin: 0 0 6px 0;
+    font-size: 1rem;
+    color: #343a40;
+}
+
+.event-content p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+.edit-button {
+    align-self: flex-end;
+    background: none;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-button:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+/* Event Management Form Styles */
+.event-management-form {
+    padding: 16px;
+}
+
+.event-management-form h4 {
+    margin: 0 0 20px 0;
+    font-size: 1.125rem;
+    color: #343a40;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #339af0;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.time-input {
+    flex: 1;
+    margin-bottom: 12px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.cancel-button {
+    background: none;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-button:hover {
+    background-color: #f8f9fa;
+}
+
+.save-button-cal {
+    background-color: #339af0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button-cal:hover {
+    background-color: #228be6;
+}
