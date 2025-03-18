@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Search, Plus, X, Check, SquarePen, Trash } from 'lucide-react'; 
-import '../../../css/styles/admin/RoleManagement.css';
+import styles from '../../../css/styles/admin/RoleManagement.module.css';
 import RoleModal from './RoleModal.jsx';
 import LoadingIndicator from './LoadingIndicator';
 
@@ -65,8 +65,8 @@ const RoleManagement = () => {
   const confirmDelete = async () => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/roles/${roleToDelete}`); // Adjust the URL according to your API
-      await fetchRoles(); // Refetch roles after deletion
+      await axios.delete(`/api/roles/${roleToDelete}`);
+      await fetchRoles();
       setIsConfirmOpen(false);
       setRoleToDelete(null);
     } catch (error) {
@@ -79,10 +79,10 @@ const RoleManagement = () => {
     setIsLoading(true);
     try {
       if (roleData.id) {
-        const response = await axios.put(`/api/roles/${roleData.id}`, roleData); // Update existing role
+        const response = await axios.put(`/api/roles/${roleData.id}`, roleData);
         setRoles(roles.map(role => role.id === roleData.id ? response.data : role));
       } else {
-        const response = await axios.post('/api/roles', roleData); // Add new role
+        const response = await axios.post('/api/roles', roleData);
         setRoles([...roles, response.data]);
       }
       handleCloseModal();
@@ -96,16 +96,16 @@ const RoleManagement = () => {
   // Generate placeholder cards when loading
   const renderPlaceholderCards = () => {
     return Array(3).fill(0).map((_, index) => (
-      <div key={`placeholder-${index}`} className="role-card placeholder-card">
-        <div className="role-header placeholder-header">
-          <div className="role-title">
-            <div className="role-badge placeholder-text" style={{ width: '80px' }}></div>
-            <div className="role-description placeholder-text" style={{ width: '200px' }}></div>
+      <div key={`placeholder-${index}`} className={`${styles['role-card']} ${styles['placeholder-card']}`}>
+        <div className={`${styles['role-header']} ${styles['placeholder-header']}`}>
+          <div className={styles['role-title']}>
+            <div className={`${styles['role-badge']} ${styles['placeholder-text']}`} style={{ width: '80px' }}></div>
+            <div className={`${styles['role-description']} ${styles['placeholder-text']}`} style={{ width: '200px' }}></div>
           </div>
         </div>
-        <div className="permissions-container">
-          <h4 className="permissions-title">Access Permissions</h4>
-          <div className="permissions-table">
+        <div className={styles['permissions-container']}>
+          <h4 className={styles['permissions-title']}>Access Permissions</h4>
+          <div className={styles['permissions-table']}>
             <table>
               <thead>
                 <tr>
@@ -118,12 +118,12 @@ const RoleManagement = () => {
               </thead>
               <tbody>
                 {Array(3).fill(0).map((_, i) => (
-                  <tr key={`placeholder-row-${i}`} className="placeholder-row">
-                    <td className="module-name placeholder-text" style={{ width: '100px' }}></td>
-                    <td className="permission-cell"></td>
-                    <td className="permission-cell"></td>
-                    <td className="permission-cell"></td>
-                    <td className="permission-cell"></td>
+                  <tr key={`placeholder-row-${i}`} className={styles['placeholder-row']}>
+                    <td className={`${styles['module-name']} ${styles['placeholder-text']}`} style={{ width: '100px' }}></td>
+                    <td className={styles['permission-cell']}></td>
+                    <td className={styles['permission-cell']}></td>
+                    <td className={styles['permission-cell']}></td>
+                    <td className={styles['permission-cell']}></td>
                   </tr>
                 ))}
               </tbody>
@@ -135,12 +135,12 @@ const RoleManagement = () => {
   };
 
   return (
-    <div className="role-management">
-      <div className="panel">
-        <div className="panel-header">
+    <div className={styles['role-management']}>
+      <div className={styles['panel']}>
+        <div className={styles['panel-header']}>
           <h2 className="text-2xl font-bold">Role Management</h2>
           <button 
-            className="add-button"
+            className={styles['add-button']}
             onClick={() => handleOpenModal()}
             disabled={isLoading}
           >
@@ -149,15 +149,15 @@ const RoleManagement = () => {
           </button>
         </div>
         
-        <div className="panel-content">
+        <div className={styles['panel-content']}>
           {/* Search Box */}
-          <div className="filters-container">
-            <div className="search-box">
-              <Search size={20} className="search-icon" />
+          <div className={styles['filters-container']}>
+            <div className={styles['search-box']}>
+              <Search size={20} className={styles['search-icon']} />
               <input 
                 type="text" 
                 placeholder="Search roles..." 
-                className="search-input"
+                className={styles['search-input']}
                 value={searchTerm}
                 onChange={handleSearch}
                 disabled={isLoading}
@@ -166,33 +166,33 @@ const RoleManagement = () => {
           </div>
 
           {/* Roles List with relative positioning for overlay */}
-          <div className="roles-list-container" style={{ position: 'relative', minHeight: '400px' }}>
+          <div className={styles['roles-list-container']} style={{ position: 'relative', minHeight: '400px' }}>
             {isLoading && (
-              <div className="loading-overlay">
+              <div className={styles['loading-overlay']}>
                 <LoadingIndicator />
               </div>
             )}
             
-            <div className="roles-list">
+            <div className={styles['roles-list']}>
               {isLoading ? (
                 renderPlaceholderCards()
               ) : filteredRoles.length > 0 ? (
                 filteredRoles.map((role) => (
-                  <div key={role.id} className="role-card">
-                    <div className="role-header">
-                      <div className="role-title">
-                        <span className="role-badge">{role.name}</span>
-                        <p className="role-description">{role.description}</p>
+                  <div key={role.id} className={styles['role-card']}>
+                    <div className={styles['role-header']}>
+                      <div className={styles['role-title']}>
+                        <span className={styles['role-badge']}>{role.name}</span>
+                        <p className={styles['role-description']}>{role.description}</p>
                       </div>
-                      <div className="role-actions">
+                      <div className={styles['role-actions']}>
                         <button 
-                          className="edit-button"
+                          className={styles['edit-button']}
                           onClick={() => handleOpenModal(role)}
                         >
                           <SquarePen size={18} />
                         </button>
                         <button 
-                          className="delete-button"
+                          className={styles['delete-button']}
                           onClick={() => handleDeleteRole(role.id)}
                         >
                           <Trash size={18} />
@@ -200,9 +200,9 @@ const RoleManagement = () => {
                       </div>
                     </div>
 
-                    <div className="permissions-container">
-                      <h4 className="permissions-title">Access Permissions</h4>
-                      <div className="permissions-table">
+                    <div className={styles['permissions-container']}>
+                      <h4 className={styles['permissions-title']}>Access Permissions</h4>
+                      <div className={styles['permissions-table']}>
                         <table>
                           <thead>
                             <tr>
@@ -216,17 +216,17 @@ const RoleManagement = () => {
                           <tbody>
                             {Object.entries(role.permissions).map(([module, permissions]) => (
                               <tr key={module}>
-                                <td className="module-name">{module.charAt(0).toUpperCase() + module.slice(1)}</td>
-                                <td className={`permission-cell ${permissions.create ? 'permitted' : 'denied'}`}>
+                                <td className={styles['module-name']}>{module.charAt(0).toUpperCase() + module.slice(1)}</td>
+                                <td className={`${styles['permission-cell']} ${permissions.create ? styles['permitted'] : styles['denied']}`}>
                                   {permissions.create ? <Check size={16} /> : <X size={16} />}
                                 </td>
-                                <td className={`permission-cell ${permissions.read ? 'permitted' : 'denied'}`}>
+                                <td className={`${styles['permission-cell']} ${permissions.read ? styles['permitted'] : styles['denied']}`}>
                                   {permissions.read ? <Check size={16} /> : <X size={16} />}
                                 </td>
-                                <td className={`permission-cell ${permissions.update ? 'permitted' : 'denied'}`}>
+                                <td className={`${styles['permission-cell']} ${permissions.update ? styles['permitted'] : styles['denied']}`}>
                                   {permissions.update ? <Check size={16} /> : <X size={16} />}
                                 </td>
-                                <td className={`permission-cell ${permissions.delete ? 'permitted' : 'denied'}`}>
+                                <td className={`${styles['permission-cell']} ${permissions.delete ? styles['permitted'] : styles['denied']}`}>
                                   {permissions.delete ? <Check size={16} /> : <X size={16} />}
                                 </td>
                               </tr>
@@ -238,7 +238,7 @@ const RoleManagement = () => {
                   </div>
                 ))
               ) : (
-                <div className="empty-state">
+                <div className={styles['empty-state']}>
                   <p>No roles found. Try adjusting your search or add a new role.</p>
                 </div>
               )}
@@ -257,18 +257,18 @@ const RoleManagement = () => {
 
       {/* Confirmation Modal */}
       {isConfirmOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h4 className="modal-title">Confirm Deletion</h4>
-              <button className="close-button" onClick={() => setIsConfirmOpen(false)}>✖</button>
+        <div className={styles['modal-overlay']}>
+          <div className={styles['modal-container']}>
+            <div className={styles['modal-header']}>
+              <h4 className={styles['modal-title']}>Confirm Deletion</h4>
+              <button className={styles['close-button']} onClick={() => setIsConfirmOpen(false)}>✖</button>
             </div>
-            <div className="modal-content">
+            <div className={styles['modal-content']}>
               <p>Are you sure you want to delete this role? This action cannot be undone.</p>
             </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={() => setIsConfirmOpen(false)}>Cancel</button>
-              <button className="save-button" onClick={confirmDelete}>Delete</button>
+            <div className={styles['modal-footer']}>
+              <button className={styles['cancel-button']} onClick={() => setIsConfirmOpen(false)}>Cancel</button>
+              <button className={styles['save-button']} onClick={confirmDelete}>Delete</button>
             </div>
           </div>
         </div>

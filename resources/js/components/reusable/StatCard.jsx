@@ -1,16 +1,16 @@
 import React from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import '../../../css/styles/reusable/StatCard.css'; // Import the CSS file
+import styles from '../../../css/styles/reusable/StatCard.module.css'; // Updated to use .module.css
 
 const StatCard = ({ title, count, change, isIncrease, icon }) => {
   return (
-    <div className="stat-card">
-      <div className="stat-card-header">
-        <h3 className="stat-title">{title}</h3>
-        <div className="stat-icon">{icon}</div>
+    <div className={styles['stat-card']}>
+      <div className={styles['stat-card-header']}>
+        <h3 className={styles['stat-title']}>{title}</h3>
+        <div className={styles['stat-icon']}>{icon}</div>
       </div>
-      <div className="stat-value">{count}</div>
-      <div className={`stat-change ${isIncrease ? 'increase' : 'decrease'}`}>
+      <div className={styles['stat-value']}>{count}</div>
+      <div className={`${styles['stat-change']} ${isIncrease ? styles['increase'] : styles['decrease']}`}>
         {isIncrease ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
         <span>{change} from yesterday</span>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
+import styles from '../../../css/styles/admin/PdfUploadPanel.module.css';
 
 const PdfUploadPanel = ({ refreshForms }) => {
   const [file, setFile] = useState(null);
@@ -97,34 +98,34 @@ const PdfUploadPanel = ({ refreshForms }) => {
   const renderPreview = () => {
     if (filePreview) {
       return (
-        <div className="pdf-preview">
-          <div className="pdf-icon">
+        <div className={styles['pdf-preview']}>
+          <div className={styles['pdf-icon']}>
             <i className="far fa-file-pdf"></i>
           </div>
-          <p className="file-name">{filePreview}</p>
+          <p className={styles['file-name']}>{filePreview}</p>
         </div>
       );
     } else {
-      return <p className="no-file-text">No file uploaded</p>;
+      return <p className={styles['no-file-text']}>No file uploaded</p>;
     }
   };
 
   return (
-    <div className="panel upload-panel">
-      <div className="panel-header">
+    <div className={styles['panel'] + ' ' + styles['upload-panel']}>
+      <div className={styles['panel-header']}>
         <h2 className="text-2xl font-bold">Upload PDF Form</h2>
       </div>
-      <div className="panel-content">
-        <div className="upload-section">
-          <div className="upload-area">
-            <div className="file-holder">
+      <div className={styles['panel-content']}>
+        <div className={styles['upload-section']}>
+          <div className={styles['upload-area']}>
+            <div className={styles['file-holder']}>
               {renderPreview()}
             </div>
             
-            <div className="upload-zone">
+            <div className={styles['upload-zone']}>
               <Upload size={24} />
               <p>Drag & drop files here or click to browse</p>
-              <span className="upload-info">Only PDF files are allowed</span>
+              <span className={styles['upload-info']}>Only PDF files are allowed</span>
               <input 
                 type="file" 
                 accept="application/pdf" 
@@ -132,21 +133,21 @@ const PdfUploadPanel = ({ refreshForms }) => {
                 style={{ display: 'none' }} 
                 id="file-upload"
               />
-              <label htmlFor="file-upload" className="upload-label">Browse Files</label>
+              <label htmlFor="file-upload" className={styles['upload-label']}>Browse Files</label>
             </div>
             
-            <div className="form-controls">
+            <div className={styles['form-controls']}>
               <input 
                 type="text" 
                 placeholder="Title" 
                 value={title} 
                 onChange={(e) => setTitle(e.target.value)} 
-                className="title-input"
+                className={styles['title-input']}
               />
               <select 
                 value={status} 
                 onChange={(e) => setStatus(e.target.value)} 
-                className="status-dropdown"
+                className={styles['status-dropdown']}
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -154,20 +155,20 @@ const PdfUploadPanel = ({ refreshForms }) => {
             </div>
             
             {uploadError && (
-              <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>
+              <div className={styles['error-message']} style={{ color: 'red', marginTop: '10px' }}>
                 {uploadError}
               </div>
             )}
             
             {uploadSuccess && (
-              <div className="success-message" style={{ color: 'green', marginTop: '10px' }}>
+              <div className={styles['success-message']} style={{ color: 'green', marginTop: '10px' }}>
                 File uploaded successfully!
               </div>
             )}
             
-            <div className="publish-controls">
+            <div className={styles['publish-controls']}>
               <button 
-                className="upload-button"
+                className={styles['upload-button']}
                 onClick={handleUpload}
                 disabled={isUploading}
               >

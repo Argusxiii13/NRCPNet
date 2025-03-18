@@ -6,6 +6,7 @@ import {
   GaugeReferenceArc, 
   useGaugeState 
 } from '@mui/x-charts/Gauge';
+import styles from '../../../css/styles/reusable/UserGaugeMeter.module.css'; // Added module CSS import
 
 // Custom gauge pointer component
 function GaugePointer() {
@@ -44,59 +45,31 @@ const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
   };
 
   return (
-    <div className="user-gauge-meter" style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      backgroundColor: 'white',
-      borderRadius: '8px',
-      border: '1px solid #e1e4e8',
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-      padding: '16px',
-      boxSizing: 'border-box'
-    }}>
-      <div className="gauge-header" style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-
-      }}>
+    <div className={styles['user-gauge-meter']}>
+      <div className={styles['gauge-header']}>
         <UserCheck size={20} />
-        <h3 style={{
-          fontSize: '16px',
-          fontWeight: 600,
-          color: '#495057',
-
-        }}>Current Attendance</h3>
+        <h3 className={styles['header-title']}>Current Attendance</h3>
       </div>
       
-      <div className="gauge-container" style={{
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        width: '100%',
-        minHeight: '0'
-      }}>
+      <div className={styles['gauge-container']}>
         <GaugeContainer
-          width={325} // Enlarged from 200 to 250 (25% increase)
-          height={225} // Enlarged from 120 to 150 (25% increase)
+          width={325}
+          height={225}
           startAngle={-90}
           endAngle={90}
           value={percentage}
           valueMin={0}
           valueMax={100}
-          cornerRadius={8} // Slightly increased for proportion
+          cornerRadius={8}
           sx={{
             '& .MuiChartsGauge-valueArc': {
               fill: getGaugeColor(),
               transition: 'all 0.5s ease',
-              strokeWidth: 12 // Thicker arc
+              strokeWidth: 12
             },
             '& .MuiChartsGauge-referenceArc': {
               fill: '#f0f0f0',
-              strokeWidth: 12 // Thicker arc
+              strokeWidth: 12
             }
           }}
         >
@@ -106,25 +79,10 @@ const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
         </GaugeContainer>
       </div>
       
-      <div className="gauge-stats" style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-
-      }}>
-        <div className="current-value" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}>
-          <strong style={{
-            fontSize: '28px', // Enlarged from 24px
-            color: '#212529'
-          }}>{currentUsers}</strong>
-          <span style={{
-            fontSize: '14px', // Enlarged from 12px
-            color: '#6c757d'
-          }}>users online</span>
+      <div className={styles['gauge-stats']}>
+        <div className={styles['current-value']}>
+          <strong className={styles['user-count']}>{currentUsers}</strong>
+          <span className={styles['user-label']}>users online</span>
         </div>
       </div>
     </div>

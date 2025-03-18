@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FeatureListPanel from './FeatureListPanel';
-import FileUploadPanel from '../reusable/PngUploadPanel';
-import '../../../css/styles/admin/FeatureManagement.css';
+import FileUploadPanel from './PdfUploadPanel';
+import styles from '../../../css/styles/admin/FeatureManagement.module.css';
 
 const FeatureManagement = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
@@ -84,9 +84,9 @@ const FeatureManagement = () => {
   };
 
   return (
-    <div className="Feature-management">
+    <div className={styles['Feature-management']}>
       {error && (
-        <div className="error-message">
+        <div className={styles['error-message']}>
           <p>Error loading features: {error}</p>
         </div>
       )}

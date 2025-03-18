@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Search, Filter, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
-import '../../../css/styles/admin/SuggestionInbox.css';
+import styles from '../../../css/styles/admin/SuggestionInbox.module.css';
 import SuggestionDetailModal from './SuggestionDetailModal';
 import axios from 'axios';
 
@@ -204,29 +204,29 @@ const SuggestionInbox = () => {
   };
 
   return (
-    <div className="suggestion-inbox">
-      <div className="panel">
-        <div className="panel-header">
+    <div className={styles['suggestion-inbox']}>
+      <div className={styles['panel']}>
+        <div className={styles['panel-header']}>
           <h2 className="text-2xl font-bold">Suggestion Inbox</h2>
         </div>
         
-        <div className="panel-content">
+        <div className={styles['panel-content']}>
           {/* Filters and Search */}
-          <div className="filters-container">
-            <div className="search-box">
-              <Search size={20} className="search-icon" />
+          <div className={styles['filters-container']}>
+            <div className={styles['search-box']}>
+              <Search size={20} className={styles['search-icon']} />
               <input 
                 type="text" 
                 placeholder="Search suggestions..." 
-                className="search-input"
+                className={styles['search-input']}
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
             </div>
 
-            <div className="filters">
+            <div className={styles['filters']}>
               <select 
-                className="filter-dropdown"
+                className={styles['filter-dropdown']}
                 value={selectedDivision}
                 onChange={(e) => setSelectedDivision(e.target.value)}
               >
@@ -239,7 +239,7 @@ const SuggestionInbox = () => {
               </select>
 
               <select 
-                className="filter-dropdown"
+                className={styles['filter-dropdown']}
                 value={selectedSection}
                 onChange={(e) => setSelectedSection(e.target.value)}
                 disabled={!selectedDivision}
@@ -252,7 +252,7 @@ const SuggestionInbox = () => {
                 ))}
               </select>
 
-              <button className="filter-button" onClick={handleFilter}>
+              <button className={styles['filter-button']} onClick={handleFilter}>
                 <Filter size={20} />
                 <span>Filter</span>
               </button>
@@ -260,37 +260,37 @@ const SuggestionInbox = () => {
           </div>
 
           {/* Suggestions List */}
-          <div className="suggestions-list">
+          <div className={styles['suggestions-list']}>
             {suggestions.length === 0 ? (
-              <div className="no-suggestions">No suggestions found</div>
+              <div className={styles['no-suggestions']}>No suggestions found</div>
             ) : (
               suggestions.map((suggestion) => (
                 <div 
                   key={suggestion.id} 
-                  className="suggestion-card"
+                  className={styles['suggestion-card']}
                   onClick={() => handleOpenModal(suggestion)}
                 >
-                  <div className="suggestion-header">
-                    <div className="suggestion-meta">
-                      <span className="division-badge">
+                  <div className={styles['suggestion-header']}>
+                    <div className={styles['suggestion-meta']}>
+                      <span className={styles['division-badge']}>
                         {suggestion.division}
                       </span>
                       {suggestion.section && (
-                        <span className="section-badge">
+                        <span className={styles['section-badge']}>
                           {suggestion.section}
                         </span>
                       )}
-                      <span className="time-stamp">
+                      <span className={styles['time-stamp']}>
                         {new Date(suggestion.created_at).toLocaleString()}
                       </span>
                       {suggestion.status && (
-                        <span className={`status-badge status-${suggestion.status.toLowerCase()}`}>
+                        <span className={`${styles['status-badge']} ${styles[`status-${suggestion.status.toLowerCase()}`]}`}>
                           {suggestion.status}
                         </span>
                       )}
                     </div>
                     <button 
-                      className="delete-button"
+                      className={styles['delete-button']}
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent opening the modal
                         handleDelete(suggestion.id);
@@ -299,7 +299,7 @@ const SuggestionInbox = () => {
                       <Trash2 size={18} />
                     </button>
                   </div>
-                  <div className="suggestion-content">
+                  <div className={styles['suggestion-content']}>
                     {suggestion.content.length > 100 
                       ? suggestion.content.substring(0, 100) + '...' 
                       : suggestion.content}
@@ -309,36 +309,35 @@ const SuggestionInbox = () => {
             )}
           </div>
           
-
-{/* Pagination Controls */}
-{suggestions.length > 0 && (
-  <div className="pagination">
-    <div className="pagination-info">
-      <p>
-        {initialDataLoaded ? 
-          `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
-          'Loading...'
-        }
-      </p>
-    </div>
-    <div className="pagination-buttons">
-      <button
-        className="filter-button"
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1 || !initialDataLoaded}
-      >
-        Previous
-      </button>
-      <button
-        className="filter-button"
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage * perPage >= totalItems || !initialDataLoaded}
-      >
-        Next
-      </button>
-    </div>
-  </div>
-)}
+          {/* Pagination Controls */}
+          {suggestions.length > 0 && (
+            <div className={styles['pagination']}>
+              <div className={styles['pagination-info']}>
+                <p>
+                  {initialDataLoaded ? 
+                    `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
+                    'Loading...'
+                  }
+                </p>
+              </div>
+              <div className={styles['pagination-buttons']}>
+                <button
+                  className={styles['filter-button']}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1 || !initialDataLoaded}
+                >
+                  Previous
+                </button>
+                <button
+                  className={styles['filter-button']}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage * perPage >= totalItems || !initialDataLoaded}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

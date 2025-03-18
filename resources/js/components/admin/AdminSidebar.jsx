@@ -16,7 +16,7 @@ import {
     UserRoundCog
 } from 'lucide-react';
 import { useState } from 'react';
-import '../../../css/styles/admin/AdminSidebar.css';
+import styles from '../../../css/styles/admin/AdminSidebar.module.css';
 
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const logo = '/image/NRCP_logo----.png';
@@ -80,41 +80,41 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     };
 
     return (
-        <div className={`admin-sidebar ${!isExpanded ? 'collapsed' : ''}`}>
+        <div className={`${styles['admin-sidebar']} ${!isExpanded ? styles['collapsed'] : ''}`}>
             <button 
-                className={`sidebar-toggle ${!isExpanded ? 'rotate' : ''}`}
+                className={`${styles['sidebar-toggle']} ${!isExpanded ? styles['rotate'] : ''}`}
                 onClick={onToggle}
             >
                 <ChevronLeft size={20} />
             </button>
 
-            <div className="sidebar-header">
-                <div className="logo-container">
+            <div className={styles['sidebar-header']}>
+                <div className={styles['logo-container']}>
                     <img 
                         src={logo} 
                         alt="NRCP Logo" 
-                        className={`logo ${!isExpanded ? 'spin-reverse' : 'spin'}`}
+                        className={`${styles['logo']} ${!isExpanded ? styles['spin-reverse'] : styles['spin']}`}
                     />
                 </div>
-                <h1 className={`sidebar-title ${!isExpanded ? 'hide' : ''}`}>
+                <h1 className={`${styles['sidebar-title']} ${!isExpanded ? styles['hide'] : ''}`}>
                     NRCPNet
                 </h1>
             </div>
 
-            <ul className="menu-list">
+            <ul className={styles['menu-list']}>
                 {menuItems.map((item, index) => (
                     <li key={index}>
                         <div 
-                            className={`menu-item ${item.gap ? 'gap-top' : ''} ${item.hasSubmenu ? 'has-submenu' : ''} ${activeMenu === item.title || (item.hasSubmenu && item.submenu.some(sub => activeMenu === `${item.title}: ${sub.title}`)) ? 'active' : ''}`}
+                            className={`${styles['menu-item']} ${item.gap ? styles['gap-top'] : ''} ${item.hasSubmenu ? styles['has-submenu'] : ''} ${activeMenu === item.title || (item.hasSubmenu && item.submenu.some(sub => activeMenu === `${item.title}: ${sub.title}`)) ? styles['active'] : ''}`}
                             onClick={() => handleMenuClick(item)}
                         >
-                            <div className="menu-content">
-                                <span className="menu-icon">{item.icon}</span>
-                                <span className={`menu-title ${!isExpanded ? 'hide' : ''}`}>
+                            <div className={styles['menu-content']}>
+                                <span className={styles['menu-icon']}>{item.icon}</span>
+                                <span className={`${styles['menu-title']} ${!isExpanded ? styles['hide'] : ''}`}>
                                     {item.title}
                                 </span>
                                 {item.hasSubmenu && isExpanded && (
-                                    <span className="submenu-arrow">
+                                    <span className={styles['submenu-arrow']}>
                                         {expandedMenus[item.title] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                                     </span>
                                 )}
@@ -123,16 +123,16 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                         
                         {/* Submenu */}
                         {item.hasSubmenu && expandedMenus[item.title] && isExpanded && (
-                            <ul className="submenu-list">
+                            <ul className={styles['submenu-list']}>
                                 {item.submenu.map((subItem, subIndex) => (
                                     <li 
                                         key={subIndex}
-                                        className={`submenu-item ${activeMenu === `${item.title}: ${subItem.title}` ? 'active' : ''}`}
+                                        className={`${styles['submenu-item']} ${activeMenu === `${item.title}: ${subItem.title}` ? styles['active'] : ''}`}
                                         onClick={(e) => handleSubmenuClick(item.title, subItem.title, e)}
                                     >
-                                        <div className="submenu-content">
-                                            <span className="submenu-icon">{subItem.icon}</span>
-                                            <span className="submenu-title">
+                                        <div className={styles['submenu-content']}>
+                                            <span className={styles['submenu-icon']}>{subItem.icon}</span>
+                                            <span className={styles['submenu-title']}>
                                                 {subItem.title}
                                             </span>
                                         </div>
@@ -144,26 +144,26 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                 ))}
             </ul>
 
-            <div className="sidebar-footer">
-                <div className="profile-header">
-                    <div className="profile-image-container">
+            <div className={styles['sidebar-footer']}>
+                <div className={styles['profile-header']}>
+                    <div className={styles['profile-image-container']}>
                         <img 
                             src={profilePic} 
                             alt="Profile" 
-                            className="profile-image"
+                            className={styles['profile-image']}
                         />
                     </div>
-                    <div className={`profile-info ${!isExpanded ? 'hide' : ''}`}>
-                        <h3 className="profile-name">John Doe</h3>
-                        <p className="profile-role">Admin</p>
+                    <div className={`${styles['profile-info']} ${!isExpanded ? styles['hide'] : ''}`}>
+                        <h3 className={styles['profile-name']}>John Doe</h3>
+                        <p className={styles['profile-role']}>Admin</p>
                     </div>
                 </div>
-                <div className="menu-item">
-                    <div className="menu-content" onClick={handleLogout}>
-                        <span className="menu-icon">
+                <div className={styles['menu-item']}>
+                    <div className={styles['menu-content']} onClick={handleLogout}>
+                        <span className={styles['menu-icon']}>
                             <LogOut size={20} />
                         </span>
-                        <span className={`menu-title ${!isExpanded ? 'hide' : ''}`}>
+                        <span className={`${styles['menu-title']} ${!isExpanded ? styles['hide'] : ''}`}>
                             Logout
                         </span>
                     </div>

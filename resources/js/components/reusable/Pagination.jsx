@@ -1,28 +1,28 @@
 import React from 'react';
-import '../../../css/styles/reusable/Pagination.css'; // Import the CSS file for pagination styles
+import styles from '../../../css/styles/reusable/Pagination.module.css'; // Updated to use .module.css
 
 const Pagination = ({ loading, currentPage, setCurrentPage, totalItems, itemsPerPage }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   
   return (
-    <div className="pagination">
-      <div className="pagination-info">
+    <div className={styles['pagination']}>
+      <div className={styles['pagination-info']}>
         <p>
           {loading ? 'Loading...' :
             `Showing ${totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalItems)} of ${totalItems} features`
           }
         </p>
       </div>
-      <div className="pagination-buttons">
+      <div className={styles['pagination-buttons']}>
         <button
-          className="filter-button"
+          className={styles['filter-button']}
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1 || loading}
         >
           Previous
         </button>
         <button
-          className="filter-button"
+          className={styles['filter-button']}
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage * itemsPerPage >= totalItems || loading}
         >

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Download, Edit2, Trash2, Eye } from 'lucide-react';
 import Pagination from '../reusable/Pagination';
-import '../../../css/styles/admin/DownloadableFormsList.css';
+import styles from '../../../css/styles/admin/DownloadableFormsList.module.css';
 
 const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, currentPage, setCurrentPage, refreshForms, selectedForm, setSelectedForm }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -126,40 +126,40 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
   };
 
   return (
-    <div className="panel forms-list-panel">
-      <div className="panel-header">
+    <div className={styles['panel'] + ' ' + styles['forms-list-panel']}>
+      <div className={styles['panel-header']}>
         <h2 className="text-2xl font-bold">Downloadable Forms</h2>
       </div>
-      <div className="panel-content">
-        <div className="forms-list">
+      <div className={styles['panel-content']}>
+        <div className={styles['forms-list']}>
           {forms.map((form) => (
             <div
               key={form.id}
-              className={`form-item ${selectedForm?.id === form.id ? 'selected' : ''}`}
+              className={`${styles['form-item']} ${selectedForm?.id === form.id ? styles['selected'] : ''}`}
               onClick={() => handleFormClick(form)}
             >
-              <div className="form-info">
-                <h3 className="form-title">{form.title}</h3>
-                <span className={`form-status ${form.status.toLowerCase()}`}>
+              <div className={styles['form-info']}>
+                <h3 className={styles['form-title']}>{form.title}</h3>
+                <span className={`${styles['form-status']} ${styles[form.status.toLowerCase()]}`}>
                   {form.status}
                 </span>
               </div>
-              <div className="form-meta">
-                <span className="form-division">{form.division || 'General'}</span>
-                {form.section && <span className="form-section">{form.section}</span>}
-                <span className="form-date">{form.created_at || 'N/A'}</span>
+              <div className={styles['form-meta']}>
+                <span className={styles['form-division']}>{form.division || 'General'}</span>
+                {form.section && <span className={styles['form-section']}>{form.section}</span>}
+                <span className={styles['form-date']}>{form.created_at || 'N/A'}</span>
               </div>
-              <div className="form-actions">
-                <button className="action-button" title="Download" onClick={(e) => handleDownload(form, e)}>
+              <div className={styles['form-actions']}>
+                <button className={styles['action-button']} title="Download" onClick={(e) => handleDownload(form, e)}>
                   <Download size={16} />
                 </button>
-                <button className="action-button" title="View" onClick={(e) => openPdfModal(form, e)}>
+                <button className={styles['action-button']} title="View" onClick={(e) => openPdfModal(form, e)}>
                   <Eye size={16} />
                 </button>
-                <button className="action-button" title="Edit" onClick={(e) => openEditModal(form, e)}>
+                <button className={styles['action-button']} title="Edit" onClick={(e) => openEditModal(form, e)}>
                   <Edit2 size={16} />
                 </button>
-                <button className="action-button delete" title="Delete" onClick={(e) => openConfirmModal(form, e)}>
+                <button className={`${styles['action-button']} ${styles['delete']}`} title="Delete" onClick={(e) => openConfirmModal(form, e)}>
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -167,13 +167,13 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
           ))}
           
           {forms.length === 0 && !loading && (
-            <div className="no-forms-message">
+            <div className={styles['no-forms-message']}>
               <p>No forms available. Please upload forms to see them listed here.</p>
             </div>
           )}
           
           {loading && (
-            <div className="loading-indicator">
+            <div className={styles['loading-indicator']}>
               <p>Loading forms...</p>
             </div>
           )}
@@ -189,18 +189,18 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
       
       {/* Confirmation Modal */}
       {isConfirmOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h4 className="modal-title">Confirm Deletion</h4>
-              <button className="close-button" onClick={() => setIsConfirmOpen(false)}>✖</button>
+        <div className={styles['modal-overlay']}>
+          <div className={styles['modal-container']}>
+            <div className={styles['modal-header']}>
+              <h4 className={styles['modal-title']}>Confirm Deletion</h4>
+              <button className={styles['close-button']} onClick={() => setIsConfirmOpen(false)}>✖</button>
             </div>
-            <div className="modal-content">
+            <div className={styles['modal-content']}>
               <p>Are you sure you want to delete this form? This action cannot be undone.</p>
             </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={() => setIsConfirmOpen(false)}>Cancel</button>
-              <button className="delete-button" onClick={confirmDelete}>Delete</button>
+            <div className={styles['modal-footer']}>
+              <button className={styles['cancel-button']} onClick={() => setIsConfirmOpen(false)}>Cancel</button>
+              <button className={styles['delete-button']} onClick={confirmDelete}>Delete</button>
             </div>
           </div>
         </div>
@@ -208,52 +208,52 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
       {/* Edit Modal */}
       {isEditOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h4 className="modal-title">Edit Form</h4>
-              <button className="close-button" onClick={() => setIsEditOpen(false)}>✖</button>
+        <div className={styles['modal-overlay']}>
+          <div className={styles['modal-container']}>
+            <div className={styles['modal-header']}>
+              <h4 className={styles['modal-title']}>Edit Form</h4>
+              <button className={styles['close-button']} onClick={() => setIsEditOpen(false)}>✖</button>
             </div>
-            <div className="modal-content">
-              <div className="modal-field">
+            <div className={styles['modal-content']}>
+              <div className={styles['modal-field']}>
                 <label htmlFor="title">Title:</label>
                 <input
                   id="title"
                   type="text"
                   value={editedForm.title}
                   onChange={(e) => setEditedForm({ ...editedForm, title: e.target.value })}
-                  className="modal-input"
+                  className={styles['modal-input']}
                 />
               </div>
-              <div className="modal-field">
+              <div className={styles['modal-field']}>
                 <label htmlFor="status">Status:</label>
                 <select
                   id="status"
                   value={editedForm.status}
                   onChange={(e) => setEditedForm({ ...editedForm, status: e.target.value })}
-                  className="modal-select"
+                  className={styles['modal-select']}
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
               {editedForm.section && (
-                <div className="modal-field">
+                <div className={styles['modal-field']}>
                   <label htmlFor="section">Section:</label>
                   <input
                     id="section"
                     type="text"
                     value={editedForm.section}
                     onChange={(e) => setEditedForm({ ...editedForm, section: e.target.value })}
-                    className="modal-input"
+                    className={styles['modal-input']}
                     readOnly
                   />
                 </div>
               )}
             </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={() => setIsEditOpen(false)}>Cancel</button>
-              <button className="save-button" onClick={handleEditSubmit}>Save Changes</button>
+            <div className={styles['modal-footer']}>
+              <button className={styles['cancel-button']} onClick={() => setIsEditOpen(false)}>Cancel</button>
+              <button className={styles['save-button']} onClick={handleEditSubmit}>Save Changes</button>
             </div>
           </div>
         </div>
@@ -261,23 +261,23 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
       {/* PDF Viewer Modal with iframe */}
       {isPdfOpen && (
-        <div className="modal-overlay">
-          <div className="modal-container pdf-modal">
-            <div className="modal-header">
-              <h4 className="modal-title">PDF Viewer</h4>
-              <button className="close-button" onClick={() => setIsPdfOpen(false)}>✖</button>
+        <div className={styles['modal-overlay']}>
+          <div className={`${styles['modal-container']} ${styles['pdf-modal']}`}>
+            <div className={styles['modal-header']}>
+              <h4 className={styles['modal-title']}>PDF Viewer</h4>
+              <button className={styles['close-button']} onClick={() => setIsPdfOpen(false)}>✖</button>
             </div>
-            <div className="modal-content pdf-viewer">
+            <div className={`${styles['modal-content']} ${styles['pdf-viewer']}`}>
               {pdfError ? (
-                <div className="pdf-error">
+                <div className={styles['pdf-error']}>
                   <p>{pdfError}</p>
                 </div>
               ) : !pdfUrl ? (
-                <div className="pdf-placeholder">
+                <div className={styles['pdf-placeholder']}>
                   <p>No PDF available for this form.</p>
                 </div>
               ) : (
-                <div className="iframe-container" style={{ height: '70vh', width: '100%' }}>
+                <div className={styles['iframe-container']} style={{ height: '70vh', width: '100%' }}>
                   <iframe 
                     src={pdfUrl} 
                     title="PDF Viewer" 
@@ -289,10 +289,10 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
                 </div>
               )}
             </div>
-            <div className="modal-footer">
-              <button className="cancel-button" onClick={() => setIsPdfOpen(false)}>Close</button>
+            <div className={styles['modal-footer']}>
+              <button className={styles['cancel-button']} onClick={() => setIsPdfOpen(false)}>Close</button>
               {pdfUrl && !pdfError && (
-                <button className="download-button" onClick={() => handleDownload({content: pdfUrl, title: selectedForm?.title || 'document.pdf'})}>
+                <button className={styles['download-button']} onClick={() => handleDownload({content: pdfUrl, title: selectedForm?.title || 'document.pdf'})}>
                   Download
                 </button>
               )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
-import '../../../css/styles/reusable/LineGraph.css';
+import styles from '../../../css/styles/reusable/LineGraph.module.css';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -118,11 +118,11 @@ const LineGraph = ({ title }) => {
   }, []);
 
   return (
-    <div className="line-graph">
-      <div className="line-graph-header">
+    <div className={styles['line-graph']}>
+      <div className={styles['line-graph-header']}>
         <h3>{title}</h3>
       </div>
-      <div className="line-graph-container">
+      <div className={styles['line-graph-container']}>
         <canvas ref={chartRef}></canvas>
       </div>
     </div>

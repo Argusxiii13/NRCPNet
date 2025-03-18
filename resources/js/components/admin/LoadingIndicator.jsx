@@ -1,11 +1,11 @@
 import React from 'react';
-import '../../../css/styles/admin/LoadingIndicator.css';
+import styles from '../../../css/styles/admin/LoadingIndicator.module.css';
 
 const LoadingIndicator = () => {
   return (
-    <div className="loading-indicator">
-      <div className="spinner"></div>
-      <div className="loading-text">Loading...</div>
+    <div className={styles['loading-indicator']}>
+      <div className={styles['spinner']}></div>
+      <div className={styles['loading-text']}>Loading...</div>
     </div>
   );
 };

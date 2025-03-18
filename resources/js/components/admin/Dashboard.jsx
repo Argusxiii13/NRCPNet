@@ -3,7 +3,7 @@ import { UserCheck, MessageSquare, Megaphone } from 'lucide-react';
 import StatCard from '../reusable/StatCard'; // Adjust import path as needed
 import LineGraph from '../reusable/LineGraph'; // Adjust import path as needed
 import UserGaugeMeter from '../reusable/UserGaugeMeter'; // Import the new component
-import '../../../css/styles/admin/Dashboard.css'; // Import the dashboard CSS
+import styles from '../../../css/styles/admin/Dashboard.module.css'; // Import the dashboard CSS
 
 const Dashboard = () => {
   // Sample data for stat cards
@@ -36,17 +36,17 @@ const Dashboard = () => {
   const maxCapacity = 1200;
 
   return (
-    <div className="dashboard">
-      <div className="panel">
-        <div className="panel-header">
-          <div className="header-content">
+    <div className={styles['dashboard']}>
+      <div className={styles['panel']}>
+        <div className={styles['panel-header']}>
+          <div className={styles['header-content']}>
             <h2>Dashboard Overview</h2>
           </div>
         </div>
         
-        <div className="panel-content">
+        <div className={styles['panel-content']}>
           {/* First row: Stat cards */}
-          <div className="stat-cards-container">
+          <div className={styles['stat-cards-container']}>
             {stats.map((stat, index) => (
               <StatCard
                 key={index}
@@ -60,11 +60,11 @@ const Dashboard = () => {
           </div>
           
           {/* Second row: Line graph (2/3) and User Gauge (1/3) */}
-          <div className="chart-row">
-            <div className="chart-area">
+          <div className={styles['chart-row']}>
+            <div className={styles['chart-area']}>
               <LineGraph title="User Activity (Today)" />
             </div>
-            <div className="user-gauge-area">
+            <div className={styles['user-gauge-area']}>
               <UserGaugeMeter 
                 currentUsers={currentUsers} 
                 maxCapacity={maxCapacity} 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DownloadableFormsList from '../admin/DownloadableFormsList';
 import PdfUploadPanel from '../admin/PdfUploadPanel';
-import '../../../css/styles/admin/FormsManagement.css';
+import styles from '../../../css/styles/admin/FormsManagement.module.css';
 
 const FormsManagement = () => {
   const [selectedForm, setSelectedForm] = useState(null);
@@ -32,7 +32,7 @@ const FormsManagement = () => {
       setIsLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchDownloadableForms();
   }, [currentPage, itemsPerPage]);
@@ -43,9 +43,9 @@ const FormsManagement = () => {
   };
 
   return (
-    <div className="forms-management">
+    <div className={styles['forms-management']}>
       {error && (
-        <div className="error-message">
+        <div className={styles['error-message']}>
           <p>Error loading forms: {error}</p>
         </div>
       )}

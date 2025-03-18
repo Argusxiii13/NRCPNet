@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { startOfToday } from 'date-fns';
 import CalendarView from './CalendarView.jsx'; // Add the file extension
 import EventsView from './EventsView.jsx'; // Add the file extension
-import '../../../css/styles/admin/CalendarManagement.css';
+import styles from '../../../css/styles/admin/CalendarManagement.module.css';
 
 const CalendarManagement = () => {
     const today = startOfToday();
@@ -11,13 +11,13 @@ const CalendarManagement = () => {
     const [isManageMode, setIsManageMode] = useState(false);
 
     return (
-        <div className="admin-calendar-page">
+        <div className={styles['admin-calendar-page']}>
             {/* First Panel - Calendar View */}
-            <div className="panel">
-                <div className="panel-header">
+            <div className={styles['panel']}>
+                <div className={styles['panel-header']}>
                     <h2>Calendar View</h2>
                 </div>
-                <div className="panel-content">
+                <div className={styles['panel-content']}>
                     <CalendarView 
                         selectedDay={selectedDay}
                         setSelectedDay={setSelectedDay}
@@ -28,11 +28,11 @@ const CalendarManagement = () => {
             </div>
 
             {/* Second Panel - Manage Events */}
-            <div className="panel">
-                <div className="panel-header">
+            <div className={styles['panel']}>
+                <div className={styles['panel-header']}>
                     <h2>Manage Events</h2>
                 </div>
-                <div className="panel-content">
+                <div className={styles['panel-content']}>
                     <EventsView 
                         selectedDay={selectedDay}
                         isManageMode={isManageMode}

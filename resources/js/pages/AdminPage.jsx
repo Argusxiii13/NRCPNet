@@ -12,8 +12,8 @@ import RoleManagement from '../components/admin/RoleManagement';
 import Dashboard from '../components/admin/Dashboard';
 import FormsManagement from '../components/admin/FormsManagement';
 
-import '../../css/styles/admin/AdminPage.css';
-import '../../css/font.css';
+import styles from '../../css/styles/admin/AdminPage.module.css';
+import '../../css/font.css'; // Keeping font.css as global import
 
 function Layout() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
@@ -70,7 +70,7 @@ function Layout() {
     };
 
     return (
-        <div className={`admin-layout ${!isSidebarExpanded ? 'sidebar-collapsed' : ''}`}>
+        <div className={`${styles['admin-layout']} ${!isSidebarExpanded ? styles['sidebar-collapsed'] : ''}`}>
             <Sidebar 
                 isExpanded={isSidebarExpanded} 
                 onToggle={toggleSidebar}
@@ -78,8 +78,8 @@ function Layout() {
                 onMenuSelect={setActiveMenu}
             />
             <Header />
-            <div className="admin-content">
-                <div className="admin-content-wrapper">
+            <div className={styles['admin-content']}>
+                <div className={styles['admin-content-wrapper']}>
                     {renderContent()}
                 </div>
             </div>
