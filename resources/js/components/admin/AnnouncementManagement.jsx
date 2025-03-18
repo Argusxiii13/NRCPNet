@@ -3,7 +3,7 @@ import {
   Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight,
   List, Link2, Image, FileText, Type, Brush, Download, Upload
 } from 'lucide-react';
-import '../../../css/styles/admin/AnnouncementManagement.css';
+import styles from '../../../css/styles/admin/AnnouncementManagement.module.css';
 
 const AnnouncementManagement = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
@@ -16,25 +16,25 @@ const AnnouncementManagement = () => {
   };
 
   return (
-    <div className="Announcement-management">
+    <div className={styles['Announcement-management']}>
       {/* File Upload Panel */}
-      <div className="panel upload-panel">
-        <div className="panel-header">
+      <div className={styles.panel}>
+        <div className={styles['panel-header']}>
           <h2 className="text-2xl font-bold">Upload Files</h2>
         </div>
-        <div className="panel-Announcement">
-          <div className="upload-section">
-            <div className="upload-area">
-              <div className="upload-zone">
+        <div className={styles['panel-Announcement']}>
+          <div className={styles['upload-section']}>
+            <div className={styles['upload-area']}>
+              <div className={styles['upload-zone']}>
                 <Upload size={24} />
                 <p>Drag & drop files here or click to browse</p>
-                <span className="upload-info">Supports PDF, DOC, DOCX, TXT</span>
+                <span className={styles['upload-info']}>Supports PDF, DOC, DOCX, TXT</span>
               </div>
               
-              <div className="publish-controls">
-                <div className="dropdowns-container">
+              <div className={styles['publish-controls']}>
+                <div className={styles['dropdowns-container']}>
                   <select 
-                    className="publish-dropdown"
+                    className={styles['publish-dropdown']}
                     value={publishTo}
                     onChange={(e) => setPublishTo(e.target.value)}
                   >
@@ -44,7 +44,7 @@ const AnnouncementManagement = () => {
                   </select>
 
                   <select 
-                    className="publish-dropdown"
+                    className={styles['publish-dropdown']}
                     disabled={publishTo !== 'specific'}
                     value={selectedDivision}
                     onChange={(e) => setSelectedDivision(e.target.value)}
@@ -56,7 +56,7 @@ const AnnouncementManagement = () => {
                   </select>
 
                   <select 
-                    className="publish-dropdown"
+                    className={styles['publish-dropdown']}
                     disabled={!selectedDivision}
                   >
                     <option value="">Select Section</option>
@@ -66,7 +66,7 @@ const AnnouncementManagement = () => {
                   </select>
                 </div>
 
-                <button className="upload-button">
+                <button className={styles['upload-button']}>
                   Upload
                 </button>
               </div>
@@ -76,48 +76,48 @@ const AnnouncementManagement = () => {
       </div>
 
       {/* Announcement Management Panel */}
-      <div className="panel editor-panel">
-        <div className="panel-header">
+      <div className={styles.panel + ' ' + styles['editor-panel']}>
+        <div className={styles['panel-header']}>
           <h2 className="text-2xl font-bold">Announcement Management</h2>
         </div>
-        <div className="panel-Announcement">
-          <div className="editor-wrapper">
-            <div className="editor-toolbar">
-              <div className="toolbar-group">
-                <button className="toolbar-button"><Bold size={20} /></button>
-                <button className="toolbar-button"><Italic size={20} /></button>
-                <button className="toolbar-button"><Underline size={20} /></button>
+        <div className={styles['panel-Announcement']}>
+          <div className={styles['editor-wrapper']}>
+            <div className={styles['editor-toolbar']}>
+              <div className={styles['toolbar-group']}>
+                <button className={styles['toolbar-button']}><Bold size={20} /></button>
+                <button className={styles['toolbar-button']}><Italic size={20} /></button>
+                <button className={styles['toolbar-button']}><Underline size={20} /></button>
               </div>
 
-              <div className="toolbar-divider" />
+              <div className={styles['toolbar-divider']} />
 
-              <div className="toolbar-group">
-                <button className="toolbar-button"><AlignLeft size={20} /></button>
-                <button className="toolbar-button"><AlignCenter size={20} /></button>
-                <button className="toolbar-button"><AlignRight size={20} /></button>
+              <div className={styles['toolbar-group']}>
+                <button className={styles['toolbar-button']}><AlignLeft size={20} /></button>
+                <button className={styles['toolbar-button']}><AlignCenter size={20} /></button>
+                <button className={styles['toolbar-button']}><AlignRight size={20} /></button>
               </div>
 
-              <div className="toolbar-divider" />
+              <div className={styles['toolbar-divider']} />
 
-              <div className="toolbar-group">
-                <button className="toolbar-button"><List size={20} /></button>
-                <button className="toolbar-button"><Link2 size={20} /></button>
-                <button className="toolbar-button"><Image size={20} /></button>
+              <div className={styles['toolbar-group']}>
+                <button className={styles['toolbar-button']}><List size={20} /></button>
+                <button className={styles['toolbar-button']}><Link2 size={20} /></button>
+                <button className={styles['toolbar-button']}><Image size={20} /></button>
               </div>
 
-              <div className="toolbar-divider" />
+              <div className={styles['toolbar-divider']} />
 
-              <div className="toolbar-group">
-                <button className="toolbar-button"><Type size={20} /></button>
-                <button className="toolbar-button"><Brush size={20} /></button>
-                <button className="toolbar-button"><Brush size={20} className="rotate-180" /></button>
+              <div className={styles['toolbar-group']}>
+                <button className={styles['toolbar-button']}><Type size={20} /></button>
+                <button className={styles['toolbar-button']}><Brush size={20} /></button>
+                <button className={styles['toolbar-button']}><Brush size={20} className="rotate-180" /></button>
               </div>
             </div>
 
-            <div className="editor-Announcement" />
+            <div className={styles['editor-Announcement']} />
 
-            <div className="button-container">
-              <button className="save-button">
+            <div className={styles['button-container']}>
+              <button className={styles['save-button']}>
                 <Download size={20} />
                 <span>Save as PDF</span>
               </button>
