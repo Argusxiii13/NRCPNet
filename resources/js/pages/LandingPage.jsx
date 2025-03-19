@@ -4,9 +4,9 @@ import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
 import EventCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
-import LinkList from '../components/Landing/LinkList';
+import LinkList from '../components/landing/LinkList';
 import DownloadableForms from '../components/landing/DownloadableForms'; // New import
-import '../../css/styles/landing/LandingPage.css';
+import styles from '../../css/styles/landing/LandingPage.module.css';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
@@ -23,34 +23,34 @@ const LandingPage = () => {
     };
     
     return (
-        <div className="app">
+        <div className={styles['app']}>
             <Header/>
-            <div className="main-content">
-            <div className="welcome-container">
-                <div className="welcome-section">
+            <div className={styles['main-content']}>
+            <div className={styles['welcome-container']}>
+                <div className={styles['welcome-section']}>
                     <h2>Welcome to NRCPNet</h2>
                     <p>This is the landing page content.</p>
                 </div>
                 <TimeDisplay />
             </div>
-                <div className="content-grid">
-                    <div className="event-section">
+                <div className={styles['content-grid']}>
+                    <div className={styles['event-section']}>
                         <EventCarousel />
                     </div>
-                    <div className="announcement-section">
+                    <div className={styles['announcement-section']}>
                         <AnnouncementCarousel />
                     </div>
-                    <div className="links-section">
+                    <div className={styles['links-section']}>
                         <LinkList />
                     </div>
-                    <div className="downloadable-forms-section"> {/* New section */}
+                    <div className={styles['downloadable-forms-section']}> {/* New section */}
                         <DownloadableForms />
                     </div>
-                    <div className="thursday-wellness-section">
+                    <div className={styles['thursday-wellness-section']}>
                         <ThursdayWellness />
                         <SpecialEvents />
                     </div>
-                    <div className="calendar-section">
+                    <div className={styles['calendar-section']}>
                         <Calendar />
                         <SuggestionBox/>
                     </div>

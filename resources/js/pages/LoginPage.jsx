@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import '../../css/styles/login/LoginPage.css';
+import styles from '../../css/styles/login/LoginPage.module.css';
 import '../../css/font.css';
 
 const LoginPage = () => {
@@ -15,17 +15,17 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <div className="login-header">
-          <h2 className="title">Login to Account</h2>
-          <p className="subtitle">
+    <div className={styles['login-page']}>
+      <div className={styles['login-card']}>
+        <div className={styles['login-header']}>
+          <h2 className={styles['title']}>Login to Account</h2>
+          <p className={styles['subtitle']}>
             Please enter your email and password to continue
           </p>
         </div>
-        <div className="login-content">
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
+        <div className={styles['login-content']}>
+          <form onSubmit={handleSubmit} className={styles['login-form']}>
+            <div className={styles['form-group']}>
               <label htmlFor="email">Email Address</label>
               <input
                 id="email"
@@ -37,7 +37,7 @@ const LoginPage = () => {
               />
             </div>
             
-            <div className="form-group">
+            <div className={styles['form-group']}>
               <label htmlFor="password">Password</label>
               <input
                 id="password"
@@ -49,7 +49,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="remember-password">
+            <div className={styles['remember-password']}>
               <input
                 type="checkbox"
                 id="remember"
@@ -61,12 +61,12 @@ const LoginPage = () => {
               </label>
             </div>
 
-            <button type="submit" className="sign-in-button">
+            <button type="submit" className={styles['sign-in-button']}>
               Sign In
             </button>
 
-            <div className="forgot-password-link">
-              <a href="/forgot-password" className="forgot-password">
+            <div className={styles['forgot-password-link']}>
+              <a href="/forgot-password" className={styles['forgot-password']}>
                 Forgot Password?
               </a>
             </div>

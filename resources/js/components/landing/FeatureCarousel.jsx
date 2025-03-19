@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import '../../../css/styles/landing/FeatureCarousel.css';
+import styles from '../../../css/styles/landing/FeatureCarousel.module.css';
 
-const EventCarousel = () => {
+const FeatureCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovering, setIsHovering] = useState(false);
     const [slides, setSlides] = useState([]);
@@ -34,37 +34,37 @@ const EventCarousel = () => {
 
     return (
         <div 
-            className="carousel-container"
+            className={styles['carousel-container']}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            <div className="carousel">
+            <div className={styles['carousel']}>
                 <div 
-                    className="carousel-nav-area carousel-nav-left"
+                    className={`${styles['carousel-nav-area']} ${styles['carousel-nav-left']}`}
                     onClick={prevSlide}
                     aria-label="Previous slide"
                 >
                     {isHovering && (
-                        <button className="nav-button nav-button-left">
+                        <button className={`${styles['nav-button']} ${styles['nav-button-left']}`}>
                             ❮
                         </button>
                     )}
                 </div>
 
                 <div 
-                    className="carousel-nav-area carousel-nav-right"
+                    className={`${styles['carousel-nav-area']} ${styles['carousel-nav-right']}`}
                     onClick={nextSlide}
                     aria-label="Next slide"
                 >
                     {isHovering && (
-                        <button className="nav-button nav-button-right">
+                        <button className={`${styles['nav-button']} ${styles['nav-button-right']}`}>
                             ❯
                         </button>
                     )}
                 </div>
 
-                <div className="carousel-item">
-                    <div className="carousel-image">
+                <div className={styles['carousel-item']}>
+                    <div className={styles['carousel-image']}>
                         {slides.length > 0 ? (
                             <img 
                                 src={slides[currentIndex]} 
@@ -76,11 +76,11 @@ const EventCarousel = () => {
                     </div>
                 </div>
 
-                <div className="slide-indicators">
+                <div className={styles['slide-indicators']}>
                     {slides.map((_, index) => (
                         <button
                             key={index}
-                            className={`indicator ${currentIndex === index ? 'active' : ''}`}
+                            className={`${styles['indicator']} ${currentIndex === index ? styles['active'] : ''}`}
                             onClick={() => setCurrentIndex(index)}
                             aria-label={`Go to slide ${index + 1}`}
                         />
@@ -91,4 +91,4 @@ const EventCarousel = () => {
     );
 };
 
-export default EventCarousel;
+export default FeatureCarousel;

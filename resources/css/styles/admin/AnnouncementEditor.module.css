@@ -1,0 +1,112 @@
+.panel {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 30px 30px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.panel-content {
+  padding: 32px;
+}
+
+/* Editor Controls Styles */
+.editor-controls {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-picker {
+  width: 40px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dimensions-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Editor Panel Styles */
+.editor-wrapper {
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.editor-content {
+  height: 277px !important;
+  width: 650px !important;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
+  /* Background color is set dynamically via JavaScript */
+}
+
+/* Make sure the editor doesn't expand beyond our dimensions */
+:global(.note-editor) {
+  width: 650px !important;
+  margin: 0 auto !important;
+}
+
+:global(.note-editable) {
+  height: 237px !important; /* 277px - 40px for padding */
+  overflow: auto !important;
+}
+
+.button-container {
+  padding: 16px;
+  border-top: 1px solid #e1e4e8;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Common button styles */
+.export-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+/* HTML button specific styles */
+.html-button {
+  background-color: #2a388f;
+}
+
+.html-button:hover {
+  background-color: #3a48af;
+}
+
+/* Image button specific styles */
+.image-button {
+  background-color: #2e7d32;
+}
+
+.image-button:hover {
+  background-color: #3d8c41;
+}

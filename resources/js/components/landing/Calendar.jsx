@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfToday, startOfMonth } from 'date-fns';
-import '../../../css/styles/landing/Calendar.css'
+import styles from '../../../css/styles/landing/Calendar.module.css'
 
 const Calendar = () => {
     const today = startOfToday();
@@ -33,50 +33,50 @@ const Calendar = () => {
     };
 
     return (
-        <div className="calendar-wrapper" onMouseEnter={() => {
+        <div className={styles['calendar-wrapper']} onMouseEnter={() => {
             setIsHovering(true);
             setHoveredDay(today); // Reset hovered day to today on mouse enter
         }} onMouseLeave={() => {
             setIsHovering(false);
         }}>
-            <div className="calendar-container">
-                <div className="calendar-header">
-                    <h2 className="text-xl font-semibold">
+            <div className={styles['calendar-container']}>
+                <div className={styles['calendar-header']}>
+                    <h2 className={styles['text-xl'] + ' ' + styles['font-semibold']}>
                         {format(firstDayCurrentMonth, 'MMMM yyyy')}
                     </h2>
-                    <div className="flex gap-2">
-                        <button onClick={previousMonth} className="p-1 hover:bg-gray-100 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <div className={styles['flex'] + ' ' + styles['gap-2']}>
+                        <button onClick={previousMonth} className={styles['p-1'] + ' ' + styles['hover:bg-gray-100'] + ' ' + styles['rounded']}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className={styles['icon']} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
-                        <button onClick={nextMonth} className="p-1 hover:bg-gray-100 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <button onClick={nextMonth} className={styles['p-1'] + ' ' + styles['hover:bg-gray-100'] + ' ' + styles['rounded']}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className={styles['icon']} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
                     </div>
                 </div>
 
-                <div className="weekdays-grid">
+                <div className={styles['weekdays-grid']}>
                     {weekdays.map((weekday) => (
-                        <div key={weekday} className="weekday">
+                        <div key={weekday} className={styles['weekday']}>
                             {weekday}
                         </div>
                     ))}
                 </div>
 
-                <div className="days-grid">
+                <div className={styles['days-grid']}>
                     {emptyDaysStart.map((_, index) => (
-                        <div key={`empty-start-${index}`} className="day-button empty" />
+                        <div key={`empty-start-${index}`} className={`${styles['day-button']} ${styles['empty']}`} />
                     ))}
                     
                     {days.map((day) => (
                         <button
                             key={day.toString()}
-                            className={`day-button ${
-                                isEqual(day, selectedDay) ? 'selected' : ''
-                            } ${isToday(day) ? 'today' : ''}`}
+                            className={`${styles['day-button']} ${
+                                isEqual(day, selectedDay) ? styles['selected'] : ''
+                            } ${isToday(day) ? styles['today'] : ''}`}
                             onClick={() => setSelectedDay(day)}
                             onMouseEnter={() => setHoveredDay(day)}
                         >
@@ -85,19 +85,19 @@ const Calendar = () => {
                     ))}
 
                     {emptyDaysEnd.map((_, index) => (
-                        <div key={`empty-end-${index}`} className="day-button empty" />
+                        <div key={`empty-end-${index}`} className={`${styles['day-button']} ${styles['empty']}`} />
                     ))}
                 </div>
             </div>
 
-            <div className={`schedule-panel ${isHovering ? 'visible' : ''}`}>
-                <div className="schedule-header">
-                    <h3 className="text-lg font-medium">
+            <div className={`${styles['schedule-panel']} ${isHovering ? styles['visible'] : ''}`}>
+                <div className={styles['schedule-header']}>
+                    <h3 className={`${styles['text-lg']} ${styles['font-medium']}`}>
                         Schedule for {format(hoveredDay, 'MMM dd, yyyy')}
                     </h3>
                 </div>
-                <div className="schedule-content">
-                    <p className="no-schedule">No schedules for this date</p>
+                <div className={styles['schedule-content']}>
+                    <p className={styles['no-schedule']}>No schedules for this date</p>
                 </div>
             </div>
         </div>

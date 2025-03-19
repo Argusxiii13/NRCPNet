@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../css/styles/landing/DownloadableForms.css';
+import styles from '../../../css/styles/landing/DownloadableForms.module.css';
 
 const DownloadableForms = () => {
     const [forms, setForms] = useState([]);
@@ -36,25 +36,25 @@ const DownloadableForms = () => {
     };
 
     return (
-        <div className="downloadable-forms-container">
-            <h3 className="downloadable-forms-title">Downloadable Forms</h3>
+        <div className={styles['downloadable-forms-container']}>
+            <h3 className={styles['downloadable-forms-title']}>Downloadable Forms</h3>
             
-            {isLoading && <p className="loading-message">Loading forms...</p>}
+            {isLoading && <p className={styles['loading-message']}>Loading forms...</p>}
             
             {error && (
-                <p className="error-message">Error loading forms: {error}</p>
+                <p className={styles['error-message']}>Error loading forms: {error}</p>
             )}
             
             {!isLoading && !error && forms.length === 0 && (
-                <p className="no-forms-message">No downloadable forms available at this time.</p>
+                <p className={styles['no-forms-message']}>No downloadable forms available at this time.</p>
             )}
             
-            <div className="downloadable-forms-list">
+            <div className={styles['downloadable-forms-list']}>
                 {forms.map((form) => (
-                    <div key={form.id} className="downloadable-form-item-container">
+                    <div key={form.id} className={styles['downloadable-form-item-container']}>
                         <a 
                             href={form.content} 
-                            className="downloadable-form-item" 
+                            className={styles['downloadable-form-item']} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             download={form.title}

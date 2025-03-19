@@ -1,6 +1,6 @@
 // AnnouncementCarousel.jsx
 import React, { useState, useEffect } from 'react';
-import '../../.././css/styles/landing/AnnouncementCarousel.css'
+import styles from '../../.././css/styles/landing/AnnouncementCarousel.module.css'
 import { body } from 'framer-motion/client';
 
 const AnnouncementCarousel = () => {
@@ -40,29 +40,29 @@ const AnnouncementCarousel = () => {
     };
 
     return (
-        <div className="announcement-wrapper">
-            <div className="announcement-container">
+        <div className={styles['announcement-wrapper']}>
+            <div className={styles['announcement-container']}>
                 {announcements[currentIndex].type === 'text' ? (
-                    <div className="text-announcement">
+                    <div className={styles['text-announcement']}>
                         {announcements[currentIndex].content}
                     </div>
                 ) : (
-                    <div className="image-announcement">
+                    <div className={styles['image-announcement']}>
                         <img 
                             src={announcements[currentIndex].content} 
                             alt={announcements[currentIndex].altText}
-                            className="announcement-image"
+                            className={styles['announcement-image']}
                         />
                         {/* Removed the image-caption div here */}
                     </div>
                 )}
                 
                 {/* Indicators now inside the container */}
-                <div className="indicators-container">
+                <div className={styles['indicators-container']}>
                     {announcements.map((_, index) => (
                         <button 
                             key={index}
-                            className={`indicator ${index === currentIndex ? 'active' : ''}`}
+                            className={`${styles['indicator']} ${index === currentIndex ? styles['active'] : ''}`}
                             onClick={() => goToSlide(index)}
                             aria-label={`Go to slide ${index + 1}`}
                         />
@@ -73,4 +73,4 @@ const AnnouncementCarousel = () => {
     );
 };
 
-export default AnnouncementCarousel;    
+export default AnnouncementCarousel;

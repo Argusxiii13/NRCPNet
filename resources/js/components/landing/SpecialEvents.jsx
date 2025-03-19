@@ -1,6 +1,6 @@
 // SpecialEvents.jsx
 import React from 'react';
-import '../../../css/styles/landing/SpecialEvents.css';
+import styles from '../../../css/styles/landing/SpecialEvents.module.css';
 
 const SpecialEvents = () => {
     const valentinesEvent = {
@@ -31,23 +31,23 @@ const SpecialEvents = () => {
     };
 
     return (
-        <div className="special-events-container">
-            <h3 className="special-events-title">Special Events</h3>
-            <div className="special-events-content">
-                <div className="event-header">
-                    <div className="event-title">{valentinesEvent.title}</div>
-                    <div className="event-date">{valentinesEvent.date}</div>
+        <div className={styles['special-events-container']}>
+            <h3 className={styles['special-events-title']}>Special Events</h3>
+            <div className={styles['special-events-content']}>
+                <div className={styles['event-header']}>
+                    <div className={styles['event-title']}>{valentinesEvent.title}</div>
+                    <div className={styles['event-date']}>{valentinesEvent.date}</div>
                 </div>
-                <div className="event-timeline">
+                <div className={styles['event-timeline']}>
                     {valentinesEvent.events.map((event, index) => (
-                        <div key={index} className="timeline-item">
-                            <div className="time-marker">
-                                <div className="time">{event.time}</div>
-                                <div className="marker"></div>
+                        <div key={index} className={styles['timeline-item']}>
+                            <div className={styles['time-marker']}>
+                                <div className={styles['time']}>{event.time}</div>
+                                <div className={styles['marker']}></div>
                             </div>
-                            <div className="event-details">
-                                <div className="activity">{event.activity}</div>
-                                <div className="location">{event.location}</div>
+                            <div className={styles['event-details']}>
+                                <div className={styles['activity']}>{event.activity}</div>
+                                <div className={styles['location']}>{event.location}</div>
                             </div>
                         </div>
                     ))}

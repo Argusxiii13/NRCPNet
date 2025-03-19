@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../../css/styles/landing/SuggestionBox.css';
+import styles from '../../../css/styles/landing/SuggestionBox.module.css';
 
 const SuggestionBox = () => {
     const [suggestion, setSuggestion] = useState('');
@@ -89,17 +89,17 @@ const SuggestionBox = () => {
     };
 
     return (
-        <div className="suggestion-container">
+        <div className={styles['suggestion-container']}>
             <h4>Suggestion Box</h4>
             {submitStatus.message && (
-                <div className={`status-message ${submitStatus.type}`}>
+                <div className={`${styles['status-message']} ${styles[submitStatus.type]}`}>
                     {submitStatus.message}
                 </div>
             )}
             <form onSubmit={handleSubmit}>
-                <div className="dropdown-container">
+                <div className={styles['dropdown-container']}>
                     <select 
-                        className="suggestion-dropdown"
+                        className={styles['suggestion-dropdown']}
                         value={selectedDivisionCode}
                         onChange={handleDivisionChange}
                         required
@@ -113,7 +113,7 @@ const SuggestionBox = () => {
                     </select>
                     
                     <select 
-                        className="suggestion-dropdown"
+                        className={styles['suggestion-dropdown']}
                         value={selectedSectionName}
                         onChange={handleSectionChange}
                         disabled={!availableSections.length}
@@ -129,14 +129,14 @@ const SuggestionBox = () => {
                 </div>
                 
                 <textarea
-                    className="suggestion-input"
+                    className={styles['suggestion-input']}
                     placeholder="Place Suggestion Here :D"
                     value={suggestion}
                     onChange={handleChange}
                     required
                 />
-                <div className="button-container">
-                    <button type="submit" className="suggestion-button">Send</button>
+                <div className={styles['button-container']}>
+                    <button type="submit" className={styles['suggestion-button']}>Send</button>
                 </div>
             </form>
         </div>
