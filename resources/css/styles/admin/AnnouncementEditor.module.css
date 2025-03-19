@@ -48,13 +48,13 @@
   border: 1px solid #e1e4e8;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 650px;
+  max-width: 1026px;
   margin: 0 auto;
 }
 
 .editor-content {
-  height: 277px !important;
-  width: 650px !important;
+  height: 398px !important;
+  width: 1026px !important;
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
@@ -63,12 +63,12 @@
 
 /* Make sure the editor doesn't expand beyond our dimensions */
 :global(.note-editor) {
-  width: 650px !important;
+  width: 1026px !important;
   margin: 0 auto !important;
 }
 
 :global(.note-editable) {
-  height: 237px !important; /* 277px - 40px for padding */
+  height: 358px !important; /* 398px - 40px for padding */
   overflow: auto !important;
 }
 

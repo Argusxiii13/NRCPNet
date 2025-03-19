@@ -72,8 +72,33 @@ const AnnouncementEditor = () => {
     if (summernoteInitialized.current && window.jQuery) {
       const $ = window.jQuery;
       $('.note-editing-area').css('background-color', backgroundColor);
+      
+      // Re-check content limits when background changes
+      enforceContentLimits($);
     }
   }, [backgroundColor]);
+
+  // Function to enforce content limits (extracted to be used in multiple places)
+  const enforceContentLimits = ($) => {
+    if (!$) $ = window.jQuery; // Ensure $ is defined
+    if (!$) return; // Exit if jQuery still not available
+    
+    const $editArea = $('.note-editable');
+    const $indicator = $('.content-limit-indicator');
+    
+    if (!$editArea.length || !$indicator.length) return;
+    
+    // Check if content exceeds the visible area
+    const scrollHeight = $editArea[0].scrollHeight;
+    const clientHeight = $editArea[0].clientHeight;
+    
+    if (scrollHeight > clientHeight) {
+      // Content exceeds visible area
+      $indicator.show();
+    } else {
+      $indicator.hide();
+    }
+  };
 
   const initializeSummernote = () => {
     if (!window.jQuery || !editorRef.current || summernoteInitialized.current) return;
@@ -82,8 +107,8 @@ const AnnouncementEditor = () => {
     $(editorRef.current).summernote({
       placeholder: 'Type your announcement here...',
       tabsize: 2,
-      height: 277, // Match the export height
-      width: 650,  // Match the export width
+      height: 398, // Updated height
+      width: 1026,  // Updated width
       styleTags: ['p', 'h1', 'h2', 'h3', 'h4'],
       toolbar: [
         ['style', ['style']],
@@ -97,17 +122,27 @@ const AnnouncementEditor = () => {
       ],
       callbacks: {
         onChange: function(contents) {
-          // You can handle change events here
-          console.log('Content changed:', contents);
+          // Enforce content limits when content changes
+          setTimeout(() => enforceContentLimits($), 0);
         },
         onInit: function() {
-          // After initialization, add a custom clear format button if the built-in one doesn't work
           setTimeout(() => {
+            // Add visual overflow indicator
+            const $editArea = $('.note-editable');
+            const $editingArea = $('.note-editing-area');
+            
+            // Only add indicator if it doesn't exist yet
+            if ($('.content-limit-indicator').length === 0) {
+              const $indicator = $('<div class="content-limit-indicator" style="display: none; position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(255,0,0,0.1)); height: 30px; pointer-events: none; text-align: center; padding-top: 10px;"><span style="background: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #d32f2f;">Content exceeds visible area</span></div>');
+              $editingArea.css('position', 'relative').append($indicator);
+            }
+            
+            // Add custom clear format button if needed
             if (!$('.note-btn[data-event="removeFormat"]').length) {
               const $toolbar = $('.note-toolbar');
               const $clearBtn = $('<button type="button" class="note-btn btn btn-light btn-sm" title="Clear Formatting" data-event="removeFormat">' +
-                                  '<i class="note-icon-eraser"></i>' +
-                                  '</button>');
+                                '<i class="note-icon-eraser"></i>' +
+                                '</button>');
               
               $clearBtn.on('click', function() {
                 $(editorRef.current).summernote('removeFormat');
@@ -117,6 +152,31 @@ const AnnouncementEditor = () => {
                 $('<div class="note-btn-group btn-group note-clear-group"></div>').append($clearBtn)
               );
             }
+            
+            // Add line counter to show visual representation of line limit
+            if ($('.line-counter').length === 0) {
+              const $lineCounter = $('<div class="line-counter" style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.8); border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #666;"></div>');
+              $editingArea.append($lineCounter);
+              
+              // Update line counter on content change
+              $editArea.on('keyup mouseup', function() {
+                const lineCount = $editArea.html().split(/<\/p>|<br>|<br\/>/gi).length;
+                const maxLines = 12; // Updated for larger area
+                $lineCounter.html(`Lines: ${lineCount}/${maxLines}`);
+                
+                if (lineCount > maxLines) {
+                  $lineCounter.css('color', '#d32f2f');
+                } else {
+                  $lineCounter.css('color', '#666');
+                }
+              });
+              
+              // Trigger initial count
+              $editArea.trigger('keyup');
+            }
+            
+            // Set initial content limits
+            enforceContentLimits($);
           }, 100);
         }
       }
@@ -126,13 +186,21 @@ const AnnouncementEditor = () => {
     $('.note-editing-area').addClass(styles['editor-content']);
     $('.note-editing-area').css({
       'background-color': backgroundColor,
-      'width': '650px',
-      'height': '277px'
+      'width': '1026px',
+      'height': '398px',
+      'overflow': 'hidden' // Change from 'auto' to 'hidden' for the export view
+    });
+    
+    $('.note-editable').css({
+      'height': '358px', // 398px - 40px for padding
+      'max-height': '358px',
+      'overflow': 'auto', // Keep auto scroll for editing
+      'padding': '20px'
     });
     
     // Fix the editor container width
     $('.note-editor').css({
-      'width': '650px',
+      'width': '1026px',
       'margin': '0 auto'
     });
     
@@ -143,6 +211,20 @@ const AnnouncementEditor = () => {
   const saveAsHTML = () => {
     const $ = window.jQuery;
     const content = $(editorRef.current).summernote('code');
+    
+    // Create a temporary div to get only visible content
+    const tempDiv = $('<div></div>').html(content).css({
+      'width': '986px', // 1026px - 40px padding
+      'max-height': '358px',
+      'overflow': 'hidden',
+      'position': 'absolute',
+      'left': '-9999px',
+      'top': '-9999px'
+    }).appendTo('body');
+    
+    // Get only visible content
+    const visibleContent = tempDiv.html();
+    tempDiv.remove();
     
     // Create HTML document with proper styling
     const htmlContent = `
@@ -158,19 +240,19 @@ const AnnouncementEditor = () => {
             padding: 0;
           }
           .announcement-container {
-            width: 650px;
-            height: 277px;
+            width: 1026px;
+            height: 398px;
             margin: 0 auto;
             padding: 20px;
             background-color: ${backgroundColor};
             box-sizing: border-box;
-            overflow: auto;
+            overflow: hidden;
           }
         </style>
       </head>
       <body>
         <div class="announcement-container">
-          ${content}
+          ${visibleContent}
         </div>
       </body>
     </html>
@@ -203,10 +285,24 @@ const AnnouncementEditor = () => {
     // Get content
     const content = $(editorRef.current).summernote('code');
     
+    // Create a temporary div to get only visible content
+    const tempDiv = $('<div></div>').html(content).css({
+      'width': '986px', // 1026px - 40px padding
+      'max-height': '358px',
+      'overflow': 'hidden',
+      'position': 'absolute',
+      'left': '-9999px',
+      'top': '-9999px'
+    }).appendTo('body');
+    
+    // Get only visible content
+    const visibleContent = tempDiv.html();
+    tempDiv.remove();
+    
     // Create a temporary container for rendering with fixed dimensions
     const container = document.createElement('div');
-    container.style.width = '650px';
-    container.style.height = '277px';
+    container.style.width = '1026px';
+    container.style.height = '398px';
     container.style.padding = '20px';
     container.style.backgroundColor = backgroundColor;
     container.style.position = 'absolute';
@@ -214,7 +310,7 @@ const AnnouncementEditor = () => {
     container.style.top = '-9999px';
     container.style.boxSizing = 'border-box';
     container.style.overflow = 'hidden';
-    container.innerHTML = content;
+    container.innerHTML = visibleContent;
     document.body.appendChild(container);
     
     try {
@@ -223,8 +319,8 @@ const AnnouncementEditor = () => {
         allowTaint: true,
         useCORS: true,
         backgroundColor: backgroundColor,
-        width: 650,
-        height: 277
+        width: 1026,
+        height: 398
       });
       
       // Convert canvas to image and download
@@ -267,7 +363,7 @@ const AnnouncementEditor = () => {
             />
           </div>
           <div className={styles['dimensions-info']}>
-            <span>Fixed size: 650px × 277px</span>
+            <span>Fixed size: 1026px × 398px (max 10 lines at 16px)</span>
           </div>
         </div>
         <div className={styles['editor-wrapper']}>
