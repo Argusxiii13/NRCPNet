@@ -1,6 +1,6 @@
 .suggestion-container {
     width: 83%; /* Width for the box */
-    background-image: linear-gradient( #448ece , #11326a);
+    background-image: linear-gradient(#11326a, #175388);
     color: white;
     padding: 1rem; /* Reduced padding */
     padding-top: 0.5rem; /* Slightly reduced top padding */

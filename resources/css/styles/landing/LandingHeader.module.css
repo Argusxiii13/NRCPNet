@@ -4,19 +4,19 @@
     top: 0;
     left: 0;
     right: 0;
-    background-image: linear-gradient(#11326a, #448ece);
+    background-image: linear-gradient(#11326a, #175388);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
 
 .header-container {
-    max-width: 1280px;
+    max-width: 1280px;  
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem; /* Reduced padding */
-    background-image: linear-gradient(#11326a, #448ece);
+    background-image: linear-gradient(#11326a, #175388);
     height: 64px;
 }   
 
