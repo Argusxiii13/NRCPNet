@@ -1,0 +1,107 @@
+.panel {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  .panel-header {
+    padding: 30px 30px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .panel-content {
+    padding: 32px;
+  }
+  
+  /* Upload Panel Styles */
+  .upload-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #e1e4e8;
+  }
+  
+  .upload-area {
+    padding: 24px;
+  }
+  
+  .upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e1e4e8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+  }
+  
+  .upload-zone:hover {
+    border-color: #0ea5e9;
+    background-color: #f0f9ff;
+  }
+  
+  .upload-zone svg {
+    color: #2a388f;
+  }
+  
+  .upload-zone p {
+    margin: 0;
+    font-size: 16px;
+    color: #4b5563;
+  }
+  
+  .upload-info {
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  /* Publishing Controls Styles */
+  .publish-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+  
+  .dropdowns-container {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+  }
+  
+  .publish-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    background-color: white;
+    color: #4b5563;
+    font-size: 14px;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .publish-dropdown:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+  }
+  
+  .upload-button {
+    padding: 10px 20px;
+    background-color: #11326a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .upload-button:hover {
+    background-color: #0778f1;
+  }
