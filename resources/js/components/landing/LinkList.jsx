@@ -1,6 +1,6 @@
 // LinkList.jsx
 import React from 'react';
-import '../../../css/styles/landing/LinkList.css';
+import styles from '../../../css/styles/landing/LinkList.module.css';
 
 const logo = '/image/CompanyLogo.jpg';
 
@@ -15,19 +15,19 @@ const LinkList = () => {
     ];
 
     return (
-        <div className="linklist-container">
-            <h3 className="linklist-title">Other Links and Systems</h3>
-            <div className="linklist">
-                <div className="linklist-items">
+        <div className={styles['linklist-container']}>
+            <h3 className={styles['linklist-title']}>Other Links and Systems</h3>
+            <div className={styles['linklist']}>
+                <div className={styles['linklist-items']}>
                     {links.map((link, index) => (
-                        <div key={index} className="link-item-container">
+                        <div key={index} className={styles['link-item-container']}>
                             <img 
                                 src={logo} 
                                 alt="Company Logo" 
-                                className="link-item-logo" 
+                                className={styles['link-item-logo']} 
                                 onError={(e) => { e.target.src = '/image/placeholder.jpg'; }}
                             />
-                            <a href={link.url} className="linklist-item">
+                            <a href={link.url} className={styles['linklist-item']}>
                                 {link.name}
                             </a>
                         </div>

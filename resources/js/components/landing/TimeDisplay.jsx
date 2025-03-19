@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from '../../../css/styles/landing/TimeDisplay.module.css';
 
 const TimeDisplay = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -24,9 +25,9 @@ const TimeDisplay = () => {
   };
 
   return (
-    <div className="time-display">
-      <div className="time-zone">Philippine Standard Time</div>
-      <div className="current-time">
+    <div className={styles['time-display']}>
+      <div className={styles['time-zone']}>Philippine Standard Time</div>
+      <div className={styles['current-time']}>
         {currentTime.toLocaleString('en-US', options)}
       </div>
     </div>

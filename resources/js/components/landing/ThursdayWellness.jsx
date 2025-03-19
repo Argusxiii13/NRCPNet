@@ -1,7 +1,6 @@
 // ThursdayWellness.jsx
 import React from 'react';
-import '../../../css/styles/landing/ThursdayWellness.css';
-
+import styles from '../../../css/styles/landing/ThursdayWellness.module.css';
 
 const ThursdayWellness = () => {
     const activities = [
@@ -15,23 +14,23 @@ const ThursdayWellness = () => {
     ];
 
     return (
-        <div className="wellness-container">
-            <h3 className="wellness-title">Thursday Wellness Activities</h3>
-            <div className="wellness-content">
-                <div className="wellness-items">
+        <div className={styles['wellness-container']}>
+            <h3 className={styles['wellness-title']}>Thursday Wellness Activities</h3>
+            <div className={styles['wellness-content']}>
+                <div className={styles['wellness-items']}>
                     {activities.map((activity, index) => (
-                        <div key={index} className="wellness-item-container">
-                            <div className="wellness-date">
+                        <div key={index} className={styles['wellness-item-container']}>
+                            <div className={styles['wellness-date']}>
                                 {new Date(activity.date).toLocaleDateString('en-US', {
                                     month: 'short',
                                     day: 'numeric'
                                 })}
                             </div>
-                            <div className="wellness-details">
-                                <h4 className="sport-title">{activity.sport}</h4>
-                                <p className="time-info">{activity.time}</p>
-                                <p className="location-info">{activity.location}</p>
-                                <p className="participant-info">{activity.participants}</p>
+                            <div className={styles['wellness-details']}>
+                                <h4 className={styles['sport-title']}>{activity.sport}</h4>
+                                <p className={styles['time-info']}>{activity.time}</p>
+                                <p className={styles['location-info']}>{activity.location}</p>
+                                <p className={styles['participant-info']}>{activity.participants}</p>
                             </div>
                         </div>
                     ))}
