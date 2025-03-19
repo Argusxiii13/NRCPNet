@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
+import styles from '../../../css/styles/admin/DivisionModal.module.css';
 
 const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
   const [formData, setFormData] = useState({
@@ -90,20 +91,20 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <div className="modal-header">
-          <h3 className="modal-title">
+    <div className={styles['modal-overlay']}>
+      <div className={styles['modal-container']}>
+        <div className={styles['modal-header']}>
+          <h3 className={styles['modal-title']}>
             {division ? 'Edit Division' : 'Add New Division'}
           </h3>
-          <button className="close-button" onClick={onClose}>
+          <button className={styles['close-button']} onClick={onClose}>
             <X size={20} />
           </button>
         </div>
         
         <form onSubmit={handleSubmit}>
-          <div className="modal-content">
-            <div className="form-group">
+          <div className={styles['modal-content']}>
+            <div className={styles['form-group']}>
               <label htmlFor="code">Division Code</label>
               <input
                 type="text"
@@ -112,12 +113,12 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
                 value={formData.code}
                 onChange={handleChange}
                 placeholder="e.g. OP, FAD, RIDD"
-                className="form-input"
+                className={styles['form-input']}
                 required
               />
             </div>
             
-            <div className="form-group">
+            <div className={styles['form-group']}>
               <label htmlFor="name">Division Name</label>
               <input
                 type="text"
@@ -126,38 +127,38 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Full division name"
-                className="form-input"
+                className={styles['form-input']}
                 required
               />
             </div>
             
-            <div className="form-group checkbox-group">
+            <div className={styles['form-group'] + ' ' + styles['checkbox-group']}>
               <input
                 type="checkbox"
                 id="hasSections"
                 name="hasSections"
                 checked={formData.hasSections}
                 onChange={handleChange}
-                className="form-checkbox"
+                className={styles['form-checkbox']}
               />
               <label htmlFor="hasSections">This division has sections</label>
             </div>
             
             {formData.hasSections && (
-              <div className="sections-form">
+              <div className={styles['sections-form']}>
                 <h4>Sections</h4>
                 
-                <div className="add-section-form">
+                <div className={styles['add-section-form']}>
                   <input
                     type="text"
                     value={newSection}
                     onChange={handleSectionInputChange}
                     placeholder="New section name"
-                    className="section-input"
+                    className={styles['section-input']}
                   />
                   <button 
                     type="button" 
-                    className="add-section-btn"
+                    className={styles['add-section-btn']}
                     onClick={addSection}
                   >
                     <Plus size={16} />
@@ -165,14 +166,14 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
                   </button>
                 </div>
                 
-                <div className="sections-list-modal">
+                <div className={styles['sections-list-modal']}>
                   {formData.sections.length > 0 ? (
                     formData.sections.map((section) => (
-                      <div key={section.id} className="section-item-modal">
+                      <div key={section.id} className={styles['section-item-modal']}>
                         <span>{section.name}</span>
                         <button 
                           type="button"
-                          className="remove-section-btn"
+                          className={styles['remove-section-btn']}
                           onClick={() => removeSection(section.id)}
                         >
                           <Trash2 size={16} />
@@ -180,24 +181,24 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
                       </div>
                     ))
                   ) : (
-                    <p className="no-sections">No sections added yet</p>
+                    <p className={styles['no-sections']}>No sections added yet</p>
                   )}
                 </div>
               </div>
             )}
           </div>
           
-          <div className="modal-footer">
+          <div className={styles['modal-footer']}>
             <button 
               type="button" 
-              className="cancel-button"
+              className={styles['cancel-button']}
               onClick={onClose}
             >
               Cancel
             </button>
             <button 
               type="submit" 
-              className="save-button"
+              className={styles['save-button']}
             >
               {division ? 'Update Division' : 'Create Division'}
             </button>

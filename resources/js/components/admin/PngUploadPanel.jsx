@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
-import '../../../css/styles/reusable/PngUploadPanel.css';
+import '../../../css/styles/admin/PngUploadPanel.css';
 
 const FileUploadPanel = ({ refreshFeatures }) => {
   const [file, setFile] = useState(null);

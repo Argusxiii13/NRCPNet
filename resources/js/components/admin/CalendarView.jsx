@@ -1,6 +1,6 @@
 import React from 'react';
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfMonth } from 'date-fns';
-import '../../../css/styles/admin/CalendarView.css';
+import styles from '../../../css/styles/admin/CalendarView.module.css';
 
 const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMonth }) => {
     // Sample event data
@@ -59,16 +59,16 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
     };
 
     return (
-        <div className="admin-calendar-section">
-            <div className="panel-sub-header">
+        <div className={styles['admin-calendar-section']}>
+            <div className={styles['panel-sub-header']}>
                 <h3>{format(firstDayCurrentMonth, 'MMMM yyyy')}</h3>
-                <div className="admin-calendar-nav">
-                    <button onClick={previousMonth} className="nav-button">
+                <div className={styles['admin-calendar-nav']}>
+                    <button onClick={previousMonth} className={styles['nav-button']}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <button onClick={nextMonth} className="nav-button">
+                    <button onClick={nextMonth} className={styles['nav-button']}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
@@ -76,16 +76,16 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                 </div>
             </div>
 
-            <div className="calendar-container">
-                <div className="admin-weekdays-grid">
+            <div className={styles['calendar-container']}>
+                <div className={styles['admin-weekdays-grid']}>
                     {weekdays.map((weekday) => (
-                        <div key={weekday} className="admin-weekday">{weekday}</div>
+                        <div key={weekday} className={styles['admin-weekday']}>{weekday}</div>
                     ))}
                 </div>
 
-                <div className="admin-days-grid">
+                <div className={styles['admin-days-grid']}>
                     {emptyDaysStart.map((_, index) => (
-                        <div key={`empty-start-${index}`} className="admin-day-cell empty" />
+                        <div key={`empty-start-${index}`} className={styles['admin-day-cell'] + ' ' + styles['empty']} />
                     ))}
                     
                     {days.map((day) => {
@@ -95,16 +95,16 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                         return (
                             <button
                                 key={day.toString()}
-                                className={`admin-day-cell ${
-                                    isEqual(day, selectedDay) ? 'selected' : ''
-                                } ${isToday(day) ? 'today' : ''}`}
+                                className={`${styles['admin-day-cell']} ${
+                                    isEqual(day, selectedDay) ? styles['selected'] : ''
+                                } ${isToday(day) ? styles['today'] : ''}`}
                                 onClick={() => setSelectedDay(day)}
                                 title={eventTitle || ''}
                             >
-                                <span className="day-number">{format(day, 'd')}</span>
+                                <span className={styles['day-number']}>{format(day, 'd')}</span>
                                 {eventType && (
-                                    <div className={`event-indicator ${eventType}`}>
-                                        <span className={`event-line ${eventType}`}></span>
+                                    <div className={`${styles['event-indicator']} ${eventType}`}>
+                                        <span className={`${styles['event-line']} ${eventType}`}></span>
                                     </div>
                                 )}
                             </button>
@@ -112,22 +112,22 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                     })}
 
                     {emptyDaysEnd.map((_, index) => (
-                        <div key={`empty-end-${index}`} className="admin-day-cell empty" />
+                        <div key={`empty-end-${index}`} className={styles['admin-day-cell'] + ' ' + styles['empty']} />
                     ))}
                 </div>
             </div>
             
-            <div className="event-legend">
-                <div className="legend-item">
-                    <span className="legend-indicator meeting"></span>
+            <div className={styles['event-legend']}>
+                <div className={styles['legend-item']}>
+                    <span className={styles['legend-indicator'] + ' ' + styles['meeting']}></span>
                     <span>Meeting</span>
                 </div>
-                <div className="legend-item">
-                    <span className="legend-indicator event"></span>
+                <div className={styles['legend-item']}>
+                    <span className={styles['legend-indicator'] + ' ' + styles['event']}></span>
                     <span>Event</span>
                 </div>
-                <div className="legend-item">
-                    <span className="legend-indicator holiday"></span>
+                <div className={styles['legend-item']}>
+                    <span className={styles['legend-indicator'] + ' ' + styles['holiday']}></span>
                     <span>Holiday</span>
                 </div>
             </div>

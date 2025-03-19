@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import AddUserModal from './AddUserModal';
 import UserEditModal from './UserEditModal';
 import LoadingIndicator from './LoadingIndicator';
-import '../../../css/styles/admin/UserManagement.css';
+import styles from '../../../css/styles/admin/UserManagement.module.css';
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -209,36 +209,36 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="user-management">
-      <div className="panel">
-        <div className="panel-header">
-          <div className="header-content">
+    <div className={styles['user-management']}>
+      <div className={styles['panel']}>
+        <div className={styles['panel-header']}>
+          <div className={styles['header-content']}>
             <h2>User Management</h2>
           </div>
         </div>
         
-        <div className="panel-content">
-          <div className="um-filters-container">
-            <div className="um-search-wrapper">
-              <div className="um-search-box">
-                <Search className="um-search-icon" />
+        <div className={styles['panel-content']}>
+          <div className={styles['um-filters-container']}>
+            <div className={styles['um-search-wrapper']}>
+              <div className={styles['um-search-box']}>
+                <Search className={styles['um-search-icon']} />
                 <input
                   type="text"
                   placeholder="Search users..."
-                  className="um-search-input"
+                  className={styles['um-search-input']}
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
               </div>
-              <button className="um-add-user-btn" onClick={handleAddUser}>
+              <button className={styles['um-add-user-btn']} onClick={handleAddUser}>
                 <Plus size={16} />
                 Add New User
               </button>
             </div>
             
-            <div className="filters">
+            <div className={styles['filters']}>
               <select 
-                className="filter-dropdown"
+                className={styles['filter-dropdown']}
                 value={division}
                 onChange={handleDivisionChange}
               >
@@ -248,7 +248,7 @@ const UserManagement = () => {
               </select>
               
               <select 
-                className="filter-dropdown"
+                className={styles['filter-dropdown']}
                 value={section}
                 onChange={handleSectionChange}
               >
@@ -257,22 +257,22 @@ const UserManagement = () => {
                 <option value="development">Development</option>
               </select>
               
-              <button className="filter-button" onClick={handleApplyFilters}>
+              <button className={styles['filter-button']} onClick={handleApplyFilters}>
                 <Search size={16} />
                 Apply Filters
               </button>
             </div>
           </div>
 
-          <div className="table-container">
+          <div className={styles['table-container']}>
             {/* Table is always rendered, with a position relative for the overlay */}
-            <div className="table-wrapper" style={{ position: 'relative' }}>
+            <div className={styles['table-wrapper']} style={{ position: 'relative' }}>
               {loading && (
-                <div className="loading-overlay">
+                <div className={styles['loading-overlay']}>
                   <LoadingIndicator />
                 </div>
               )}
-              <table className="user-table">
+              <table className={styles['user-table']}>
                 <thead>
                   <tr>
                     <th>Full Name</th>
@@ -288,43 +288,43 @@ const UserManagement = () => {
                 </thead>
                 <tbody>
                   {allRows.map((user) => (
-                    <tr key={user.id} className={user.id?.toString().includes('placeholder') ? 'placeholder-row' : ''}>
+                    <tr key={user.id} className={user.id?.toString().includes('placeholder') ? styles['placeholder-row'] : ''}>
                       {!user.id?.toString().includes('placeholder') ? (
                         <>
                           <td>{user.first_name || ''} {user.middle_name || ''} {user.surname || ''}</td>
                           <td>{user.position || ''}</td>
                           <td>{user.email || ''}</td>
                           <td>
-                            <span className="section-badge">{user.section || ''}</span>
+                            <span className={styles['section-badge']}>{user.section || ''}</span>
                           </td>
                           <td>
-                            <span className="division-badge">{user.division || ''}</span>
+                            <span className={styles['division-badge']}>{user.division || ''}</span>
                           </td>
                           <td>
-                            <span className={`status-badge ${(user.status || '').toLowerCase()}`}>
+                            <span className={`${styles['status-badge']} ${styles[(user.status || '').toLowerCase()]}`}>
                               {user.status || ''}
                             </span>
                           </td>
-                          <td className="time-stamp">{user.last_login || ''}</td>
+                          <td className={styles['time-stamp']}>{user.last_login || ''}</td>
                           <td>{user.role || ''}</td>
                           <td>
-                            <div className="action-buttons">
+                            <div className={styles['action-buttons']}>
                               <button 
-                                className="icon-button view"
+                                className={`${styles['icon-button']} ${styles['view']}`}
                                 onClick={() => handleViewActivity(user.id)}
                                 title="View Activity Logs"
                               >
                                 <Eye size={16} />
                               </button>
                               <button 
-                                className="icon-button edit"
+                                className={`${styles['icon-button']} ${styles['edit']}`}
                                 onClick={() => handleEdit(user.id)}
                                 title="Edit User"
                               >
                                 <Edit2 size={16} />
                               </button>
                               <button 
-                                className="icon-button delete"
+                                className={`${styles['icon-button']} ${styles['delete']}`}
                                 onClick={() => handleDelete(user.id)}
                                 title="Delete User"
                               >
@@ -343,24 +343,24 @@ const UserManagement = () => {
             </div>
           </div>
           
-          <div className="pagination">
-            <div className="pagination-info">
+          <div className={styles['pagination']}>
+            <div className={styles['pagination-info']}>
               <p>
                 {loading ? 'Loading...' : 
                   `Showing ${users.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalUsers)} of ${totalUsers} users`
                 }
               </p>
             </div>
-            <div className="pagination-buttons">
+            <div className={styles['pagination-buttons']}>
               <button
-                className="filter-button"
+                className={styles['filter-button']}
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1 || loading}
               >
                 Previous
               </button>
               <button
-                className="filter-button"
+                className={styles['filter-button']}
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage * itemsPerPage >= totalUsers || loading}
               >

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import '../../../css/styles/admin/SuggestionDetailModal.css';
+import styles from '../../../css/styles/admin/SuggestionDetailModal.module.css';
 
 const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
   // Use adminnote to match the database field name
@@ -55,48 +55,48 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
   };
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <div className="modal-header">
+    <div className={styles['modal-overlay']}>
+      <div className={styles['modal-container']}>
+        <div className={styles['modal-header']}>
           <h2>Suggestion Details</h2>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className={styles['modal-close-btn']} onClick={onClose}>
             <X size={20} />
           </button>
         </div>
         
-        <div className="modal-content">
-          <div className="form-section-title">Suggestion Information</div>
+        <div className={styles['modal-content']}>
+          <div className={styles['form-section-title']}>Suggestion Information</div>
           
-          <div className="suggestion-info">
-            <div className="info-row">
-              <div className="info-label">Division:</div>
-              <div className="info-value">{suggestion.division}</div>
+          <div className={styles['suggestion-info']}>
+            <div className={styles['info-row']}>
+              <div className={styles['info-label']}>Division:</div>
+              <div className={styles['info-value']}>{suggestion.division}</div>
             </div>
             
-            <div className="info-row">
-              <div className="info-label">Section:</div>
-              <div className="info-value">{suggestion.section}</div>
+            <div className={styles['info-row']}>
+              <div className={styles['info-label']}>Section:</div>
+              <div className={styles['info-value']}>{suggestion.section}</div>
             </div>
             
-            <div className="info-row">
-              <div className="info-label">Date Created:</div>
-              <div className="info-value">
+            <div className={styles['info-row']}>
+              <div className={styles['info-label']}>Date Created:</div>
+              <div className={styles['info-value']}>
                 {new Date(suggestion.created_at).toLocaleString()}
               </div>
             </div>
           </div>
           
-          <div className="form-section-title">Suggestion Content</div>
-          <div className="suggestion-content-box">
+          <div className={styles['form-section-title']}>Suggestion Content</div>
+          <div className={styles['suggestion-content-box']}>
             {suggestion.content}
           </div>
           
-          <div className="form-section-title">Actions</div>
-          <div className="suggestion-actions">
-            <div className="info-row">
-              <div className="info-label">Status:</div>
+          <div className={styles['form-section-title']}>Actions</div>
+          <div className={styles['suggestion-actions']}>
+            <div className={styles['info-row']}>
+              <div className={styles['info-label']}>Status:</div>
               <select 
-                className="status-dropdown"
+                className={styles['status-dropdown']}
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
@@ -109,20 +109,20 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
             </div>
           </div>
           
-          <div className="form-section-title">Admin Notes</div>
+          <div className={styles['form-section-title']}>Admin Notes</div>
           <textarea 
-            className="admin-notes" 
+            className={styles['admin-notes']} 
             placeholder="Add internal notes about this suggestion..."
             rows={4}
             value={adminNotes}
             onChange={(e) => setAdminNotes(e.target.value)}
           ></textarea>
           
-          <div className="modal-footer">
-            <button className="modal-button cancel" onClick={onClose}>
+          <div className={styles['modal-footer']}>
+            <button className={`${styles['modal-button']} ${styles['cancel']}`} onClick={onClose}>
               Close
             </button>
-            <button className="modal-button submit" onClick={handleSaveChanges}>
+            <button className={`${styles['modal-button']} ${styles['submit']}`} onClick={handleSaveChanges}>
               Save Changes
             </button>
           </div>

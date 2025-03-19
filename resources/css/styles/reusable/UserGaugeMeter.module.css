@@ -1,0 +1,55 @@
+.user-gauge-meter {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e1e4e8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.gauge-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.gauge-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 0;
+}
+
+.gauge-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.current-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-count {
+  font-size: 28px;
+  color: #212529;
+}
+
+.user-label {
+  font-size: 14px;
+  color: #6c757d;
+}

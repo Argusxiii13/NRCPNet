@@ -1,0 +1,160 @@
+/* Panel Styles */
+.upload-panel {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 20px 32px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.panel-content {
+    padding: 32px;
+}
+
+/* Upload Section Styles */
+.upload-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #e1e4e8;
+}
+
+.upload-area {
+    padding: 24px;
+}
+
+.upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e1e4e8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upload-zone:hover {
+    border-color: #5aa6f8;
+    background-color: #f0f9ff;
+}
+
+.upload-zone svg {
+    color: #2a388f;
+}
+
+.upload-zone p {
+    margin: 0;
+    font-size: 16px;
+    color: #4b5563;
+}
+
+.upload-info {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* File Holder Styles */
+.file-holder {
+    width: 100%;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+    padding: 20px;
+    min-height: 100px;
+    box-sizing: border-box;
+}
+
+.pdf-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pdf-icon {
+    font-size: 24px;
+    color: #e94c3d;
+}
+
+.file-name {
+    margin: 0;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.no-file-text {
+    color: #6b7280;
+}
+
+/* Upload Label */
+.upload-label {
+    background-color: #f0f2f5;
+    color: #2a388f;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #dcdfe4;
+    transition: all 0.2s ease;
+}
+
+.upload-label:hover {
+    background-color: #e6e8eb;
+}
+
+/* Form Controls Styles */
+.form-controls {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.title-input {
+    padding: 10px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.status-dropdown {
+    padding: 8px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 150px;
+}
+
+/* Publishing Controls Styles */
+.publish-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    background-color: #2a388f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
-import '../../../css/styles/admin/AddUserModal.css';
+import styles from '../../../css/styles/admin/AddUserModal.module.css';
 
 const AddUserModal = ({ isOpen, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -83,21 +83,21 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay">
-      <div className="modal-container">
-        <div className="modal-header">
+    <div className={styles['modal-overlay']}>
+      <div className={styles['modal-container']}>
+        <div className={styles['modal-header']}>
           <h2>Add New User</h2>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className={styles['modal-close-btn']} onClick={onClose}>
             <X size={20} />
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="modal-form">
+        <form onSubmit={handleSubmit} className={styles['modal-form']}>
           {/* Personal Information Section */}
-          <div className="form-section-title">Personal Information</div>
-          <div className="form-row">
-            <div className="form-group name-field">
-              <div className="form-input-wrapper">
+          <div className={styles['form-section-title']}>Personal Information</div>
+          <div className={styles['form-row']}>
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="firstName">First Name</label>
                 <input
                   type="text"
@@ -110,8 +110,8 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                 />
               </div>
             </div>
-            <div className="form-group name-field">
-              <div className="form-input-wrapper">
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="middleName">Middle Name</label>
                 <input
                   type="text"
@@ -123,8 +123,8 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                 />
               </div>
             </div>
-            <div className="form-group name-field">
-              <div className="form-input-wrapper">
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="lastName">Last Name</label>
                 <input
                   type="text"
@@ -140,10 +140,10 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
           </div>
           
           {/* Department Information Section */}
-          <div className="form-section-title">Department Information</div>
-          <div className="form-row">
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+          <div className={styles['form-section-title']}>Department Information</div>
+          <div className={styles['form-row']}>
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="division">Division</label>
                 <select
                   id="division"
@@ -159,8 +159,8 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                 </select>
               </div>
             </div>
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="section">Section</label>
                 <select
                   id="section"
@@ -180,10 +180,10 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
           </div>
           
           {/* Account Settings Section */}
-          <div className="form-section-title">Account Settings</div>
-          <div className="form-row">
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+          <div className={styles['form-section-title']}>Account Settings</div>
+          <div className={styles['form-row']}>
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="position">Position</label>
                 <input
                   type="text"
@@ -196,8 +196,8 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                 />
               </div>
             </div>
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
@@ -213,9 +213,9 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
           </div>
 
           {/* Role Dropdown */}
-          <div className="form-row">
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+          <div className={styles['form-row']}>
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="role">Role</label>
                 <select
                   id="role"
@@ -230,8 +230,8 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                 </select>
               </div>
             </div>
-            <div className="form-group half-width">
-              <div className="form-input-wrapper">
+            <div className={styles['form-group']}>
+              <div className={styles['form-input-wrapper']}>
                 <label htmlFor="status">Status</label>
                 <select
                   id="status"
@@ -247,11 +247,11 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
             </div>
           </div>
 
-          <div className="modal-footer">
-            <button type="button" className="modal-button cancel" onClick={onClose}>
+          <div className={styles['modal-footer']}>
+            <button type="button" className={styles['modal-button-cancel']} onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="modal-button submit">
+            <button type="submit" className={styles['modal-button-submit']}>
               Save User
             </button>
           </div>
