@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(FeatureSeeder::class);
         $this->call(DownloadableSeeder::class);
+        $this->call(AnnouncementSeeder::class);
         User::factory()->count(13)->create();
         Suggestion::factory()->count(8)->create();
         

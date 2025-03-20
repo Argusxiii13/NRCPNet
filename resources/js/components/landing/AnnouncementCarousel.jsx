@@ -4,25 +4,28 @@ import styles from '../../.././css/styles/landing/AnnouncementCarousel.module.cs
 
 const AnnouncementCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [announcements, setAnnouncements] = useState([]); // State to hold announcements
     const [htmlContent, setHtmlContent] = useState(null);
-    
-    // Hardcoded announcements with specific file paths
-    const announcements = [
-        {
-            type: 'image',
-            content: '/announcements/Announcement1.png',
-            altText: 'Announcement 1'
-        },
-        {
-            type: 'html',
-            content: '/announcements/Announcement2.html'
-        }
-    ];
+
+    // Fetch announcements from API
+    useEffect(() => {
+        const fetchAnnouncements = async () => {
+            try {
+                const response = await fetch('/api/announcements');
+                const data = await response.json();
+                setAnnouncements(data);
+            } catch (error) {
+                console.error('Error fetching announcements:', error);
+            }
+        };
+
+        fetchAnnouncements();
+    }, []);
 
     // Fetch HTML content when needed
     useEffect(() => {
         const fetchHtmlContent = async () => {
-            if (announcements[currentIndex].type === 'html') {
+            if (announcements.length > 0 && announcements[currentIndex].type === 'html') {
                 try {
                     const response = await fetch(announcements[currentIndex].content);
                     const html = await response.text();
@@ -35,25 +38,31 @@ const AnnouncementCarousel = () => {
         };
 
         fetchHtmlContent();
-    }, [currentIndex]);
+    }, [currentIndex, announcements]);
 
     // Auto-rotate carousel
     useEffect(() => {
+        if (announcements.length === 0) return; // Prevent interval if no announcements
+
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-        }, 15000); // Change every 4 seconds
+        }, 15000); // Change every 15 seconds
 
         return () => clearInterval(interval); // Cleanup on unmount
-    }, []);
+    }, [announcements.length]);
 
-    // Function to navigate to a specific slide when indicator is clicked
+    // Function to navigate to a specific slide when an indicator is clicked
     const goToSlide = (index) => {
         setCurrentIndex(index);
     };
 
     const renderContent = () => {
+        if (announcements.length === 0) {
+            return <div>Loading announcements...</div>;
+        }
+
         const currentAnnouncement = announcements[currentIndex];
-        
+
         switch (currentAnnouncement.type) {
             case 'image':
                 return (
@@ -85,7 +94,7 @@ const AnnouncementCarousel = () => {
                 <div className={styles['announcement-item']}>
                     {renderContent()}
                 </div>
-                
+
                 <div className={styles['indicators-container']}>
                     {announcements.map((_, index) => (
                         <button 
