@@ -11,20 +11,24 @@ class AnnouncementController extends Controller
 {
     // Method to fetch announcements
     public function index()
-    {
-        // Retrieve all active announcements
-        $announcements = Announcement::where('status', 'Active')->get();
+{
+    // Retrieve all announcements (both active and inactive)
+    $announcements = Announcement::all();
 
-        // Transform the records into the format expected by the front-end
-        $formattedAnnouncements = $announcements->map(function ($announcement) {
-            return [
-                'type' => $announcement->type,
-                'content' => $announcement->content,
-                'altText' => $announcement->title // Optionally set altText if needed
-            ];
-        });
+    // Transform the records with all needed fields
+    $formattedAnnouncements = $announcements->map(function ($announcement) {
+        return [
+            'id' => $announcement->id,
+            'title' => $announcement->title,
+            'type' => $announcement->type,
+            'content' => $announcement->content,
+            'author' => $announcement->author,
+            'status' => $announcement->status,
+            'created_at' => $announcement->created_at,
+            'updated_at' => $announcement->updated_at
+        ];
+    });
 
-        // Return the formatted announcements as JSON
-        return response()->json($formattedAnnouncements);
-    }
+    return response()->json($formattedAnnouncements);
+}
 }

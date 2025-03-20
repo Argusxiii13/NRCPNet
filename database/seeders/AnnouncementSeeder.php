@@ -18,6 +18,12 @@ class AnnouncementSeeder extends Seeder
         $announcements = [
             '/announcement/Announcement1.png',
             '/announcement/Announcement2.html',
+            '/announcement/Announcement3.png',
+            '/announcement/Announcement4.html',
+            '/announcement/Announcement5.png',
+            '/announcement/Announcement6.html',
+            '/announcement/Announcement7.png',
+            '/announcement/Announcement8.html',
         ];
 
         foreach ($announcements as $announcementPath) {

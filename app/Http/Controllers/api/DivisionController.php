@@ -15,6 +15,12 @@ class DivisionController extends Controller
         return Division::with('sections')->get();
     }
 
+    public function getDivisions()
+    {
+    // Fetch only the divisions without sections
+    return Division::all(['id', 'name']); // Adjust fields as necessary
+    }
+
     public function store(Request $request)
     {
         // Validate incoming request
