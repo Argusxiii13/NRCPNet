@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Eye, Edit2, Trash2 } from 'lucide-react';
-import Pagination from '../reusable/Pagination'; // Adjust the import path as necessary
 import styles from '../../../css/styles/admin/FeatureListPanel.module.css';
 
 const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, currentPage, setCurrentPage, refreshFeatures, selectedFeature, setSelectedFeature }) => {
@@ -14,6 +13,9 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
   // Image viewer modal state
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
+
+  // Built-in pagination functionality (previously in separate component)
+  const totalPages = Math.ceil(totalFeatures / itemsPerPage);
 
   const handleFeatureClick = (feature) => {
     setSelectedFeature(selectedFeature?.id === feature.id ? null : feature);
@@ -127,13 +129,33 @@ const FeatureListPanel = ({ features, loading, totalFeatures, itemsPerPage, curr
           ))}
         </div>
       </div>
-      <Pagination 
-        loading={loading}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalItems={totalFeatures}
-        itemsPerPage={itemsPerPage}
-      />
+      
+      {/* Embedded Pagination (previously imported as separate component) */}
+      <div className={styles['pagination']}>
+        <div className={styles['pagination-info']}>
+          <p>
+            {loading ? 'Loading...' :
+              `Showing ${totalFeatures > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalFeatures)} of ${totalFeatures} features`
+            }
+          </p>
+        </div>
+        <div className={styles['pagination-buttons']}>
+          <button
+            className={styles['filter-button']}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1 || loading}
+          >
+            Previous
+          </button>
+          <button
+            className={styles['filter-button']}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage * itemsPerPage >= totalFeatures || loading}
+          >
+            Next
+          </button>
+        </div>
+      </div>
       
       {/* Confirmation Modal */}
       {isConfirmOpen && (

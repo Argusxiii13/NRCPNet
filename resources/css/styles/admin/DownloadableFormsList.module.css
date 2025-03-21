@@ -384,3 +384,39 @@
   max-width: 100%;
   height: auto !important;
 }
+
+/* Pagination.css */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom:13px;
+  margin-left:13px;
+  margin-right:13px;
+}
+
+.pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4f46e5; /* Change color as needed */
+  color: white;
+  cursor: pointer;
+}
+
+.filter-button:disabled {
+  background-color: #d1d5db; /* Change to a disabled color */
+  cursor: not-allowed;
+}
+

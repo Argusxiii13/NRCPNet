@@ -203,6 +203,41 @@ const SuggestionInbox = () => {
     setCurrentPage(1); // Reset to first page when changing items per page
   };
 
+// Built-in pagination component renderer
+const renderPagination = () => {
+  if (!initialDataLoaded || suggestions.length === 0) return null;
+  
+  return (
+    <div className={styles['pagination']}>
+      <div className={styles['pagination-info']}>
+        <p>
+          {initialDataLoaded ? 
+            `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
+            'Loading...'
+          }
+        </p>
+      </div>
+      <div className={styles['pagination-buttons']}>
+        <button
+          className={styles['pagination-button']}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1 || !initialDataLoaded}
+        >
+          <ChevronLeft size={16} />
+          Previous
+        </button>
+        <button
+          className={styles['pagination-button']}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages || !initialDataLoaded}
+        >
+          Next
+          <ChevronRight size={16} />
+        </button>
+      </div>
+    </div>
+  );
+};
   return (
     <div className={styles['suggestion-inbox']}>
       <div className={styles['panel']}>
@@ -309,35 +344,8 @@ const SuggestionInbox = () => {
             )}
           </div>
           
-          {/* Pagination Controls */}
-          {suggestions.length > 0 && (
-            <div className={styles['pagination']}>
-              <div className={styles['pagination-info']}>
-                <p>
-                  {initialDataLoaded ? 
-                    `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
-                    'Loading...'
-                  }
-                </p>
-              </div>
-              <div className={styles['pagination-buttons']}>
-                <button
-                  className={styles['filter-button']}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1 || !initialDataLoaded}
-                >
-                  Previous
-                </button>
-                <button
-                  className={styles['filter-button']}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage * perPage >= totalItems || !initialDataLoaded}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Embedded Pagination - using the renderPagination function */}
+          {renderPagination()}
         </div>
       </div>
 
