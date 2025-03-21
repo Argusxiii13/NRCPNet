@@ -24,15 +24,15 @@ const LandingPage = () => {
     
     return (
         <div className={styles['app']}>
-            <Header/>
+            <Header />
             <div className={styles['main-content']}>
-            <div className={styles['welcome-container']}>
-                <div className={styles['welcome-section']}>
-                    <h2>Welcome to NRCPNet</h2>
-                    <p>This is the landing page content.</p>
+                <div className={styles['welcome-container']}>
+                    <div className={styles['welcome-section']}>
+                        <h2>Welcome to NRCPNet</h2>
+                        <p>This is the landing page content.</p>
+                    </div>
+                    <TimeDisplay />
                 </div>
-                <TimeDisplay />
-            </div>
                 <div className={styles['content-grid']}>
                     <div className={styles['event-section']}>
                         <EventCarousel />
@@ -43,20 +43,23 @@ const LandingPage = () => {
                     <div className={styles['links-section']}>
                         <LinkList />
                     </div>
-                    <div className={styles['downloadable-forms-section']}> {/* New section */}
-                        <DownloadableForms />
-                    </div>
-                    <div className={styles['thursday-wellness-section']}>
-                        <ThursdayWellness />
-                        <SpecialEvents />
-                    </div>
-                    <div className={styles['calendar-section']}>
-                        <Calendar />
-                        <SuggestionBox/>
+                    {/* Hallway Section for Background */}
+                    <div className={styles['hallway-section']}>
+                        <div className={styles['downloadable-forms-section']}>
+                            <DownloadableForms />
+                        </div>
+                        <div className={styles['thursday-wellness-section']}>
+                            <ThursdayWellness />
+                            <SpecialEvents />
+                        </div>
+                        <div className={styles['calendar-section']}>
+                            <Calendar />
+                            <SuggestionBox />
+                        </div>
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
