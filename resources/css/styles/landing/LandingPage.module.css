@@ -1,6 +1,7 @@
 .main-content {
     margin-top: 100px;
     padding: 0.5rem 7rem;
+    /* background-image: url('/image/HallwayBackground.png'); /* Update with your image path */ 
 }
 
 .content-grid {
@@ -25,14 +26,14 @@
 /* Hallway Section for Background */
 .hallway-section {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Three equal columns */
-    background-image: url('/image/HallwayBackground.png'); /* Update with your image path */
-    background-size: cover;
-    background-position: center;
-    padding: 20px; /* Adjust padding as needed */
+    grid-template-columns: 2fr 2fr 2fr; /* Three equal columns */
+    background-image: url('/image/HallwayBackground.png'); /* Update with your image path */ 
+    background-size: auto;
+    background-position: unset;
+    padding: 50px; /* Adjust padding as needed */
     border-radius: 8px; /* Optional rounded corners */
     grid-column: 1 / span 3; /* Span all 3 columns */
-    gap: 20px; /* Add gap between items */
+    gap: 15px; /* Add gap between items */
 }
 
 /* Downloadable Forms occupies 2 rows */
@@ -49,7 +50,7 @@
     flex-direction: column;
     gap: 20px; 
     padding: 1.5rem;
-    background-color: #fff;
+    background-color: #ffffff00;
     border-radius: 8px;
 }
 
@@ -62,7 +63,7 @@
     align-items: center; 
     justify-content: center; 
     padding: 1.5rem; 
-    background-color: #fff; 
+    background-color: #ffffff00; 
     border-radius: 8px; 
 }
 
