@@ -31,7 +31,7 @@ class SuggestionFactory extends Factory
             'content' => $this->faker->sentence(), // Random sentence for suggestion content
             'division' => $division ? $division->code : null, // Division code
             'section' => $section ? $section->name : null, // Section name or null
-            'status' => 'new', // Default status
+            'status' => 'New', // Default status
             'assignee' => $this->faker->name(), // Random name for assignee (can be null)
             'adminnote' => $this->faker->optional()->sentence(), // Random sentence for admin notes or null
             'created_at' => now(), // Current timestamp for created_at

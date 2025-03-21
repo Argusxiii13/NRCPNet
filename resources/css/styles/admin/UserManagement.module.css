@@ -136,10 +136,6 @@
     transition: background-color 0.2s ease;
 }
 
-.filter-button:hover {
-    background-color: ##0778f1;
-}
-
 /* Table Styles */
 .table-container {
     overflow-x: auto;

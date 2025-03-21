@@ -17,44 +17,6 @@ class FeatureController extends Controller
         return Feature::all(['id', 'title', 'content', 'author', 'status']);
     }
 
-    // Fetch features with pagination
-    public function paginatedIndex(Request $request)
-    {
-        try {
-            $query = Feature::query();
-            
-            // Apply filtering if necessary
-            if ($request->has('status') && !empty($request->status)) {
-                $query->where('status', $request->status);
-            }
-            
-            // Apply search term if provided
-            if ($request->has('search') && !empty($request->search)) {
-                $searchTerm = $request->search;
-                $query->where(function($q) use ($searchTerm) {
-                    $q->where('title', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('content', 'LIKE', "%{$searchTerm}%");
-                });
-            }
-
-            // Sort by created_at desc by default (newest first)
-            $query->orderBy('created_at', 'desc');
-
-            // Get pagination parameters (default to 10 items per page)
-            $perPage = $request->has('per_page') ? (int)$request->per_page : 10;
-
-            // Paginate results
-            $features = $query->paginate($perPage);
-
-            return response()->json($features);
-        } catch (\Exception $e) {
-            Log::error('Fetch features error: ' . $e->getMessage());
-            return response()->json([
-                'status' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
 
     // Store a new feature with file upload
     public function store(Request $request)

@@ -10,46 +10,6 @@ use App\Models\Suggestion;
 class SuggestionController extends Controller
 {
     // Fetch all suggestions with optional filtering and pagination
-    public function index(Request $request) {
-        try {
-            $query = Suggestion::query();
-            
-            // Apply division filter if provided
-            if ($request->has('division') && !empty($request->division)) {
-                $query->where('division', $request->division);
-            }
-            
-            // Apply section filter if provided
-            if ($request->has('section') && !empty($request->section)) {
-                $query->where('section', $request->section);
-            }
-            
-            // Apply search term if provided
-            if ($request->has('search') && !empty($request->search)) {
-                $searchTerm = $request->search;
-                $query->where(function($q) use ($searchTerm) {
-                    $q->where('content', 'LIKE', "%{$searchTerm}%");
-                });
-            }
-            
-            // Sort by created_at desc by default (newest first)
-            $query->orderBy('created_at', 'desc');
-            
-            // Get pagination parameters (default to 10 items per page)
-            $perPage = $request->has('per_page') ? (int)$request->per_page : 10;
-            
-            // Paginate results
-            $suggestions = $query->paginate($perPage);
-            
-            return response()->json($suggestions);
-        } catch (\Exception $e) {
-            Log::error('Fetch suggestions error: ' . $e->getMessage());
-            return response()->json([
-                'status' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
 
     // Store a new suggestion
     public function store(Request $request) {
