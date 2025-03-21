@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Filter, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Filter, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from '../../../css/styles/admin/SuggestionInbox.module.css';
 import SuggestionDetailModal from './SuggestionDetailModal';
 import axios from 'axios';
 
 const SuggestionInbox = () => {
   const [selectedDivision, setSelectedDivision] = useState('');
-  const [selectedSection, setSelectedSection] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [divisions, setDivisions] = useState([]);
-  const [sections, setSections] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
@@ -25,106 +23,64 @@ const SuggestionInbox = () => {
   // Function to fetch suggestions with optional filters and pagination
   const fetchSuggestions = async (filters = {}, page = 1) => {
     try {
-      let url = `/api/suggestion?page=${page}&per_page=${perPage}`;
+      let url = `/api/paginated/suggestions?page=${page}&per_page=${perPage}`;
       if (filters.division) url += `&division=${encodeURIComponent(filters.division)}`;
-      if (filters.section) url += `&section=${encodeURIComponent(filters.section)}`;
-      if (filters.search) url += `&search=${encodeURIComponent(filters.search)}`;
+      if (filters.status) url += `&status=${encodeURIComponent(filters.status)}`;
       
       const response = await axios.get(url);
-      
-      // Use data returned from Laravel pagination
-      setSuggestions(response.data.data);
-      setCurrentPage(response.data.current_page);
-      setTotalPages(response.data.last_page);
-      setTotalItems(response.data.total);
+  
+      // Log the response to debug
+      console.log('API Response:', response.data);
+  
+      // Ensure the response structure is valid
+      if (response.data && response.data.data) {
+        setSuggestions(response.data.data);
+        
+        // Update pagination based on the nested pagination object
+        if (response.data.pagination) {
+          setCurrentPage(response.data.pagination.current_page);
+          setTotalPages(response.data.pagination.last_page);
+          setTotalItems(response.data.pagination.total);
+        }
+      } else {
+        console.error('Unexpected response structure:', response.data);
+        setSuggestions([]);
+        setTotalItems(0);
+      }
       
       return response.data.data;
     } catch (error) {
       console.error('Error fetching suggestions:', error);
+      setSuggestions([]);
+      setTotalItems(0);
       return [];
     }
   };
 
-  // Initial data loading
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch suggestions with pagination
-        const suggestionData = await fetchSuggestions({}, currentPage);
+        // Fetch suggestions with current filters and pagination
+        await fetchSuggestions({
+          division: selectedDivision,
+          status: selectedStatus
+        }, currentPage);
         
-        // Fetch divisions with their sections
-        const divisionsResponse = await axios.get('/api/divisions');
-        setDivisions(divisionsResponse.data);
+        // Fetch divisions (only once)
+        if (!initialDataLoaded) {
+          const divisionsResponse = await axios.get('/api/divisions');
+          setDivisions(divisionsResponse.data);
+        }
         
         setInitialDataLoaded(true);
       } catch (error) {
         console.error('Error fetching data:', error);
-        
-        // If divisions API fails, extract divisions from suggestions
-        if (suggestionData && suggestionData.length > 0) {
-          const uniqueDivisions = getUniqueDivisionsFromSuggestions(suggestionData);
-          setDivisions(uniqueDivisions);
-        }
-        
         setInitialDataLoaded(true);
       }
     };
-
+  
     fetchData();
-  }, [refreshTrigger, currentPage, perPage]); // Add pagination dependencies
-
-  // Get unique divisions from suggestions
-  const getUniqueDivisionsFromSuggestions = (suggestionData) => {
-    const uniqueDivisionNames = [...new Set(suggestionData.map(s => s.division))];
-    return uniqueDivisionNames.map(name => ({
-      name,
-      id: name, // Using name as ID for simplicity
-      code: name.substring(0, 3).toUpperCase(),
-      has_sections: true
-    }));
-  };
-
-  // Get unique sections for a division from suggestions
-  const getUniqueSectionsForDivision = (suggestionData, divisionName) => {
-    const relevantSuggestions = suggestionData.filter(s => s.division === divisionName);
-    const uniqueSectionNames = [...new Set(relevantSuggestions
-      .map(s => s.section)
-      .filter(s => s && s.trim() !== '')
-    )];
-    
-    return uniqueSectionNames.map(name => ({
-      name,
-      id: name // Using name as ID for simplicity
-    }));
-  };
-
-  // Update available sections when division changes
-  useEffect(() => {
-    if (!selectedDivision || !initialDataLoaded) return;
-    
-    // Find selected division in our data
-    const selectedDivisionData = divisions.find(div => div.name === selectedDivision);
-    
-    if (selectedDivisionData) {
-      // If we have sections from the API
-      if (selectedDivisionData.sections && selectedDivisionData.sections.length > 0) {
-        setSections(selectedDivisionData.sections);
-      } 
-      // Otherwise try to extract from suggestions
-      else if (suggestions.length > 0) {
-        const extractedSections = getUniqueSectionsForDivision(suggestions, selectedDivision);
-        setSections(extractedSections);
-      }
-      else {
-        setSections([]);
-      }
-    } else {
-      setSections([]);
-    }
-    
-    // Reset selected section when division changes
-    setSelectedSection('');
-  }, [selectedDivision, initialDataLoaded, suggestions]);
+  }, [refreshTrigger, currentPage, perPage, selectedDivision, selectedStatus]); // Include filter states
 
   // Handler for modal opening
   const handleOpenModal = (suggestion) => {
@@ -149,8 +105,7 @@ const SuggestionInbox = () => {
       // Refresh the current page after deletion
       await fetchSuggestions({
         division: selectedDivision,
-        section: selectedSection,
-        search: searchTerm
+        status: selectedStatus
       }, currentPage);
     } catch (error) {
       console.error('Error deleting suggestion:', error);
@@ -161,34 +116,12 @@ const SuggestionInbox = () => {
   const handleFilter = async () => {
     // Reset to page 1 when applying new filters
     setCurrentPage(1);
+    
     await fetchSuggestions({
       division: selectedDivision,
-      section: selectedSection,
-      search: searchTerm
+      status: selectedStatus
     }, 1);
   };
-
-  // Handle search input changes with debounce
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  // Apply search filter when search term changes (with debounce)
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (initialDataLoaded) {
-        // Reset to page 1 when search term changes
-        setCurrentPage(1);
-        fetchSuggestions({
-          division: selectedDivision,
-          section: selectedSection,
-          search: searchTerm
-        }, 1);
-      }
-    }, 500); // 500ms delay
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, initialDataLoaded]);
 
   // Handle pagination navigation
   const handlePageChange = (newPage) => {
@@ -201,43 +134,45 @@ const SuggestionInbox = () => {
     const newPerPage = parseInt(e.target.value);
     setPerPage(newPerPage);
     setCurrentPage(1); // Reset to first page when changing items per page
+    // Again, no need to call fetchSuggestions manually
   };
 
-// Built-in pagination component renderer
-const renderPagination = () => {
-  if (!initialDataLoaded || suggestions.length === 0) return null;
+  // Built-in pagination component renderer
+  const renderPagination = () => {
+    if (!initialDataLoaded || !totalItems) return null;
   
-  return (
-    <div className={styles['pagination']}>
-      <div className={styles['pagination-info']}>
-        <p>
-          {initialDataLoaded ? 
-            `Showing ${suggestions.length > 0 ? (currentPage - 1) * perPage + 1 : 0}-${Math.min(currentPage * perPage, totalItems)} of ${totalItems} suggestions` :
-            'Loading...'
-          }
-        </p>
+    const startItem = totalItems > 0 ? (currentPage - 1) * perPage + 1 : 0;
+    const endItem = Math.min(currentPage * perPage, totalItems);
+  
+    return (
+      <div className={styles['pagination']}>
+        <div className={styles['pagination-info']}>
+          <p>
+            Showing {startItem} - {endItem} of {totalItems} suggestions
+          </p>
+        </div>
+        <div className={styles['pagination-buttons']}>
+          <button
+            className={styles['pagination-button']}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1 || !initialDataLoaded}
+          >
+            <ChevronLeft size={16} />
+            Previous
+          </button>
+          <button
+            className={styles['pagination-button']}
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || !initialDataLoaded}
+          >
+            Next
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
-      <div className={styles['pagination-buttons']}>
-        <button
-          className={styles['pagination-button']}
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1 || !initialDataLoaded}
-        >
-          <ChevronLeft size={16} />
-          Previous
-        </button>
-        <button
-          className={styles['pagination-button']}
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages || !initialDataLoaded}
-        >
-          Next
-          <ChevronRight size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
+    );
+  };
+
   return (
     <div className={styles['suggestion-inbox']}>
       <div className={styles['panel']}>
@@ -246,45 +181,34 @@ const renderPagination = () => {
         </div>
         
         <div className={styles['panel-content']}>
-          {/* Filters and Search */}
+          {/* Filters */}
           <div className={styles['filters-container']}>
-            <div className={styles['search-box']}>
-              <Search size={20} className={styles['search-icon']} />
-              <input 
-                type="text" 
-                placeholder="Search suggestions..." 
-                className={styles['search-input']}
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-            </div>
-
             <div className={styles['filters']}>
-              <select 
-                className={styles['filter-dropdown']}
-                value={selectedDivision}
-                onChange={(e) => setSelectedDivision(e.target.value)}
-              >
-                <option value="">All Divisions</option>
-                {divisions.map((division) => (
-                  <option key={division.id || division.name} value={division.name}>
-                    {division.name}
-                  </option>
-                ))}
-              </select>
+            
+<select 
+  className={styles['filter-dropdown']}
+  value={selectedDivision}
+  onChange={(e) => setSelectedDivision(e.target.value)}
+>
+  <option value="">All Divisions</option>
+  {divisions.map((division) => (
+    <option key={division.id} value={division.code}>
+      {division.code} - {division.name}
+    </option>
+  ))}
+</select>
 
               <select 
                 className={styles['filter-dropdown']}
-                value={selectedSection}
-                onChange={(e) => setSelectedSection(e.target.value)}
-                disabled={!selectedDivision}
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
               >
-                <option value="">All Sections</option>
-                {sections.map((section) => (
-                  <option key={section.id || section.name} value={section.name}>
-                    {section.name}
-                  </option>
-                ))}
+                <option value="">All Status</option>
+                <option value="New">New</option>
+                <option value="In Consideration">In Consideration</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Dismissed">Dismissed</option>
               </select>
 
               <button className={styles['filter-button']} onClick={handleFilter}>
@@ -310,11 +234,6 @@ const renderPagination = () => {
                       <span className={styles['division-badge']}>
                         {suggestion.division}
                       </span>
-                      {suggestion.section && (
-                        <span className={styles['section-badge']}>
-                          {suggestion.section}
-                        </span>
-                      )}
                       <span className={styles['time-stamp']}>
                         {new Date(suggestion.created_at).toLocaleString()}
                       </span>

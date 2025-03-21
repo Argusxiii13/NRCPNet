@@ -44,17 +44,43 @@
     color: #495057;
 }
 
+/* Split view container */
+.split-view-container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
 .calendar-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px 16px 8px 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    flex: 1;
+    max-width: 50%;
+    display: flex; /* Added this */
+    flex-direction: column; /* Added this */
+    height:500px
+}
+
+.event-details-container {
     background-color: white;
     border-radius: 8px;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 50%;
+    height: 500px;
+    overflow-y: auto;
 }
 
 .admin-weekdays-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    width: 100%;
+    padding: 0 4px;
 }
 
 .admin-weekday {
@@ -69,10 +95,12 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
+    width: 95%;
+    padding: 4px;
 }
 
 .admin-day-cell {
-    aspect-ratio: 1/1;
+    aspect-ratio: 1/0.5;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,6 +111,7 @@
     border: none;
     background: none;
     cursor: pointer;
+    width: 100%;
 }
 
 .admin-day-cell:hover:not(.empty) {
@@ -119,18 +148,21 @@
     justify-content: center;
 }
 
-.event-indicator {
+/* Fixed Event Indicators */
+.event-indicator-container {
     position: absolute;
     bottom: 6px;
-    width: 80%;
     display: flex;
+    gap: 2px;
     justify-content: center;
+    width: 100%;
 }
 
 .event-line {
     height: 3px;
-    width: 20px;
+    width: 16px;
     border-radius: 1.5px;
+    display: inline-block;
 }
 
 .event-line.meeting {
@@ -149,13 +181,14 @@
 .event-legend {
     display: flex;
     gap: 16px;
-    margin-top: 16px;
+
     padding: 12px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: auto; /* Added this to push it to the bottom */
+    margin-bottom: 20px; /* Maintain 20px bottom margin */
 }
-
 .legend-item {
     display: flex;
     align-items: center;
@@ -181,4 +214,91 @@
 
 .legend-indicator.holiday {
     background-color: #fa5252; /* Red */
+}
+
+/* Event Details Styling */
+.selected-date-header {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.event-card {
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #dee2e6;
+}
+
+.event-card.meeting {
+    border-left-color: #339af0;
+}
+
+.event-card.event {
+    border-left-color: #20c997;
+}
+
+.event-card.holiday {
+    border-left-color: #fa5252;
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.event-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.event-time {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.event-info {
+    font-size: 0.875rem;
+}
+
+.event-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.event-location svg {
+    color: #6c757d;
+}
+
+.event-description {
+    margin: 0;
+    color: #495057;
+    line-height: 1.5;
+}
+
+.no-events {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    color: #6c757d;
 }

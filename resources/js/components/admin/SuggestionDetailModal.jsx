@@ -100,11 +100,11 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
-                <option value="new">New</option>
-                <option value="in-consideration">In Consideration</option>
-                <option value="in-progress">In Progress</option>
-                <option value="resolved">Resolved</option>
-                <option value="dismissed">Dismissed</option>
+                <option value="New">New</option>
+                <option value="In Consideration">In Consideration</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Dismissed">Dismissed</option>
               </select>
             </div>
           </div>

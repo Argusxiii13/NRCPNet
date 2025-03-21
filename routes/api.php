@@ -27,3 +27,7 @@ Route::apiResource('downloadables', DownloadableController::class);
 Route::apiResource('announcements', AnnouncementController::class);
 
 Route::get('paginated/announcements', [PaginatedController::class, 'getAnnouncementsPaginated']);
+
+Route::get('paginated/features', [PaginatedController::class, 'getFeaturesPaginated']);
+
+Route::get('paginated/suggestions', [PaginatedController::class, 'getSuggestionsPaginated']);

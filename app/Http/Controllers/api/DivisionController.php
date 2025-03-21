@@ -18,7 +18,7 @@ class DivisionController extends Controller
     public function getDivisions()
     {
     // Fetch only the divisions without sections
-    return Division::all(['id', 'name']); // Adjust fields as necessary
+    return Division::all(['id', 'name', 'code']); // Adjust fields as necessary
     }
 
     public function store(Request $request)
