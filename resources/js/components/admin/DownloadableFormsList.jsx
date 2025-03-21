@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import { Download, Edit2, Trash2, Eye } from 'lucide-react';
-import Pagination from '../reusable/Pagination';
 import styles from '../../../css/styles/admin/DownloadableFormsList.module.css';
 
 const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, currentPage, setCurrentPage, refreshForms, selectedForm, setSelectedForm }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [formToDelete, setFormToDelete] = useState(null);
-  
-  // Edit modal state
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editedForm, setEditedForm] = useState({ title: '', status: '', division: '', section: '' });
-
-  // PDF viewer modal state
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfError, setPdfError] = useState(null);
+
+  const totalPages = Math.ceil(totalForms / itemsPerPage);
 
   const handleFormClick = (form) => {
     setSelectedForm(selectedForm?.id === form.id ? null : form);
@@ -29,11 +26,11 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
   const openEditModal = (form, e) => {
     e.stopPropagation();
     setEditedForm({
-        id: form.id,
-        title: form.title, 
-        status: form.status,
-        division: form.division,
-        section: form.section
+      id: form.id,
+      title: form.title,
+      status: form.status,
+      division: form.division,
+      section: form.section
     });
     setIsEditOpen(true);
   };
@@ -41,8 +38,6 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
   const openPdfModal = (form, e) => {
     e.stopPropagation();
     setPdfError(null);
-    
-    // Use the content field from the form data, which contains the PDF path
     const fileUrl = form.content || null;
     
     if (!fileUrl) {
@@ -57,10 +52,8 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
   const handleDownload = (form, e) => {
     if (e) e.stopPropagation();
-    // Get the file path from the content field
     const fileUrl = form?.content;
     if (fileUrl) {
-      // Create a temporary anchor element and trigger download
       const link = document.createElement('a');
       link.href = fileUrl;
       link.download = form?.title || 'document.pdf';
@@ -78,7 +71,6 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          // Add any authentication headers if required
         }
       });
       
@@ -86,13 +78,11 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         throw new Error(`Error: ${response.status}`);
       }
       
-      // Close the modal and refresh the forms list
       setIsConfirmOpen(false);
       setFormToDelete(null);
       refreshForms();
     } catch (error) {
       console.error('Error deleting form:', error);
-      // You might want to show an error message to the user
     }
   };
 
@@ -102,12 +92,10 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          // Add any authentication headers if required
         },
         body: JSON.stringify({
           title: editedForm.title,
           status: editedForm.status
-          // Removed division and section fields
         })
       });
       
@@ -115,13 +103,11 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         throw new Error(`Error: ${response.status}`);
       }
       
-      // Close the modal and refresh the forms list
       setIsEditOpen(false);
       setEditedForm({ id: null, title: '', status: '' });
       refreshForms();
     } catch (error) {
       console.error('Error updating form:', error);
-      // You might want to show an error message to the user
     }
   };
 
@@ -179,13 +165,31 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
           )}
         </div>
       </div>
-      <Pagination 
-        loading={loading}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalItems={totalForms}
-        itemsPerPage={itemsPerPage}
-      />
+
+{/* Integrated Pagination - Corrected class names */}
+<div className={styles['pagination']}>
+  <div className={styles['pagination-info']}>
+    {loading ? 'Loading...' :
+      `Showing ${totalForms > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalForms)} of ${totalForms} features`
+    }
+  </div>
+  <div className={styles['pagination-buttons']}>
+    <button
+      onClick={() => setCurrentPage(currentPage - 1)}
+      disabled={currentPage === 1 || loading}
+      className={styles['filter-button']}
+    >
+      Previous
+    </button>
+    <button
+      onClick={() => setCurrentPage(currentPage + 1)}
+      disabled={currentPage * itemsPerPage >= totalForms || loading}
+      className={styles['filter-button']}
+    >
+      Next
+    </button>
+  </div>
+</div>
       
       {/* Confirmation Modal */}
       {isConfirmOpen && (
@@ -259,7 +263,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         </div>
       )}
 
-      {/* PDF Viewer Modal with iframe */}
+      {/* PDF Viewer Modal */}
       {isPdfOpen && (
         <div className={styles['modal-overlay']}>
           <div className={`${styles['modal-container']} ${styles['pdf-modal']}`}>

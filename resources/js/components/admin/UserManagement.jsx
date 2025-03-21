@@ -343,31 +343,32 @@ const UserManagement = () => {
             </div>
           </div>
           
-          <div className={styles['pagination']}>
-            <div className={styles['pagination-info']}>
-              <p>
-                {loading ? 'Loading...' : 
-                  `Showing ${users.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalUsers)} of ${totalUsers} users`
-                }
-              </p>
-            </div>
-            <div className={styles['pagination-buttons']}>
-              <button
-                className={styles['filter-button']}
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage === 1 || loading}
-              >
-                Previous
-              </button>
-              <button
-                className={styles['filter-button']}
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage * itemsPerPage >= totalUsers || loading}
-              >
-                Next
-              </button>
-            </div>
-          </div>
+{/* Embedded Pagination with same structure as Pagination component */}
+<div className={styles['pagination']}>
+  <div className={styles['pagination-info']}>
+    <p>
+      {loading ? 'Loading...' :
+        `Showing ${totalUsers > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalUsers)} of ${totalUsers} users`
+      }
+    </p>
+  </div>
+  <div className={styles['pagination-buttons']}>
+    <button
+      className={styles['filter-button']}
+      onClick={() => setCurrentPage(currentPage - 1)}
+      disabled={currentPage === 1 || loading}
+    >
+      Previous
+    </button>
+    <button
+      className={styles['filter-button']}
+      onClick={() => setCurrentPage(currentPage + 1)}
+      disabled={currentPage * itemsPerPage >= totalUsers || loading}
+    >
+      Next
+    </button>
+  </div>
+</div>
         </div>
       </div>
       

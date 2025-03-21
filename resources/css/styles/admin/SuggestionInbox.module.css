@@ -238,12 +238,17 @@
   }
 }
 
+/* Add this after the suggestions-list styles and before the responsive adjustments */
+
 /* Pagination Styles */
 .pagination {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+  margin-bottom: 13px;
+  margin-left: 13px;
+  margin-right: 13px;
 }
 
 .pagination-info {
@@ -254,4 +259,19 @@
 .pagination-buttons {
   display: flex;
   gap: 8px;
+}
+
+/* Note: I'm renaming this to pagination-button to avoid conflict with your existing filter-button */
+.pagination-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4f46e5; /* Change color as needed */
+  color: white;
+  cursor: pointer;
+}
+
+.pagination-button:disabled {
+  background-color: #d1d5db; /* Change to a disabled color */
+  cursor: not-allowed;
 }
