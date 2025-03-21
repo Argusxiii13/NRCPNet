@@ -95,18 +95,19 @@
 
 /* HTML button specific styles */
 .html-button {
-  background-color: #2a388f;
+  background-color: #11326a;
 }
 
 .html-button:hover {
-  background-color: #3a48af;
+  background-color: #348cda;
 }
 
 /* Image button specific styles */
 .image-button {
-  background-color: #2e7d32;
+  background-color: #118316;
 }
 
 .image-button:hover {
-  background-color: #3d8c41;
+  background-color: #348cda;
+  color: rgb(255, 255, 255);
 }

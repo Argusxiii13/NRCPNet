@@ -93,12 +93,12 @@
 }
 
 .upload-zone:hover {
-  border-color: #0ea5e9;
+  border-color: #348cda;
   background-color: #f0f9ff;
 }
 
 .upload-zone svg {
-  color: #2a388f;
+  color: #11326a;
 }
 
 .upload-zone p {
@@ -147,7 +147,7 @@
 
 .text-input:focus {
   outline: none;
-  border-color: #0ea5e9;
+  border-color: #348cda;
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
@@ -198,5 +198,5 @@
 }
 
 .upload-button:hover {
-  background-color: #0778f1;
+  background-color: #348cda;
 }

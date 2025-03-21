@@ -44,12 +44,12 @@
 }
 
 .upload-zone:hover {
-    border-color: #5aa6f8;
+    border-color: #348cda;
     background-color: #f0f9ff;
 }
 
 .upload-zone svg {
-    color: #2a388f;
+    color: #11326a;
 }
 
 .upload-zone p {
@@ -102,7 +102,7 @@
 /* Upload Label */
 .upload-label {
     background-color: #f0f2f5;
-    color: #2a388f;
+    color: #11326a;
     padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
@@ -150,7 +150,7 @@
 
 .upload-button {
     padding: 10px 20px;
-    background-color: #2a388f;
+    background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
@@ -158,3 +158,7 @@
     transition: background-color 0.2s ease;
     white-space: nowrap;
 }
+
+.upload-button:hover {
+    background-color: #348cda;
+  }

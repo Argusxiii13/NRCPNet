@@ -143,7 +143,7 @@
   
   .admin-notes:focus {
     outline: none;
-    border-color: #0ea5e9;
+    border-color: #348cda;
     box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
   }
   
@@ -176,13 +176,13 @@
   }
   
   .modal-button.submit {
-    background-color: #2a38ff;
-    border: 1px solid #0ea5e9;
+    background-color: #11326a;
+    border: 1px solid #348cda;
     color: white;
   }
   
   .modal-button.submit:hover {
-    background-color: #0284c7;
+    background-color: #348cda;
   }
   
   /* Responsive Adjustments */
