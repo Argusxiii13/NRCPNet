@@ -1,5 +1,5 @@
 .wellness-container {
-    background-image: linear-gradient( #11326a, #4a99daec );
+    background-image: linear-gradient(#11326ae5, #488bc5); /* background-image: linear-gradient( #11326a, #4a99daec ); */
     padding: 1rem;
     border: 1px solid #dee2e6;
     border-radius: 8px;
@@ -49,6 +49,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
     margin-bottom: 150px;
+    margin-top: 50px;
 }
 
 .wellness-date {
