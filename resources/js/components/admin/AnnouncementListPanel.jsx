@@ -13,36 +13,41 @@ const AnnouncementListPanel = () => {
   const [editedAnnouncement, setEditedAnnouncement] = useState({ title: '', status: '' });
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [announcementContent, setAnnouncementContent] = useState('');
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // You can adjust this number
+  const [totalItems, setTotalItems] = useState(0);
 
-  // Fetch announcements from API
+  // Fetch paginated announcements from API
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/announcements');
+        const response = await fetch(`/api/paginated/announcements?page=${currentPage}&perPage=${itemsPerPage}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        const data = await response.json();
+        const result = await response.json();
         
         // Transform the data to match our component's expected format
-        const formattedData = data.map(item => ({
-          id: item.id || Math.random().toString(36).substr(2, 9), // Use ID from API or generate one
-          title: item.altText || item.title || 'Untitled Announcement',
-          status: 'Active', // Assuming all returned announcements are active
+        const formattedData = result.data.map(item => ({
+          id: item.id || Math.random().toString(36).substr(2, 9),
+          title: item.title || 'Untitled Announcement',
+          status: item.status || 'Active',
           content: item.content,
           type: item.type,
-          author: 'Admin' // Default author if not provided
+          author: item.author || 'Admin'
         }));
         
         setAnnouncements(formattedData);
+        setTotalItems(result.pagination.total);
         setError(null);
       } catch (err) {
         console.error('Error fetching announcements:', err);
         setError('Failed to load announcements. Please try again later.');
-        // Optionally fall back to sample data for development
         setAnnouncements([]);
       } finally {
         setLoading(false);
@@ -50,7 +55,7 @@ const AnnouncementListPanel = () => {
     };
 
     fetchAnnouncements();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   const handleAnnouncementClick = (announcement) => {
     setSelectedAnnouncement(selectedAnnouncement?.id === announcement.id ? null : announcement);
@@ -81,17 +86,25 @@ const AnnouncementListPanel = () => {
     if (!announcementToDelete) return;
     
     try {
-      // Implement delete API call here when you have the endpoint
-      // const response = await fetch(`/api/announcements/${announcementToDelete.id}`, {
-      //   method: 'DELETE',
-      // });
+      // Implement delete API call here
+      const response = await fetch(`/api/announcements/${announcementToDelete.id}`, {
+        method: 'DELETE',
+      });
       
-      // if (!response.ok) throw new Error('Failed to delete announcement');
+      if (!response.ok) throw new Error('Failed to delete announcement');
       
-      console.log('Would delete announcement with ID:', announcementToDelete.id);
-      
-      // Remove from local state
-      setAnnouncements(announcements.filter(a => a.id !== announcementToDelete.id));
+      // After successful deletion, check if we need to adjust the current page
+      if (announcements.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } else {
+        // Refresh the current page
+        const refreshResponse = await fetch(`/api/paginated/announcements?page=${currentPage}&perPage=${itemsPerPage}`);
+        if (refreshResponse.ok) {
+          const result = await refreshResponse.json();
+          setAnnouncements(result.data);
+          setTotalItems(result.pagination.total);
+        }
+      }
       
     } catch (err) {
       console.error('Error deleting announcement:', err);
@@ -106,23 +119,23 @@ const AnnouncementListPanel = () => {
     if (!editedAnnouncement.id) return;
     
     try {
-      // Implement update API call here when you have the endpoint
-      // const response = await fetch(`/api/announcements/${editedAnnouncement.id}`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(editedAnnouncement),
-      // });
+      // Implement update API call here
+      const response = await fetch(`/api/announcements/${editedAnnouncement.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedAnnouncement),
+      });
       
-      // if (!response.ok) throw new Error('Failed to update announcement');
+      if (!response.ok) throw new Error('Failed to update announcement');
       
-      console.log('Would update announcement:', editedAnnouncement);
-      
-      // Update in local state
-      setAnnouncements(announcements.map(a => 
-        a.id === editedAnnouncement.id ? { ...a, ...editedAnnouncement } : a
-      ));
+      // Refresh the current page after successful update
+      const refreshResponse = await fetch(`/api/paginated/announcements?page=${currentPage}&perPage=${itemsPerPage}`);
+      if (refreshResponse.ok) {
+        const result = await refreshResponse.json();
+        setAnnouncements(result.data);
+      }
       
     } catch (err) {
       console.error('Error updating announcement:', err);
@@ -146,46 +159,76 @@ const AnnouncementListPanel = () => {
         ) : announcements.length === 0 ? (
           <div className={styles['empty-state']}>No announcements found.</div>
         ) : (
-          <div className={styles['announcements-list']}>
-            {announcements.map((announcement) => (
-              <div
-                key={announcement.id}
-                className={`${styles['announcement-item']} ${selectedAnnouncement?.id === announcement.id ? styles['selected'] : ''}`}
-                onClick={() => handleAnnouncementClick(announcement)}
-              >
-                <div className={styles['announcement-info']}>
-                  <h3 className={styles['announcement-title']}>{announcement.title}</h3>
-                  <span className={`${styles['announcement-status']} ${styles[announcement.status]}`}>
-                    {announcement.status}
-                  </span>
+          <>
+            <div className={styles['announcements-list']}>
+              {announcements.map((announcement) => (
+                <div
+                  key={announcement.id}
+                  className={`${styles['announcement-item']} ${selectedAnnouncement?.id === announcement.id ? styles['selected'] : ''}`}
+                  onClick={() => handleAnnouncementClick(announcement)}
+                >
+                  <div className={styles['announcement-info']}>
+                    <h3 className={styles['announcement-title']}>{announcement.title}</h3>
+                    <span className={`${styles['announcement-status']} ${styles[announcement.status]}`}>
+                      {announcement.status}
+                    </span>
+                  </div>
+                  <div className={styles['announcement-meta']}>
+                    <span className={styles['announcement-division']}>{announcement.author}</span>
+                    <span className={styles['announcement-type']}>{announcement.type}</span>
+                  </div>
+                  <div className={styles['announcement-actions']}>
+                    <button className={styles['action-button']} title="View" onClick={(e) => {
+                      e.stopPropagation();
+                      openImageModal(announcement);
+                    }}>
+                      <Eye size={16} />
+                    </button>
+                    <button className={styles['action-button']} title="Edit" onClick={(e) => {
+                      e.stopPropagation();
+                      openEditModal(announcement);
+                    }}>
+                      <Edit2 size={16} />
+                    </button>
+                    <button className={`${styles['action-button']} ${styles['delete']}`} title="Delete" onClick={(e) => {
+                      e.stopPropagation();
+                      openConfirmModal(announcement);
+                    }}>
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
-                <div className={styles['announcement-meta']}>
-                  <span className={styles['announcement-division']}>{announcement.author}</span>
-                  <span className={styles['announcement-type']}>{announcement.type}</span>
-                </div>
-                <div className={styles['announcement-actions']}>
-                  <button className={styles['action-button']} title="View" onClick={(e) => {
-                    e.stopPropagation();
-                    openImageModal(announcement);
-                  }}>
-                    <Eye size={16} />
-                  </button>
-                  <button className={styles['action-button']} title="Edit" onClick={(e) => {
-                    e.stopPropagation();
-                    openEditModal(announcement);
-                  }}>
-                    <Edit2 size={16} />
-                  </button>
-                  <button className={`${styles['action-button']} ${styles['delete']}`} title="Delete" onClick={(e) => {
-                    e.stopPropagation();
-                    openConfirmModal(announcement);
-                  }}>
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            {/* Pagination Component */}
+{/* Pagination Component */}
+<div className={styles['pagination']}>
+  <div className={styles['pagination-info']}>
+    <p>
+      {loading ? 'Loading...' :
+        `Showing ${totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalItems)} of ${totalItems} announcements`
+      }
+    </p>
+  </div>
+  <div className={styles['pagination-buttons']}>
+    <button
+      className={styles['filter-button']}
+      onClick={() => setCurrentPage(currentPage - 1)}
+      disabled={currentPage === 1 || loading}
+    >
+      Previous
+    </button>
+    <button
+      className={styles['filter-button']}
+      onClick={() => setCurrentPage(currentPage + 1)}
+      disabled={currentPage * itemsPerPage >= totalItems || loading}
+    >
+      Next
+    </button>
+  </div>
+</div>
+          </>
         )}
       </div>
       

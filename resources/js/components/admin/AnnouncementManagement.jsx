@@ -9,10 +9,8 @@ const AnnouncementManagement = () => {
     <div className={styles['announcement-management']}>
       <AnnouncementListPanel />
 
-      {/* File Upload Panel Component */}
       <FileUploadPanel />
       
-      {/* Announcement Editor Component */}
       <AnnouncementEditor />
     </div>
   );
