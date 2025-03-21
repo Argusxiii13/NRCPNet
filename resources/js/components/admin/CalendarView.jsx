@@ -1,38 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfMonth } from 'date-fns';
+import axios from 'axios'; // Make sure you have axios installed
 import styles from '../../../css/styles/admin/CalendarView.module.css';
 
 const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMonth }) => {
-    // Sample event data - expanded with more details
-    const events = [
-        { id: 1, date: '2025-03-03', type: 'meeting', title: 'Team Standup', time: '09:00 - 09:30', location: 'Conference Room A', description: 'Daily team status update.' },
-        { id: 2, date: '2025-03-07', type: 'meeting', title: 'Client Call', time: '14:00 - 15:00', location: 'Zoom', description: 'Project progress review with client.' },
-        { id: 3, date: '2025-03-14', type: 'event', title: 'Pi Day', time: 'All Day', location: 'Office', description: 'Celebration with pie for everyone!' },
-        { id: 4, date: '2025-03-17', type: 'holiday', title: "St. Patrick's Day", time: 'All Day', location: '-', description: 'Office closed for holiday.' },
-        { id: 5, date: '2025-03-20', type: 'event', title: 'Spring Equinox', time: '15:30 - 16:30', location: 'Courtyard', description: 'Team building activity to welcome spring.' },
-        { id: 6, date: '2025-03-25', type: 'meeting', title: 'Project Review', time: '11:00 - 12:00', location: 'Conference Room B', description: 'Quarterly review of ongoing projects.' },
-        { id: 7, date: '2025-03-31', type: 'meeting', title: 'Sprint Planning', time: '10:00 - 11:30', location: 'Main Hall', description: 'Planning session for next sprint.' },
-        
-        { id: 8, date: '2025-03-20', type: 'meeting', title: 'Department Sync', time: '09:30 - 10:30', location: 'Conference Room C', description: 'Sync meeting with department heads.' },
-        { id: 9, date: '2025-03-20', type: 'meeting', title: 'Department Sync', time: '09:30 - 10:30', location: 'Conference Room C', description: 'Sync meeting with department heads.' },
-        { id: 10, date: '2025-03-20', type: 'meeting', title: 'Department Sync', time: '09:30 - 10:30', location: 'Conference Room C', description: 'Sync meeting with department heads.' },
-
-    ];
-
+    // State for events
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    
     // Get selected day's events
     const [selectedDayEvents, setSelectedDayEvents] = useState([]);
     
-    useEffect(() => {
-        const dateString = format(selectedDay, 'yyyy-MM-dd');
-        const filteredEvents = events.filter(event => event.date === dateString);
-        setSelectedDayEvents(filteredEvents);
-    }, [selectedDay]);
-
     const firstDayCurrentMonth = typeof currentMonth === 'string' 
         ? parse(currentMonth, 'MMM-yyyy', new Date())
         : currentMonth;
     
     const formattedMonth = format(firstDayCurrentMonth, 'MMM-yyyy');
+    
+    // Fetch events for the current month
+    useEffect(() => {
+        const fetchEvents = async () => {
+            setLoading(true);
+            setError(null);
+            
+            try {
+                const response = await axios.get('/api/calendar', {
+                    params: { month: formattedMonth }
+                });
+                setEvents(response.data);
+            } catch (err) {
+                console.error('Error fetching events:', err);
+                setError('Failed to load events. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchEvents();
+    }, [formattedMonth]);
+    
+    // Filter events for selected day
+    useEffect(() => {
+        const dateString = format(selectedDay, 'yyyy-MM-dd');
+        const filteredEvents = events.filter(event => event.date === dateString);
+        setSelectedDayEvents(filteredEvents);
+    }, [selectedDay, events]);
     
     const days = eachDayOfInterval({
         start: startOfMonth(firstDayCurrentMonth),
@@ -45,16 +58,11 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
     const totalCells = 42; // 6 rows of 7 days
     const emptyDaysEnd = Array(Math.max(0, totalCells - days.length - startDay)).fill(null);
 
-    const hasEvent = (day) => {
-        const dateString = format(day, 'yyyy-MM-dd');
-        return events.some(event => event.date === dateString);
-    };
-
     const getEventTypes = (day) => {
         const dateString = format(day, 'yyyy-MM-dd');
         const dayEvents = events.filter(event => event.date === dateString);
-        // Get unique event types
-        return [...new Set(dayEvents.map(event => event.type))];
+        // Get unique event types, convert to lowercase
+        return [...new Set(dayEvents.map(event => event.type.toLowerCase()))];
     };
 
     const getDayEventCount = (day) => {
@@ -89,6 +97,9 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                     </button>
                 </div>
             </div>
+
+            {loading && <div className={styles['loading-indicator']}>Loading events...</div>}
+            {error && <div className={styles['error-message']}>{error}</div>}
 
             <div className={styles['split-view-container']}>
                 <div className={styles['calendar-container']}>
@@ -162,8 +173,7 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                     {selectedDayEvents.length > 0 ? (
                         <div className={styles['event-list']}>
                             {selectedDayEvents.map((event) => (
-                                <div key={event.id} className={`${styles['event-card']} ${styles[event.type]}`}>
-                                    <div className={styles['event-header']}>
+                                <div key={event.id} className={`${styles['event-card']} ${styles[event.type.toLowerCase()]}`}>                                    <div className={styles['event-header']}>
                                         <h5 className={styles['event-title']}>{event.title}</h5>
                                         <span className={styles['event-time']}>{event.time}</span>
                                     </div>
