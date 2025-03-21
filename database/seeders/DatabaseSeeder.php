@@ -13,14 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
-
+    
         // Call the DivisionSeeder
         $this->call(DivisionSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(FeatureSeeder::class);
         $this->call(DownloadableSeeder::class);
         $this->call(AnnouncementSeeder::class);
+        $this->call(CalendarScheduleSeeder::class);
         User::factory()->count(40)->create();
         Suggestion::factory()->count(40)->create();
         
