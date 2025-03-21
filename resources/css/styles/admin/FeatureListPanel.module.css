@@ -38,13 +38,13 @@
   }
   
   .feature-item:hover {
-    border-color: #0778f1;
+    border-color: #348cda;
     background-color: #f0f9ff;
   }
   
   .feature-item.selected {
     border-color: #0ea5e9;
-    background-color: #2a388f;
+    background-color: #348dda1e;
     box-shadow: 0 0 0 1px #0ea5e9;
   }
   
@@ -171,7 +171,7 @@
   
   .modal-input:focus,
   .modal-select:focus {
-    border-color: #007bff; /* Change border color on focus */
+    border-color: #348cda; /* Change border color on focus */
     outline: none;
   }
   
@@ -195,7 +195,7 @@
   }
   
   .save-button {
-    background-color: #007bff;
+    background-color: #348cda;
     color: white;
   }
   
@@ -204,7 +204,7 @@
   }
   
   .save-button:hover {
-    background-color: #0056b3; /* Darken on hover */
+    background-color: #348cda; /* Darken on hover */
   }
 
   .image-viewer {
@@ -241,12 +241,16 @@
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
-  background-color: #4f46e5; /* Change color as needed */
+  background-color: #11326a; /* Change color as needed */
   color: white;
   cursor: pointer;
 }
 
+.filter-button:hover {
+  background-color: #348cda;
+}
+
 .filter-button:disabled {
-  background-color: #d1d5db; /* Change to a disabled color */
+  background-color: #11326a; /* Change to a disabled color */
   cursor: not-allowed;
 }

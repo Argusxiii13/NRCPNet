@@ -129,7 +129,7 @@
 }
 
 .admin-day-cell.today .day-number {
-    background-color: #339af0;
+    background-color: #348cda;
     color: white;
     border-radius: 50%;
     width: 28px;
@@ -166,7 +166,7 @@
 }
 
 .event-line.meeting {
-    background-color: #339af0; /* Blue */
+    background-color: #348cda; /* Blue */
 }
 
 .event-line.event {
@@ -205,7 +205,7 @@
 }
 
 .legend-indicator.meeting {
-    background-color: #339af0; /* Blue */
+    background-color: #348cda; /* Blue */
 }
 
 .legend-indicator.event {

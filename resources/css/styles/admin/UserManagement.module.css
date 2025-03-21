@@ -72,7 +72,7 @@
 
 .um-search-input:focus {
     outline: none;
-    border-color: #0ea5e9;
+    border-color: #348cda;
     box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
 }
 
@@ -81,7 +81,7 @@
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    background-color: #2a388f;
+    background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
@@ -94,7 +94,7 @@
 }
 
 .um-add-user-btn:hover {
-    background-color: #0778f1;
+    background-color: #348cda;
     transform: translateY(-1px);
 }
 
@@ -128,13 +128,18 @@
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    background-color: #2a388f;
+    background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
     font-weight: 500;
     transition: background-color 0.2s ease;
 }
+
+.filter-button:hover {
+    background-color: #348cda;
+}
+
 
 /* Table Styles */
 .table-container {
@@ -188,7 +193,7 @@
 
 .division-badge {
     background-color: #e0f2fe;
-    color: #0284c7;
+    color: #348cda;
 }
 
 .status-badge.active {
@@ -203,7 +208,7 @@
 
 .activity-badge.online {
     background-color: #dbeafe;
-    color: #1e40af;
+    color: #348cda;
 }
 
 .activity-badge.offline {
@@ -239,7 +244,7 @@
 }
 
 .icon-button.view {
-    color: #0ea5e9;
+    color: #6d726e;
 }
 
 .icon-button.view:hover {
@@ -247,7 +252,7 @@
 }
 
 .icon-button.edit {
-    color: #0ea5e9;
+    color: #348cda;
 }
 
 .icon-button.edit:hover {
@@ -287,7 +292,7 @@
     padding: 8px 12px;
     border: none;
     border-radius: 4px;
-    background-color: #4f46e5; /* Change color as needed */
+    background-color: #11326a; /* Change color as needed */
     color: white;
     cursor: pointer;
 }

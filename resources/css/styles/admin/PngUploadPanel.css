@@ -42,12 +42,12 @@
 }
 
 .upload-zone:hover {
-  border-color: #5aa6f8;
+  border-color: #348cda;
   background-color: #f0f9ff;
 }
 
 .upload-zone svg {
-  color: #2a388f;
+  color: #11326a;
 }
 
 .upload-zone p {
@@ -120,7 +120,7 @@
 
 .upload-button {
   padding: 10px 20px;
-  background-color: #2a388f;
+  background-color: #11326a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -130,5 +130,5 @@
 }
 
 .upload-button:hover {
-  background-color: #0778f1;
+  background-color: #348cda;
 }

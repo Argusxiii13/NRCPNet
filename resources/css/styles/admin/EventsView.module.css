@@ -17,24 +17,27 @@
 }
 
 .toggle-button {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: #11326a;
+    color: white;
+    border-color: #ffffff;
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: none;
 }
 
 .toggle-button:hover {
-    background-color: #e9ecef;
+    background-color: #348cda;
 }
 
-.toggle-button.active {
+
+/* .toggle-button.active {
     background-color: #339af0;
     border-color: #339af0;
     color: white;
-}
+} */
 
 .events-container {
     background-color: white;
@@ -51,7 +54,7 @@
 
 .event-item {
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #ffffff;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -171,11 +174,12 @@
 }
 
 .cancel-button:hover {
-    background-color: #f8f9fa;
+    background-color: #dc2626;
+    color: white;
 }
 
 .save-button-cal {
-    background-color: #339af0;
+    background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
@@ -186,5 +190,5 @@
 }
 
 .save-button-cal:hover {
-    background-color: #228be6;
+    background-color: #348cda;
 }

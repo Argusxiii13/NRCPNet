@@ -76,7 +76,7 @@
   
   .form-input:focus {
     outline: none;
-    border-color: #0ea5e9;
+    border-color: #348cda;
     box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
   }
   
@@ -113,7 +113,7 @@
   .form-checkbox {
     width: 16px;
     height: 16px;
-    accent-color: #0ea5e9;
+    accent-color: #348cda;
   }
   
   .modal-footer {
@@ -140,7 +140,7 @@
   
   .save-button {
     padding: 8px 16px;
-    background-color: #2a388f;
+    background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
@@ -149,7 +149,7 @@
   }
   
   .save-button:hover {
-    background-color: #0778f1;
+    background-color: #348cda;
   }
   
   .module-name {

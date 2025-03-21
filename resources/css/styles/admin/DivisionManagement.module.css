@@ -32,7 +32,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background-color: #2a388f;
+  background-color: #11326a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -41,7 +41,7 @@
 }
 
 .add-button:hover {
-  background-color: #0778f1;
+  background-color: #348cda;
 }
 
 /* Filters and Search Styles */
@@ -72,7 +72,7 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #0ea5e9;
+  border-color: #348cda;
   box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
 }
 
@@ -138,7 +138,7 @@
 }
 
 .edit-button {
-  color: #11326a;
+  color: #348cda;
 }
 
 .edit-button:hover {
@@ -202,7 +202,7 @@
 }
 
 .edit-button-sm {
-  color: #2a388f;
+  color: #11326a;
 }
 
 .edit-button-sm:hover {
@@ -236,7 +236,7 @@
 .add-section-button:hover {
   background-color: #f1f5f9;
   border-color: #94a3b8;
-  color: #0284c7;
+  color: #348cda;
 }
 
 /* Confirmation Modal Styles */
@@ -320,7 +320,7 @@
 
 .save-button {
   padding: 8px 16px;
-  background-color: #0ea5e9;
+  background-color: #11326a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -329,7 +329,7 @@
 }
 
 .save-button:hover {
-  background-color: #0284c7;
+  background-color: #348cda;
 }
 
 /* Loading and Placeholder Styles */

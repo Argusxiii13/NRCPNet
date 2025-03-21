@@ -55,7 +55,7 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #0ea5e9;
+  border-color: #348cda;
   box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
 }
 
@@ -85,7 +85,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background-color: #2a388f;
+  background-color: #11326a;
   color: white;
   border: none;
   border-radius: 6px;
@@ -93,7 +93,7 @@
 }
 
 .filter-button:hover {
-  background-color: #0778f1;
+  background-color: #348cda;
 }
 
 /* Suggestions List Styles */
@@ -125,7 +125,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #2a388f;
+  background-color: #348cda;
   color: white;
   padding: 4px 10px;
   font-size: 12px;
@@ -161,7 +161,7 @@
 
 .division-badge {
   background-color: #e0f2fe;
-  color: #0284c7;
+  color: #11326a;
 }
 
 .section-badge {
@@ -180,7 +180,7 @@
 
 .status-in-progress {
   background-color: #eff6ff;
-  color: #2563eb;
+  color: #348cda;
 }
 
 .status-resolved {
@@ -266,7 +266,7 @@
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
-  background-color: #4f46e5; /* Change color as needed */
+  background-color: #11326a; /* Change color as needed */
   color: white;
   cursor: pointer;
 }
