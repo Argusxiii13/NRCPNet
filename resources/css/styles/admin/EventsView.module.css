@@ -1,5 +1,7 @@
 .admin-events-section {
     width: 100%;
+    height: 600px;
+    overflow-y: auto;
 }
 
 .panel-sub-header {
@@ -14,6 +16,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #333;
+    flex-grow: 1; /* Add this line */
 }
 
 .toggle-button {
@@ -26,23 +29,18 @@
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: none;
+    margin-left: auto; /* Add this line */
 }
 
 .toggle-button:hover {
     background-color: #348cda;
 }
 
-
-/* .toggle-button.active {
-    background-color: #339af0;
-    border-color: #339af0;
-    color: white;
-} */
-
 .events-container {
     background-color: white;
     border-radius: 8px;
     padding: 16px;
+    overflow-y: auto;
 }
 
 /* Event List Styles */
@@ -112,6 +110,17 @@
     color: #343a40;
 }
 
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
 .form-group {
     margin-bottom: 16px;
 }
@@ -125,8 +134,9 @@
 }
 
 .form-group input,
-.form-group textarea {
-    width: 100%;
+.form-group textarea,
+.form-group select {
+    width: 550px;
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 6px;
@@ -135,25 +145,18 @@
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: #339af0;
 }
 
 .form-group textarea {
-    min-height: 100px;
     resize: vertical;
 }
 
-.form-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.time-input {
-    flex: 1;
-    margin-bottom: 12px;
+.date-picker input {
+    cursor: pointer;
 }
 
 .form-buttons {
@@ -192,3 +195,33 @@
 .save-button-cal:hover {
     background-color: #348cda;
 }
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .date-nav-button {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .date-picker-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .date-picker-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }

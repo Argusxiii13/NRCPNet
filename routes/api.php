@@ -11,7 +11,6 @@ use App\Http\Controllers\api\DownloadableController;
 use App\Http\Controllers\api\AnnouncementController;
 use App\Http\Controllers\api\PaginatedController;
 use App\Http\Controllers\api\CalendarScheduleController;
-use App\Models\CalendarSchedule;
 
 Route::apiResource('suggestion', SuggestionController::class);
 
@@ -34,3 +33,5 @@ Route::get('paginated/features', [PaginatedController::class, 'getFeaturesPagina
 Route::get('paginated/suggestions', [PaginatedController::class, 'getSuggestionsPaginated']);
 
 Route::apiResource('calendar', CalendarScheduleController::class);
+
+Route::get('calendar/date/{date}', [CalendarScheduleController::class, 'getEventsByDate']);

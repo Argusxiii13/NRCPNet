@@ -23,10 +23,5 @@ class CalendarSchedule extends Model
         'description',
     ];
     
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
 
 }
