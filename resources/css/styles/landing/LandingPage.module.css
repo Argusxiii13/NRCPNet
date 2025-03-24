@@ -48,8 +48,8 @@
     grid-row: 1; /* 1st row */
     display: flex;
     flex-direction: column;
-    gap: 20px; 
-    padding: 1.5rem;
+    gap: 30px; 
+    padding: 1rem;
     background-color: #ffffff00;
     border-radius: 8px;
 }

@@ -18,6 +18,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     const [editingEvent, setEditingEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [timeDisabled, setTimeDisabled] = useState(false);
 
     // Format date for date input (YYYY-MM-DD)
     function formatDateForInput(date) {
@@ -27,14 +28,36 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         return `${year}-${month}-${day}`;
     }
 
+    // Check if the selected date is a Thursday
+    const isThursday = (date) => {
+        return new Date(date).getDay() === 4; // 0 is Sunday, 4 is Thursday
+    };
+
     // Load events when selected day changes
     useEffect(() => {
         fetchEventsByDate(formatDateForInput(selectedDay));
         setEventDate(selectedDay);
-        setFormData({
+        
+        const isSelectedDayThursday = isThursday(selectedDay);
+        
+        // Update form data with new date
+        let updatedFormData = {
             ...formData,
             date: formatDateForInput(selectedDay)
-        });
+        };
+        
+        // If changing from Thursday to non-Thursday and type is Wellness, reset type
+        if (!isSelectedDayThursday && formData.type === 'Wellness') {
+            updatedFormData = {
+                ...updatedFormData,
+                type: ''
+            };
+        }
+        
+        setFormData(updatedFormData);
+        
+        // Set time disabled only if it's Thursday AND type is Wellness
+        setTimeDisabled(isSelectedDayThursday && formData.type === 'Wellness');
     }, [selectedDay]);
 
     // Fetch events for a specific date
@@ -59,20 +82,61 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         // Remove the 'event' prefix and convert to lowercase if present
         const fieldName = id.startsWith('event') ? id.replace('event', '').toLowerCase() : id;
         
-        setFormData({
+        let updatedFormData = {
             ...formData,
             [fieldName]: value
-        });
+        };
+        
+        // If event type changes to Wellness, set the specific time
+        if (fieldName === 'type' && value === 'Wellness' && isThursday(formData.date)) {
+            updatedFormData = {
+                ...updatedFormData,
+                startTime: '15:00',
+                endTime: '17:00'
+            };
+            setTimeDisabled(true);
+        } 
+        // If changing from Wellness to another type, enable time fields
+        else if (fieldName === 'type' && formData.type === 'Wellness' && value !== 'Wellness') {
+            setTimeDisabled(false);
+        }
+        
+        setFormData(updatedFormData);
     };
 
     // Handle date change
     const handleDateChange = (e) => {
         const newDate = new Date(e.target.value);
         setEventDate(newDate);
-        setFormData({
+        
+        const isNewDateThursday = isThursday(e.target.value);
+        
+        let updatedFormData = {
             ...formData,
             date: e.target.value
-        });
+        };
+        
+        // If changing from Thursday to non-Thursday and type is Wellness, reset type
+        if (!isNewDateThursday && formData.type === 'Wellness') {
+            updatedFormData = {
+                ...updatedFormData,
+                type: '',
+                startTime: '',
+                endTime: ''
+            };
+            setTimeDisabled(false);
+        }
+        // If changing to Thursday and type is already set to Wellness, lock time to 3PM-5PM
+        else if (isNewDateThursday && formData.type === 'Wellness') {
+            updatedFormData = {
+                ...updatedFormData,
+                startTime: '15:00',
+                endTime: '17:00'
+            };
+            setTimeDisabled(true);
+        }
+        
+        setFormData(updatedFormData);
         
         // If we're in view mode, fetch events for the new date
         if (!isManageMode) {
@@ -138,7 +202,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             endTime = end;
         }
 
-        setFormData({
+        const eventFormData = {
             title: event.title,
             type: event.type,
             date: event.date,
@@ -146,7 +210,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             endTime: endTime,
             location: event.location || '',
             description: event.description || ''
-        });
+        };
+
+        // Set time disabled based on event type and day
+        setTimeDisabled(isThursday(event.date) && event.type === 'Wellness');
+
+        setFormData(eventFormData);
     };
 
     // Delete event
@@ -178,6 +247,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             location: '',
             description: ''
         });
+        setTimeDisabled(false);
     };
 
     // Format time for display (e.g., "9:00 AM - 10:00 AM")
@@ -203,6 +273,9 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         const formattedDate = formatDateForInput(nextDay);
         fetchEventsByDate(formattedDate);
     };
+
+    // Check if current date is Thursday
+    const isCurrentDateThursday = isThursday(formData.date);
 
     return (
         <div className={styles['admin-events-section']}>
@@ -285,6 +358,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         <option value="Meeting">Meeting</option>
                                         <option value="Event">Event</option>
                                         <option value="Holiday">Holiday</option>
+                                        {/* Only show Wellness option on Thursdays */}
+                                        {isCurrentDateThursday && <option value="Wellness">Wellness</option>}
                                     </select>
                                 </div>
                             </div>
@@ -324,6 +399,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         id="startTime" 
                                         value={formData.startTime || ''}
                                         onChange={handleInputChange}
+                                        disabled={timeDisabled}
+                                        title={timeDisabled ? 'Time is fixed for Wellness events on Thursday' : ''}
                                     />
                                 </div>
                                 <div className={styles['form-group']}>
@@ -333,9 +410,18 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         id="endTime" 
                                         value={formData.endTime || ''}
                                         onChange={handleInputChange}
+                                        disabled={timeDisabled}
+                                        title={timeDisabled ? 'Time is fixed for Wellness events on Thursday' : ''}
                                     />
                                 </div>
                             </div>
+                            
+                            {/* Show message about Wellness events if applicable */}
+                            {isCurrentDateThursday && formData.type === 'Wellness' && (
+                                <div className={styles['info-message'] || ''}>
+                                    Wellness events on Thursday are automatically scheduled from 3:00 PM to 5:00 PM.
+                                </div>
+                            )}
                             
                             {/* Description field taking remaining space */}
                             <div className={styles['form-group']}>
@@ -383,6 +469,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                     </div>
                                     <div className={styles['event-content']}>
                                         <h4>{event.title}</h4>
+                                        <div className={styles['event-type']}>{event.type}</div>
                                         {event.location && <div className={styles['event-location']}>{event.location}</div>}
                                         {event.description && <p>{event.description}</p>}
                                     </div>

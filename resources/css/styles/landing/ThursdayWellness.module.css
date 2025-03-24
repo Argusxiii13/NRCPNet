@@ -3,7 +3,7 @@
     padding: 1rem;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    height: 350px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -11,7 +11,6 @@
 
 .wellness-title {
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
     text-align: center;
     flex-shrink: 0;
     color: #ffffff; 
@@ -48,8 +47,7 @@
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     flex-shrink: 0;
-    margin-bottom: 150px;
-    margin-top: 50px;
+    
 }
 
 .wellness-date {
