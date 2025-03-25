@@ -1,203 +1,160 @@
-.main-content {
-    margin-top: 100px;
-    padding: 0.5rem 7rem;
-    /* background-image: url('/image/HallwayBackground.png'); /* Update with your image path */ 
-}
-
-.content-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto auto auto; /* Three rows */
-    gap: 20px;
-    width: 100%;
-}
-
-/* Add padding to each section */
-.event-section,
-.announcement-section,
-.links-section,
-.calendar-section,  
-.downloadable-forms-section,
-.thursday-wellness-section {
-    padding: 1.5rem;    
-    border-radius: 8px;
-}
-
-/* Hallway Section for Background */
-.hallway-section {
-    display: grid;
-    grid-template-columns: 2fr 2fr 2fr; /* Three equal columns */
-    background-image: url('/image/HallwayBackground.png'); /* Update with your image path */ 
-    background-size: auto;
-    background-position: unset;
-    padding: 50px; /* Adjust padding as needed */
-    border-radius: 8px; /* Optional rounded corners */
-    grid-column: 1 / span 3; /* Span all 3 columns */
-    gap: 15px; /* Add gap between items */
-}
-
-/* Downloadable Forms occupies 2 rows */
-.downloadable-forms-section {
-    grid-column: 1; /* 1st column */
-    grid-row: 1 / span 2; /* Span 2 rows */
-}
-
-/* Thursday Wellness occupies 1 row */
-.thursday-wellness-section {
-    grid-column: 2; /* 2nd column */
-    grid-row: 1; /* 1st row */
+/* Reset and Base Styles */
+.app {
     display: flex;
     flex-direction: column;
-    gap: 30px; 
-    padding: 1rem;
-    background-color: #ffffff00;
-    border-radius: 8px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
-/* Calendar occupies 1 row */
-.calendar-section {
-    grid-column: 3; /* 3rd column */
-    grid-row: 1; /* 1st row */
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    padding: 1.5rem; 
-    background-color: #ffffff00; 
-    border-radius: 8px; 
+/* Header - Prevent Overlap */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
 }
 
-/* First row: EventCarousel takes all 3 columns */
-.event-section {
-    grid-column: 1 / span 3;
-    grid-row: 1;
+/* Main Content Area - Add Top Padding to Prevent Header Overlap */
+.main-content {
+    padding-top: 80px; /* Adjust based on your header height */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Second row: AnnouncementCarousel takes 2 columns, LinkList takes 1 column */
-.announcement-section {
-    grid-column: 1 / span 2;
-    grid-row: 2;
-    display: flex; 
-    flex-direction: column; 
-    height: 400px;  
-}
-
-.links-section {
-    grid-column: 3;
-    grid-row: 2;
-}
-
-/* Adjust the container heights to fit nicely in the stack */
-.wellness-container,
-.special-events-container {
-    height: 300px; 
-    min-height: 300px; 
-    flex: 1; 
-}
-
-/* Component styles */
-.announcement-container,
-.linklist-container,
-.wellness-container {
-    height: 350px;
-}
-
-.welcome-container {
+/* Welcome Section */
+.welcome-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
 }
 
-.welcome-section {
-    margin-bottom: 0; 
+.welcome-text {
+    flex-grow: 1;
 }
 
 .time-display {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: right;
+    margin-left: 2rem;
 }
 
-.time-zone {
-    font-weight: bold;
-    font-size: small;
-    color: #666;
-    margin-bottom: 0.5rem;
+/* First Section - Event Carousel */
+.first-section {
+    width: 100%; /* Ensure full width */
+    margin-bottom: 0; /* Remove margin */
+    padding: 0;
+    background-color: #d3d3d3; /* Light gray background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Prevent overflow */
+    border-radius: 8px; /* Add border radius */
 }
 
-.current-time {
-    font-size: small;
-    color: #333;
+/* Removed Section Separator */
+
+/* Second Section - Announcement and Links */
+.second-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin-top: 0; /* Remove margin */
+    margin-bottom: 0; /* Remove margin */
+    gap: 1rem;
+    background-color: #a9a9a9; /* Dark gray background */
 }
 
-/* Responsive design */
-@media (max-width: 1200px) {
-    .main-content {
-        padding: 0.5rem 3rem;
-    }
+.announcement-carousel {
+    background-color: transparent;
+    padding: 2rem;
 }
 
+.links-list {
+    background-color: transparent;
+    padding: 2rem;
+}
+
+/* Third Section - Complex Layout */
+.third-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    background-image: url('/image/HallwayBackground.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.downloadable-forms {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    background-color: transparent;
+    padding: 2rem;
+}
+
+.thursday-wellness {
+    grid-column: 2;
+    grid-row: 1;
+    background-color: transparent;
+    padding: 2rem;
+    margin-bottom: 0;
+}
+
+.calendar {
+    grid-column: 3;
+    grid-row: 1;
+    background-color: transparent;
+    padding: 2rem;
+}
+
+.special-events {
+    grid-column: 2;
+    grid-row: 2;
+    background-color: transparent;
+    padding: 2rem;
+    margin-top: -30%;
+}
+
+.suggestion-box {
+    grid-column: 3;
+    grid-row: 2;
+    background-color: transparent;
+    padding: 2rem;
+}
+
+/* Footer */
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    margin: 0;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        padding: 0.5rem 1rem;
+        padding-top: 60px;
     }
-    
-    .content-grid {
+
+    .welcome-section,
+    .second-section,
+    .third-section {
+        flex-direction: column;
         grid-template-columns: 1fr;
     }
-    
-    .event-section,
-    .announcement-section,
-    .links-section,
-    .calendar-section,
-    .downloadable-forms-section,
-    .thursday-wellness-section {
+
+    .third-section {
+        grid-template-rows: auto;
+    }
+
+    .downloadable-forms,
+    .thursday-wellness,
+    .special-events,
+    .calendar,
+    .suggestion-box {
         grid-column: 1;
-        padding: 1rem;
-    }
-    
-    .event-section {
-        grid-row: 1;
-    }
-    
-    .announcement-section {
-        grid-row: 2;
-    }
-    
-    .links-section {
-        grid-row: 3;
-    }
-    
-    .downloadable-forms-section {
-        grid-row: 4;
-    }
-
-    .calendar-section {
-        grid-row: 5; /* Adjusted for mobile view */
-    }
-
-    .thursday-wellness-section {
-        gap: 15px; 
-        padding: 1rem;
-        grid-row: 6; /* Adjusted for mobile view */
-    }
-
-    .wellness-container,
-    .special-events-container {
-        height: 250px; 
-        min-height: 250px;
-    }
-
-    .welcome-container {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .time-display {
-        width: 100%;
-        text-align: center;
+        grid-row: auto;
     }
 }

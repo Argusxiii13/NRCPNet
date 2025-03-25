@@ -1,48 +1,53 @@
 /* EventCarousel.css */
 .carousel-container {
-    width: 100%; /* Takes full width of parent */
-    height: 450px;
+    width: 100%;
+    min-height: 450px; /* Changed from fixed height to min-height */
     position: relative;
-    margin: 20px 0;
+    overflow: visible; /* Changed from hidden to visible */
+    margin: 0; /* Removed margin */
 }
 
 .carousel {
     position: relative;
     width: 100%;
-    height: 240px;
-    padding-top: 15%; /* This creates an aspect ratio of 2.5:1 */
-    background-image: linear-gradient( #448ece , #11326a);
+    height: auto; /* Changed from fixed height to auto */
+    min-height: 300px; /* Added minimum height */
+    padding-top: 0; /* Removed percentage padding */
+    background-image: linear-gradient(#448ece, #11326a);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible */
 }
 
+/* Aspect Ratio */
 .carousel-item {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative; /* Changed from absolute */
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: visible; /* Changed from hidden */
 }
 
 /* Image container */
+/* Image container */
 .carousel-image {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative; /* Changed from absolute */
     width: 100%;
-    height: 100%;
+    height: auto; /* Changed from 100% to auto */
+    min-height: 250px; /* Added minimum height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1;
-}
+}   
 
 /* Image styling with object-fit: fill as requested */
 .carousel-image img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Ensure image fits well */
 }
 
 /* Navigation areas */

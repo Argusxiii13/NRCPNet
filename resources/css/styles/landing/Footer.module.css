@@ -1,13 +1,12 @@
-/* footer.css */
+/* Footer */
 .footer {
-    background-color: #333; /* Dark background */
-    color: #fff; /* White text */
-    text-align: center; /* Centered text */
-    padding: 1rem; /* Padding around the text */
-    position: relative; /* Positioning for sticky footer */
-    bottom: 0; /* Align to the bottom */
-    width: 99%; /* Full width */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    background-color: #343a40;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    margin: 0;
+    width: 100%; /* Ensure full width */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Responsive design */
