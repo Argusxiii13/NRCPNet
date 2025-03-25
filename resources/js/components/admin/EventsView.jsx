@@ -9,7 +9,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     const [formData, setFormData] = useState({
         title: '',
         type: '',
-        date: formatDateForInput(selectedDay),
+        date: format(selectedDay, 'yyyy-MM-dd'),
         startTime: '',
         endTime: '',
         location: '',
@@ -19,6 +19,17 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [timeDisabled, setTimeDisabled] = useState(false);
+    
+    // NEW: Add state to track validation errors
+    const [validationErrors, setValidationErrors] = useState({
+        title: false,
+        type: false,
+        date: false,
+        startTime: false,
+        endTime: false,
+        location: false,
+        description: false
+    });
 
     // Format date for date input (YYYY-MM-DD)
     function formatDateForInput(date) {
@@ -31,6 +42,24 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     // Check if the selected date is a Thursday
     const isThursday = (date) => {
         return new Date(date).getDay() === 4; // 0 is Sunday, 4 is Thursday
+    };
+
+    // NEW: Validation function
+    const validateFields = () => {
+        const newValidationErrors = {
+            title: !formData.title.trim(),
+            type: !formData.type,
+            date: !formData.date,
+            startTime: !timeDisabled && !formData.startTime,
+            endTime: !timeDisabled && !formData.endTime,
+            location: !formData.location.trim(),
+            description: !formData.description.trim()
+        };
+
+        setValidationErrors(newValidationErrors);
+
+        // Return true if all fields are valid (no errors)
+        return !Object.values(newValidationErrors).some(error => error);
     };
 
     // Load events when selected day changes
@@ -86,6 +115,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             ...formData,
             [fieldName]: value
         };
+        
+        // Clear validation error for this field
+        setValidationErrors(prev => ({
+            ...prev,
+            [fieldName]: !value.trim()
+        }));
         
         // If event type changes to Wellness, set the specific time
         if (fieldName === 'type' && value === 'Wellness' && isThursday(formData.date)) {
@@ -147,6 +182,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     // Save event (create or update)
     const handleSaveEvent = async (e) => {
         e.preventDefault();
+        
+        // Validate fields first
+        if (!validateFields()) {
+            return; // Stop if validation fails
+        }
+
         setIsLoading(true);
         setError(null);
 
@@ -180,6 +221,17 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             resetForm();
             setEditingEvent(null);
             setIsManageMode(false);
+            
+            // Reset validation errors
+            setValidationErrors({
+                title: false,
+                type: false,
+                date: false,
+                startTime: false,
+                endTime: false,
+                location: false,
+                description: false
+            });
         } catch (err) {
             setError('Failed to save event. Please check your inputs and try again.');
             console.error('Error saving event:', err);
@@ -335,7 +387,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                         <form onSubmit={handleSaveEvent}>
                             {/* First Row: Title and Event Type */}
                             <div className={styles['form-row']}>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${validationErrors.title ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventTitle">Event Title</label>
                                     <input 
                                         type="text" 
@@ -345,8 +397,9 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         onChange={handleInputChange}
                                         required
                                     />
+                                    {validationErrors.title && <span className={styles['error-message']}>Title is required</span>}
                                 </div>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${validationErrors.type ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventType">Event Type</label>
                                     <select 
                                         id="eventType"
@@ -361,12 +414,13 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         {/* Only show Wellness option on Thursdays */}
                                         {isCurrentDateThursday && <option value="Wellness">Wellness</option>}
                                     </select>
+                                    {validationErrors.type && <span className={styles['error-message']}>Type is required</span>}
                                 </div>
                             </div>
                             
                             {/* Second Row: Date and Location */}
                             <div className={styles['form-row']}>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${validationErrors.date ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventDate">Event Date</label>
                                     <div className={styles['date-picker']}>
                                         <input 
@@ -377,8 +431,9 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                             required
                                         />
                                     </div>
+                                    {validationErrors.date && <span className={styles['error-message']}>Date is required</span>}
                                 </div>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${validationErrors.location ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventLocation">Location</label>
                                     <input 
                                         type="text" 
@@ -386,13 +441,15 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         placeholder="Enter event location" 
                                         value={formData.location}
                                         onChange={handleInputChange}
+                                        required
                                     />
+                                    {validationErrors.location && <span className={styles['error-message']}>Location is required</span>}
                                 </div>
                             </div>
                             
                             {/* Third Row: Start Time and End Time */}
                             <div className={styles['form-row']}>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${!timeDisabled && validationErrors.startTime ? styles['error-field'] : ''}`}>
                                     <label htmlFor="startTime">Start Time</label>
                                     <input 
                                         type="time" 
@@ -401,9 +458,11 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         onChange={handleInputChange}
                                         disabled={timeDisabled}
                                         title={timeDisabled ? 'Time is fixed for Wellness events on Thursday' : ''}
+                                        required={!timeDisabled}
                                     />
+                                    {!timeDisabled && validationErrors.startTime && <span className={styles['error-message']}>Start Time is required</span>}
                                 </div>
-                                <div className={styles['form-group']}>
+                                <div className={`${styles['form-group']} ${!timeDisabled && validationErrors.endTime ? styles['error-field'] : ''}`}>
                                     <label htmlFor="endTime">End Time</label>
                                     <input 
                                         type="time" 
@@ -412,8 +471,23 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         onChange={handleInputChange}
                                         disabled={timeDisabled}
                                         title={timeDisabled ? 'Time is fixed for Wellness events on Thursday' : ''}
+                                        required={!timeDisabled}
                                     />
+                                    {!timeDisabled && validationErrors.endTime && <span className={styles['error-message']}>End Time is required</span>}
                                 </div>
+                            </div>
+                            
+                            {/* Description field taking remaining space */}
+                            <div className={`${styles['form-group']} ${validationErrors.description ? styles['error-field'] : ''}`}>
+                                <label htmlFor="eventDescription">Description</label>
+                                <textarea 
+                                    id="eventDescription" 
+                                    placeholder="Enter event description"
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                                {validationErrors.description && <span className={styles['error-message']}>Description is required</span>}
                             </div>
                             
                             {/* Show message about Wellness events if applicable */}
@@ -422,17 +496,6 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                     Wellness events on Thursday are automatically scheduled from 3:00 PM to 5:00 PM.
                                 </div>
                             )}
-                            
-                            {/* Description field taking remaining space */}
-                            <div className={styles['form-group']}>
-                                <label htmlFor="eventDescription">Description</label>
-                                <textarea 
-                                    id="eventDescription" 
-                                    placeholder="Enter event description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                ></textarea>
-                            </div>
                             
                             <div className={styles['form-buttons']}>
                                 <button 

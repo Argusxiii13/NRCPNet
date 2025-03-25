@@ -225,3 +225,26 @@
     opacity: 0;
     cursor: pointer;
   }
+
+  /* Add these styles to your existing CSS file */
+.error-field input,
+.error-field select,
+.error-field textarea {
+    border-color: #dc2626;
+    background-color: #fff5f5;
+}
+
+.error-field input:focus,
+.error-field select:focus,
+.error-field textarea:focus {
+    outline: none;
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    display: block;
+}
