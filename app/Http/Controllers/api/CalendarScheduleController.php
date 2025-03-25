@@ -172,4 +172,28 @@ public function getEventsByDate($date)
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+/**
+     * Get wellness activities for the current week
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getWellnessActivities()
+    {
+        try {
+            // Get the start and end of the current week
+            $startOfWeek = Carbon::now()->startOfWeek();
+            $endOfWeek = Carbon::now()->endOfWeek();
+
+            // Fetch wellness activities for the current week
+            $activities = CalendarSchedule::where('type', 'wellness')
+                ->whereBetween('date', [$startOfWeek, $endOfWeek])
+                ->get();
+
+            Log::debug('Wellness activities found: ' . $activities->count());
+            return response()->json($activities);
+        } catch (\Exception $e) {
+            Log::error('Wellness activities fetch error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

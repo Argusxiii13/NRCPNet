@@ -35,3 +35,5 @@ Route::get('paginated/suggestions', [PaginatedController::class, 'getSuggestions
 Route::apiResource('calendar', CalendarScheduleController::class);
 
 Route::get('calendar/date/{date}', [CalendarScheduleController::class, 'getEventsByDate']);
+
+Route::get('wellness-activities', [CalendarScheduleController::class, 'getWellnessActivities']);

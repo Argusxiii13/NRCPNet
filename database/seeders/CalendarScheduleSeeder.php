@@ -16,11 +16,11 @@ class CalendarScheduleSeeder extends Seeder
             ['date' => '2025-03-17', 'type' => 'Holiday', 'title' => 'St. Patrick\'s Day', 'time' => 'All Day', 'location' => '-', 'description' => 'Office closed for holiday.'],
             ['date' => '2025-03-24', 'type' => 'Event', 'title' => 'Spring Equinox', 'time' => '15:30 - 16:30', 'location' => 'Courtyard', 'description' => 'Team building activity to welcome spring.'],
             ['date' => '2025-03-24', 'type' => 'Meeting', 'title' => 'Project Review', 'time' => '11:00 - 12:00', 'location' => 'Conference Room B', 'description' => 'Quarterly review of ongoing projects.'],
-            ['date' => '2025-03-31', 'type' => 'Meeting', 'title' => 'Sprint Planning', 'time' => '10:00 - 11:30', 'location' => 'Main Hall', 'description' => 'Planning session for next sprint.'],
-            ['date' => '2025-03-24', 'type' => 'Meeting', 'title' => 'Department Sync1', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
-            ['date' => '2025-03-24', 'type' => 'Meeting', 'title' => 'Department Sync2', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
-            ['date' => '2025-03-24', 'type' => 'Meeting', 'title' => 'Department Sync3', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
-            ['date' => '2025-03-24', 'type' => 'Holiday', 'title' => 'Department Sync4', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
+            ['date' => '2025-03-27', 'type' => 'Wellness', 'title' => 'Sprint Planning', 'time' => '10:00 - 11:30', 'location' => 'Main Hall', 'description' => 'Planning session for next sprint.'],
+            ['date' => '2025-03-25', 'type' => 'Meeting', 'title' => 'Department Sync1', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
+            ['date' => '2025-03-25', 'type' => 'Meeting', 'title' => 'Department Sync2', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
+            ['date' => '2025-03-25', 'type' => 'Meeting', 'title' => 'Department Sync3', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
+            ['date' => '2025-03-25', 'type' => 'Holiday', 'title' => 'Department Sync4', 'time' => '09:30 - 10:30', 'location' => 'Conference Room C', 'description' => 'Sync meeting with department heads.'],
 
         ];
 
