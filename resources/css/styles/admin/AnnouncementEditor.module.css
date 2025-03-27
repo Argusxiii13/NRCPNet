@@ -48,13 +48,13 @@
   border: 1px solid #e1e4e8;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 1026px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
 .editor-content {
-  height: 398px !important;
-  width: 1026px !important;
+  height: 532px !important;
+  width: 1120px !important;
   padding: 20px;
   box-sizing: border-box;
   overflow: auto;
@@ -63,13 +63,13 @@
 
 /* Make sure the editor doesn't expand beyond our dimensions */
 :global(.note-editor) {
-  width: 1026px !important;
+  width: 1120px !important;
   margin: 0 auto !important;
 }
 
 :global(.note-editable) {
-  height: 358px !important; /* 398px - 40px for padding */
-  overflow: auto !important;
+  height: 530px !important; /* 500px - 20px for padding */
+  overflow: hidden !important;
 }
 
 .button-container {
@@ -110,4 +110,15 @@
 .image-button:hover {
   background-color: #348cda;
   color: rgb(255, 255, 255);
+}
+
+/* New styles to remove line spacing in HTML export */
+.announcement-container p {
+  margin: 0;
+  padding: 0;
+}
+
+.announcement-container br {
+  line-height: 0;
+  height: 0;
 }

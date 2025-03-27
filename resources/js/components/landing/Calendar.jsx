@@ -1,21 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfToday, startOfMonth } from 'date-fns';
-import styles from '../../../css/styles/landing/Calendar.module.css'
+import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfMonth } from 'date-fns';
+import axios from 'axios';
+import styles from '../../../css/styles/landing/Calendar.module.css';
+
+// Function to convert 24-hour time to 12-hour time with AM/PM
+const formatTime = (timeString) => {
+    if (!timeString) return '';
+
+    // Split the time range if it exists
+    const times = timeString.split(' - ');
+    
+    // Convert each time in the range
+    const formattedTimes = times.map(time => {
+        const [hours, minutes] = time.split(':');
+        const parsedHours = parseInt(hours, 10);
+        const period = parsedHours >= 12 ? 'PM' : 'AM';
+        const formattedHours = parsedHours % 12 || 12;
+        return `${formattedHours}:${minutes} ${period}`;
+    });
+
+    // Join back with ' - ' if it was a range
+    return formattedTimes.join(' - ');
+};
 
 const Calendar = () => {
-    const today = startOfToday();
+    const today = new Date();
     const [selectedDay, setSelectedDay] = useState(today);
     const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
     const [hoveredDay, setHoveredDay] = useState(today);
     const [isHovering, setIsHovering] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isLocked, setIsLocked] = useState(false); // State to track if date is locked
 
     const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
 
     const days = eachDayOfInterval({
-        start: firstDayCurrentMonth,
+        start: startOfMonth(firstDayCurrentMonth),
         end: endOfMonth(firstDayCurrentMonth),
     });
 
@@ -25,20 +46,14 @@ const Calendar = () => {
     const totalCells = 42;
     const emptyDaysEnd = Array(totalCells - days.length - startDay).fill(null);
 
-    // Fetch events for the selected day
-    const fetchEvents = async (date) => {
+    // Fetch events for the current month
+    const fetchEvents = async () => {
         try {
             setLoading(true);
-            // Format the date as YYYY-MM-DD for the API call
-            const formattedDate = format(date, 'yyyy-MM-dd');
-            const response = await fetch(`/api/calendar/date/${formattedDate}`);
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch events');
-            }
-            
-            const data = await response.json();
-            setEvents(data);
+            const response = await axios.get('/api/calendar', {
+                params: { month: currentMonth }
+            });
+            setEvents(response.data);
         } catch (error) {
             console.error('Error fetching events:', error);
             setEvents([]);
@@ -47,36 +62,13 @@ const Calendar = () => {
         }
     };
 
-    // Handle day selection with locking mechanism
-    const handleDaySelect = (day) => {
-        // Toggle lock if clicking the same day
-        if (isEqual(day, selectedDay) && isLocked) {
-            setIsLocked(false);
-        } else {
-            setSelectedDay(day);
-            setIsLocked(true);
-            // When locking to a day, also set hovered day to match
-            setHoveredDay(day);
-        }
-    };
-
-    // Handle day hover
-    const handleDayHover = (day) => {
-        // Only update hovered day if not locked
-        if (!isLocked) {
-            setHoveredDay(day);
-        }
-    };
-
-    // Fetch events when active day changes (either locked selected day or hovered day)
     useEffect(() => {
-        const activeDay = isLocked ? selectedDay : (isHovering ? hoveredDay : selectedDay);
-        fetchEvents(activeDay);
-    }, [hoveredDay, selectedDay, isHovering, isLocked]);
+        fetchEvents();
+    }, [currentMonth]);
 
     const previousMonth = () => {
-        const firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
-        setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
+        const firstDayPrevMonth = add(firstDayCurrentMonth, { months: -1 });
+        setCurrentMonth(format(firstDayPrevMonth, 'MMM-yyyy'));
     };
 
     const nextMonth = () => {
@@ -84,33 +76,35 @@ const Calendar = () => {
         setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'));
     };
 
-    // Check if a day has events (for visual indicator)
-    const hasEvents = (day) => {
-        const formattedDate = format(day, 'yyyy-MM-dd');
-        return days.some(d => 
-            format(d, 'yyyy-MM-dd') === formattedDate && 
-            events.some(event => event.date === formattedDate)
-        );
+    const getEventTypes = (day) => {
+        const dateString = format(day, 'yyyy-MM-dd');
+        const dayEvents = events.filter(event => event.date === dateString);
+        return [...new Set(dayEvents.map(event => event.type.toLowerCase()))];
     };
 
-    // Determine which day to display in the schedule panel
-    const activeDay = isLocked ? selectedDay : hoveredDay;
+    const handleDaySelect = (day) => {
+        if (isEqual(day, selectedDay) && isLocked) {
+            setIsLocked(false);
+        } else {
+            setSelectedDay(day);
+            setIsLocked(true);
+            setHoveredDay(day);
+        }
+    };
+
+    const handleDayHover = (day) => {
+        if (!isLocked) {
+            setHoveredDay(day);
+        }
+    };
 
     return (
-        <div className={styles['calendar-wrapper']} onMouseEnter={() => {
-            setIsHovering(true);
-            if (!isLocked) {
-                setHoveredDay(selectedDay); // Set hovered day to selected day initially if not locked
-            }
-        }} onMouseLeave={() => {
-            setIsHovering(false);
-            setIsLocked(false); // Add this line to remove lock status when hovering out
-        }}>
+        <div className={styles['calendar-wrapper']} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <div className={styles['calendar-container']}>
                 <div className={styles['calendar-header']}>
-                    <h2 className={styles['text-xl'] + ' ' + styles['font-semibold']}>
+                    <h3 className={styles['text-xl'] + ' ' + styles['font-semibold']}>
                         {format(firstDayCurrentMonth, 'MMMM yyyy')}
-                    </h2>
+                    </h3>
                     <div className={styles['flex'] + ' ' + styles['gap-2']}>
                         <button onClick={previousMonth} className={styles['p-1'] + ' ' + styles['hover:bg-gray-100'] + ' ' + styles['rounded']}>
                             <svg xmlns="http://www.w3.org/2000/svg" className={styles['icon']} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -144,12 +138,23 @@ const Calendar = () => {
                             className={`${styles['day-button']} ${
                                 isEqual(day, selectedDay) ? styles['selected'] : ''
                             } ${isToday(day) ? styles['today'] : ''} ${
-                                hasEvents(day) ? styles['has-events'] : ''
-                            } ${isLocked && isEqual(day, selectedDay) ? styles['locked'] : ''}`}
+                                isLocked && isEqual(day, selectedDay) ? styles['locked'] : ''
+                            }`}
                             onClick={() => handleDaySelect(day)}
                             onMouseEnter={() => handleDayHover(day)}
                         >
-                            {format(day, 'd')}
+                            <span className={styles['day-number']}>{format(day, 'd')}</span>
+                            {/* Show event indicators */}
+                            {getEventTypes(day).length > 0 && (
+                                <div className={styles['event-indicator-container']}>
+                                    {getEventTypes(day).map((type, index) => (
+                                        <span
+                                            key={`${day}-${type}-${index}`}
+                                            className={`${styles['event-line']} ${styles[type]}`}
+                                        ></span>
+                                    ))}
+                                </div>
+                            )}
                         </button>
                     ))}
 
@@ -157,12 +162,31 @@ const Calendar = () => {
                         <div key={`empty-end-${index}`} className={`${styles['day-button']} ${styles['empty']}`} />
                     ))}
                 </div>
+
+                <div className={styles['event-legend']}>
+                    <div className={styles['legend-item']}>
+                        <span className={`${styles['legend-indicator']} ${styles['meeting']}`}></span>
+                        <span>Meeting</span>
+                    </div>
+                    <div className={styles['legend-item']}>
+                        <span className={`${styles['legend-indicator']} ${styles['event']}`}></span>
+                        <span>Event</span>
+                    </div>
+                    <div className={styles['legend-item']}>
+                        <span className={`${styles['legend-indicator']} ${styles['holiday']}`}></span>
+                        <span>Holiday</span>
+                    </div>
+                    <div className={styles['legend-item']}>
+                        <span className={`${styles['legend-indicator']} ${styles['wellness']}`}></span>
+                        <span>Wellness</span>
+                    </div>
+                </div>
             </div>
 
-            <div className={`${styles['schedule-panel']} ${isHovering || isLocked ? styles['visible'] : ''}`}>
+            <div className={`${styles['schedule-panel']} ${isHovering ? styles['visible'] : ''}`}>
                 <div className={styles['schedule-header']}>
                     <h3 className={`${styles['text-lg']} ${styles['font-medium']}`}>
-                        Schedule for {format(activeDay, 'MMM dd, yyyy')}
+                        Schedule for {format(isLocked ? selectedDay : hoveredDay, 'MMM dd, yyyy')}
                         {isLocked && (
                             <span className={styles['lock-indicator']}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className={styles['lock-icon']} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -183,29 +207,27 @@ const Calendar = () => {
                 <div className={styles['schedule-content']}>
                     {loading ? (
                         <p className={styles['loading']}>Loading schedules...</p>
-                    ) : events.length > 0 ? (
+                    ) : (
                         <div className={styles['event-list']}>
-                            {events.map((event) => (
-                                <div key={event.id} className={`${styles['event-item']} ${styles[`event-${event.type}`]}`}>
-                                    <div className={styles['event-time']}>{event.time}</div>
-                                    <div className={styles['event-title']}>{event.title}</div>
-                                    {event.location && (
+                            {events.filter(event => event.date === format(isLocked ? selectedDay : hoveredDay, 'yyyy-MM-dd')).map((event) => (
+                                <div key={event.id} className={`${styles['event-card']} ${styles[event.type.toLowerCase()]}`}>
+                                    <div className={styles['event-header']}>
+                                        <h5 className={styles['event-title']}>{event.title}</h5>
+                                        <span className={styles['event-time']}>{formatTime(event.time)}</span>
+                                    </div>
+                                    <div className={styles['event-info']}>
                                         <div className={styles['event-location']}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className={styles['location-icon']} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1113.314-13.314 8 8 0 010 13.314z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
                                             {event.location}
                                         </div>
-                                    )}
-                                    {event.description && (
-                                        <div className={styles['event-description']}>{event.description}</div>
-                                    )}
+                                        <p className={styles['event-description']}>{event.description}</p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <p className={styles['no-schedule']}>No schedules for this date</p>
                     )}
                 </div>
             </div>

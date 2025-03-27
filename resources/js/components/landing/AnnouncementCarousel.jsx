@@ -46,7 +46,7 @@ const AnnouncementCarousel = () => {
 
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-        }, 15000); // Change every 15 seconds
+        }, 60000); // Change every 15 seconds
 
         return () => clearInterval(interval); // Cleanup on unmount
     }, [announcements.length]);

@@ -1,6 +1,6 @@
 .wellness-container {
     /* background-image: linear-gradient( #11326a, #4a99daec ); */
-    padding: 1rem;
+
     border: 1px solid #dee2e6;
     border-radius: 8px;
     height: 250px;
@@ -14,6 +14,7 @@
     text-align: center;
     flex-shrink: 0;
     color: #ffffff; 
+    padding-top:2rem;
 }
 
 .wellness-content {
@@ -33,7 +34,8 @@
     overflow-y: auto;
     width: 100%;
     gap: 1rem;
-    padding: 0.5rem;
+    padding: 2rem;
+
 }
 
 .wellness-item-container { 

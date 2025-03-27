@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../../../css/styles/landing/SpecialEvents.module.css';
+import styles from '../../../css/styles/landing/TodaysEvents.module.css';
 import { format } from 'date-fns';
 
-const SpecialEvents = () => {
+const TodaysEvents = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -120,4 +120,4 @@ const SpecialEvents = () => {
     );
 };
 
-export default SpecialEvents;
+export default TodaysEvents;

@@ -107,8 +107,8 @@ const AnnouncementEditor = () => {
     $(editorRef.current).summernote({
       placeholder: 'Type your announcement here...',
       tabsize: 2,
-      height: 398, // Updated height
-      width: 1026,  // Updated width
+      height: 500, // Updated height
+      width: 1120,  // Updated width
       styleTags: ['p', 'h1', 'h2', 'h3', 'h4'],
       toolbar: [
         ['style', ['style']],
@@ -186,21 +186,21 @@ const AnnouncementEditor = () => {
     $('.note-editing-area').addClass(styles['editor-content']);
     $('.note-editing-area').css({
       'background-color': backgroundColor,
-      'width': '1026px',
-      'height': '398px',
+      'width': '1120px', // Updated width
+      'height': '500px', // Updated height
       'overflow': 'hidden' // Change from 'auto' to 'hidden' for the export view
     });
     
     $('.note-editable').css({
-      'height': '358px', // 398px - 40px for padding
-      'max-height': '358px',
+      'height': '500px', // 500px - 20px for padding
+      'max-height': '500px',
       'overflow': 'auto', // Keep auto scroll for editing
       'padding': '20px'
     });
     
     // Fix the editor container width
     $('.note-editor').css({
-      'width': '1026px',
+      'width': '1120px', // Updated width
       'margin': '0 auto'
     });
     
@@ -212,21 +212,6 @@ const AnnouncementEditor = () => {
     const $ = window.jQuery;
     const content = $(editorRef.current).summernote('code');
     
-    // Create a temporary div to get only visible content
-    const tempDiv = $('<div></div>').html(content).css({
-      'width': '986px', // 1026px - 40px padding
-      'max-height': '358px',
-      'overflow': 'hidden',
-      'position': 'absolute',
-      'left': '-9999px',
-      'top': '-9999px'
-    }).appendTo('body');
-    
-    // Get only visible content
-    const visibleContent = tempDiv.html();
-    tempDiv.remove();
-    
-    // Create HTML document with proper styling
     const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -234,35 +219,45 @@ const AnnouncementEditor = () => {
         <meta charset="utf-8">
         <title>Announcement</title>
         <style>
+          /* Reset ALL default margins and paddings */
+          * {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+          }
           body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
           }
           .announcement-container {
-            width: 1026px;
-            height: 398px;
-            margin: 0 auto;
-            padding: 20px;
+            width: 1175px;
+            height: 532px;
+            margin: 0 auto !important;
+            padding: 20px !important;
             background-color: ${backgroundColor};
-            box-sizing: border-box;
             overflow: hidden;
+          }
+          /* Ensure no extra spacing between elements */
+          .announcement-container p,
+          .announcement-container div,
+          .announcement-container span,
+          .announcement-container br {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: inherit !important;
           }
         </style>
       </head>
       <body>
         <div class="announcement-container">
-          ${visibleContent}
+          ${content}
         </div>
       </body>
     </html>
     `;
     
-    // Create a Blob with the HTML content
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     
-    // Create a link and trigger download
     const link = document.createElement('a');
     link.href = url;
     link.download = 'announcement.html';
@@ -270,7 +265,6 @@ const AnnouncementEditor = () => {
     link.click();
     document.body.removeChild(link);
     
-    // Clean up the URL object
     setTimeout(() => URL.revokeObjectURL(url), 100);
   };
 
@@ -287,8 +281,8 @@ const AnnouncementEditor = () => {
     
     // Create a temporary div to get only visible content
     const tempDiv = $('<div></div>').html(content).css({
-      'width': '986px', // 1026px - 40px padding
-      'max-height': '358px',
+      'width': '1120px', // 1120px - 20px padding
+      'max-height': '500px',
       'overflow': 'hidden',
       'position': 'absolute',
       'left': '-9999px',
@@ -301,8 +295,8 @@ const AnnouncementEditor = () => {
     
     // Create a temporary container for rendering with fixed dimensions
     const container = document.createElement('div');
-    container.style.width = '1026px';
-    container.style.height = '398px';
+    container.style.width = '1120px';
+    container.style.height = '500px';
     container.style.padding = '20px';
     container.style.backgroundColor = backgroundColor;
     container.style.position = 'absolute';
@@ -319,8 +313,8 @@ const AnnouncementEditor = () => {
         allowTaint: true,
         useCORS: true,
         backgroundColor: backgroundColor,
-        width: 1026,
-        height: 398
+        width: 1120,
+        height: 500
       });
       
       // Convert canvas to image and download
@@ -363,7 +357,7 @@ const AnnouncementEditor = () => {
             />
           </div>
           <div className={styles['dimensions-info']}>
-            <span>Fixed size: 1026px × 398px (max 10 lines at 16px)</span>
+            <span>Fixed size: 1175px × 530px (max 13 lines at Header1)</span>
           </div>
         </div>
         <div className={styles['editor-wrapper']}>

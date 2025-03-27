@@ -5,6 +5,7 @@
     position: relative;
     overflow: visible; /* Changed from hidden to visible */
     margin: 0; /* Removed margin */
+    
 }
 
 .carousel {
@@ -28,6 +29,7 @@
     justify-content: center;
     align-items: center;
     overflow: visible; /* Changed from hidden */
+    
 }
 
 /* Image container */
@@ -41,6 +43,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1;
+    
 }   
 
 /* Image styling with object-fit: fill as requested */
@@ -48,6 +51,7 @@
     width: 100%;
     height: 100%;
     object-fit: contain; /* Ensure image fits well */
+    border-radius: 8px;
 }
 
 /* Navigation areas */

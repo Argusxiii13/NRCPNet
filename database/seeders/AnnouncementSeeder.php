@@ -24,6 +24,8 @@ class AnnouncementSeeder extends Seeder
             '/announcement/Announcement6.html',
             '/announcement/Announcement7.png',
             '/announcement/Announcement8.html',
+            '/announcement/Announcement9.png',
+            '/announcement/Announcement10.html',
         ];
 
         foreach ($announcements as $announcementPath) {

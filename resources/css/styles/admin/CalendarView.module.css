@@ -176,6 +176,9 @@
 .event-line.holiday {
     background-color: #fa5252; /* Red */
 }
+.event-line.wellness {
+    background-color: #e5babf; /* Red */
+}
 
 /* Event Legend */
 .event-legend {
@@ -215,6 +218,9 @@
 .legend-indicator.holiday {
     background-color: #fa5252; /* Red */
 }
+.legend-indicator.wellness {
+    background-color: #e5babf; /* Red */
+}
 
 /* Event Details Styling */
 .selected-date-header {
@@ -249,6 +255,10 @@
 
 .event-card.holiday {
     border-left-color: #fa5252;
+}
+
+.event-card.wellness {
+    border-left-color: #e5babf;
 }
 
 .event-header {

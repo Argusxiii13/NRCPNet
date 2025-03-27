@@ -162,6 +162,10 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                             <span className={`${styles['legend-indicator']} ${styles['holiday']}`}></span>
                             <span>Holiday</span>
                         </div>
+                        <div className={styles['legend-item']}>
+                            <span className={`${styles['legend-indicator']} ${styles['wellness']}`}></span>
+                            <span>Wellness</span>
+                        </div>
                     </div>
                 </div>
                 

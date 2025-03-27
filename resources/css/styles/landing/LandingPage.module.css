@@ -47,13 +47,15 @@
     width: 100%; /* Ensure full width */
     margin-bottom: 0; /* Remove margin */
     padding: 0;
-    background-color: #d3d3d3; /* Light gray background */
+    background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden; /* Prevent overflow */
-    border-radius: 8px; /* Add border radius */
+    
 }
-
-/* Removed Section Separator */
+.feature-carousel {
+    background-color: transparent;
+    padding: 2rem;
+}
 
 /* Second Section - Announcement and Links */
 .second-section {
@@ -61,13 +63,13 @@
     grid-template-columns: 2fr 1fr;
     margin-top: 0; /* Remove margin */
     margin-bottom: 0; /* Remove margin */
-    gap: 1rem;
-    background-color: #a9a9a9; /* Dark gray background */
+
+    background-color: #f8f9fa;
 }
 
 .announcement-carousel {
     background-color: transparent;
-    padding: 2rem;
+    padding: 2rem; 
 }
 
 .links-list {
@@ -84,6 +86,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding: 2rem 8rem 2rem 8rem;
 }
 
 .downloadable-forms {
@@ -91,6 +94,7 @@
     grid-row: 1 / span 2;
     background-color: transparent;
     padding: 2rem;
+
 }
 
 .thursday-wellness {
@@ -113,7 +117,7 @@
     grid-row: 2;
     background-color: transparent;
     padding: 2rem;
-    margin-top: -30%;
+    margin-top: -65%;
 }
 
 .suggestion-box {
@@ -121,6 +125,8 @@
     grid-row: 2;
     background-color: transparent;
     padding: 2rem;
+    margin-top: -10%;
+
 }
 
 /* Footer */

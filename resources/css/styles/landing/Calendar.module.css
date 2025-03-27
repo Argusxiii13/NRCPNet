@@ -2,19 +2,24 @@
     display: flex;
     gap: 1rem;
     position: relative;
-    width: fit-content;
+    width: 100%;
+    max-width: 800px; /* Optional: set a max-width if needed */
+    margin: 0 auto; /* Center the calendar if desired */
 }
 
 .calendar-container {
-    padding: 2.6rem;    
+    flex: 1;
+    min-width: 300px;
+    max-width: 100%;
+    max-height: 100%; /* Changed from height to max-height */
+    padding: 1.5rem;    
     background-color: #ffffff;
     border: 1px solid #dee2e6;
-
     border-radius: 8px;
-    width: 350px;
-    height: 400px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    
 }
 
 .calendar-header {
@@ -88,6 +93,8 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 0.5rem;
     flex-grow: 1;
+    max-height: 100%; /* Add this */
+    overflow: hidden;
 }
 
 .day-button {
@@ -102,16 +109,13 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #dee2e6;
-    /* border: 1px solid #000000; */
+    overflow: hidden; /* Prevent text overflow */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative; /* Add this */
 }
 
 .day-button:hover:not(.empty) {
-    background-color: #448ece;
-    color: white;
-}
-
-/* Add this new class for hovered days */
-.day-button.hovered:not(.selected):not(.empty) {
     background-color: #448ece;
     color: white;
 }
@@ -134,12 +138,49 @@
     font-weight: bold;
 }
 
+.day-button.locked {
+    background-color: #11326a;
+    color: white;
+}
+
+.event-indicator-container {
+    position: absolute;
+    bottom: 6px;
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    width: 100%;
+}
+
+.event-line {
+    height: 3px;
+    width: 16px;
+    border-radius: 1.5px;
+    display: inline-block;
+}
+
+.event-line.meeting {
+    background-color: #348cda; /* Blue */
+}
+
+.event-line.event {
+    background-color: #20c997; /* Green */
+}
+
+.event-line.holiday {
+    background-color: #fa5252; /* Red */
+}
+
+.event-line.wellness {
+    background-color: #e5babf; /* Pink */
+}
+
 .schedule-panel {
     position: absolute;
-    left: -300px; /* Positioned right after the calendar */
+    left: -300px; /* Position next to the calendar */
     top: 0;
     width: 300px;
-    height: 450px;
+    height: 400px; /* Match calendar height */
     background-color: white;
     border-radius: 8px;
     opacity: 0;
@@ -169,6 +210,7 @@
     padding: 1rem;
     overflow-y: auto;
     flex-grow: 1;
+    max-height: calc(100% - 60px); /* Ensure content fits within panel */
 }
 
 .no-schedule {
@@ -177,88 +219,120 @@
     margin-top: 2rem;
 }
 
-/* Day with events indicator */
-.has-events {
-    position: relative;
+.event-legend {
+    display: flex;
+    gap: 16px;
+
+    padding: 12px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 13px; /* Added this to push it to the bottom */
+
 }
-  
-.has-events::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: #3b82f6;
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: #495057;
 }
-  
-/* Event list styles */
+
+.legend-indicator {
+    height: 3px;
+    width: 20px;
+    border-radius: 1.5px;
+    display: inline-block;
+}
+
+.legend-indicator.meeting {
+    background-color: #348cda; /* Blue */
+}
+
+.legend-indicator.event {
+    background-color: #20c997; /* Green */
+}
+
+.legend-indicator.holiday {
+    background-color: #fa5252; /* Red */
+}
+
+.legend-indicator.wellness {
+    background-color: #e5babf; /* Red */
+}
+
 .event-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    max-height: 300px;
-    overflow-y: auto;
+    gap: 12px;
 }
-  
-.event-item {
-    padding: 10px;
-    border-radius: 4px;
-    border-left: 3px solid #3b82f6;
-    background-color: #f3f4f6;
+
+.event-card {
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #dee2e6;
 }
-  
-/* Event types */
-.event-meeting {
-    border-left-color: #3b82f6;
+
+.event-card.meeting {
+    border-left-color: #339af0;
 }
-  
-.event-appointment {
-    border-left-color: #10b981;
+
+.event-card.event {
+    border-left-color: #20c997;
 }
-  
-.event-deadline {
-    border-left-color: #ef4444;
+
+.event-card.holiday {
+    border-left-color: #fa5252;
 }
-  
-.event-reminder {
-    border-left-color: #f59e0b;
+
+.event-card.wellness {
+    border-left-color: #e5babf;
 }
-  
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.event-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #212529;
+}
+
 .event-time {
     font-size: 0.875rem;
+    color: #6c757d;
     font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 2px;
 }
-  
-.event-title {
-    font-weight: 600;
-    margin-bottom: 4px;
+
+.event-info {
+    font-size: 0.875rem;
 }
-  
+
 .event-location {
     display: flex;
     align-items: center;
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 2px;
+    gap: 6px;
+    margin-bottom: 8px;
+    color: #495057;
 }
-  
-.location-icon {
-    width: 14px;
-    height: 14px;
-    margin-right: 4px;
+
+.event-location svg {
+    color: #6c757d;
 }
-  
+
 .event-description {
-    font-size: 0.875rem;
-    color: #4b5563;
-    margin-top: 4px;
+    margin: 0;
+    color: #495057;
+    line-height: 1.5;
 }
-  
+
 .loading {
     color: #6b7280;
     font-style: italic;

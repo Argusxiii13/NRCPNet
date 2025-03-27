@@ -1,14 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
-import EventCarousel from '../components/landing/FeatureCarousel';
+import FeatureCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
 import LinkList from '../components/landing/LinkList';
 import DownloadableForms from '../components/landing/DownloadableForms';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
-import SpecialEvents from '../components/landing/SpecialEvents';
+import SpecialEvents from '../components/landing/TodaysEvents';
 import Footer from '../components/landing/Footer';
 import TimeDisplay from '../components/landing/TimeDisplay';
 import styles from '../../css/styles/landing/LandingPage.module.css';
@@ -33,7 +33,9 @@ const LandingPage = () => {
 
                 {/* First Section - Event Carousel */}
                 <div className={styles['first-section']}>
-                    <EventCarousel />
+                <div className={styles['feature-carousel']}>
+                        <FeatureCarousel />
+                    </div>
                 </div>
 
                 {/* Separator */}
