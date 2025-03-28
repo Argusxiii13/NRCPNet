@@ -21,7 +21,7 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
   
   // Pagination state from API
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Fixed items per page
+  const [itemsPerPage] = useState(4); // Fixed items per page
   const [totalFeatures, setTotalFeatures] = useState(0);
   const [lastPage, setLastPage] = useState(1);
 

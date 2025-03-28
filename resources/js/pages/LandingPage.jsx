@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
 import FeatureCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
-import LinkList from '../components/landing/LinkList';
+import Resources from '../components/landing/Resources';
 import DownloadableForms from '../components/landing/DownloadableForms';
 import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
@@ -46,8 +46,8 @@ const LandingPage = () => {
                     <div className={styles['announcement-carousel']}>
                         <AnnouncementCarousel />
                     </div>
-                    <div className={styles['links-list']}>
-                        <LinkList />
+                    <div className={styles['resources']}>
+                        <Resources />
                     </div>
                 </div>
 

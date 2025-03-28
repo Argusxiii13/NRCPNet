@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\Feature;
 use App\Models\Suggestion;
-use App\Models\ResourceLink;
+use App\Models\ResourcesLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -62,7 +62,7 @@ class PaginatedController extends Controller
             $query->orderBy('created_at', 'desc');
     
             // Get pagination parameters (default to 10 items per page)
-            $perPage = $request->has('per_page') ? (int)$request->per_page : 10;
+            $perPage = $request->has('per_page') ? (int)$request->per_page : 6;
     
             // Paginate results
             $features = $query->paginate($perPage);
@@ -139,13 +139,13 @@ class PaginatedController extends Controller
 {
     try {
         // Query for resources
-        $query = ResourceLink::query();
+        $query = ResourcesLink::query();
 
         // Sort by created_at desc (newest first)
         $query->orderBy('created_at', 'desc');
 
         // Get pagination parameters (default to 10 items per page)
-        $perPage = $request->has('per_page') ? (int)$request->per_page : 10;
+        $perPage = $request->has('per_page') ? (int)$request->per_page : 3;
 
         // Paginate results
         $resources = $query->paginate($perPage);

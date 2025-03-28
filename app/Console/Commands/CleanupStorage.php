@@ -16,6 +16,8 @@ class CleanupStorage extends Command
         $this->call('db:wipe');
         
         // Clean feature directory
+        Storage::disk('public')->deleteDirectory('resources');
+        Storage::disk('public')->makeDirectory('resources');
         Storage::disk('public')->deleteDirectory('feature');
         Storage::disk('public')->makeDirectory('feature');
         
