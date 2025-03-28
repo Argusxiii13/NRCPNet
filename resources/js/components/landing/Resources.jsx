@@ -53,23 +53,42 @@ const Resources = () => {
             <div className={styles['resources']}>
                 <div className={styles['resources-items']}>
                     {resources.map((resource) => (
-                        <div key={resource.id} className={styles['resources-item-container']}>
-                            <img 
-                                src={resource.icon || defaultLogo} 
-                                alt={`${resource.name} logo`} 
-                                className={styles['resources-item-logo']} 
-                                onError={(e) => { 
-                                    e.target.src = placeholderLogo; 
-                                }}
-                            />
-                            <a 
-                                href={resource.link} 
-                                className={styles['resources-item']}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {resource.name}
-                            </a>
+                        <div key={resource.id} className={styles['resources-item-wrapper']}>
+                            <div className={styles['resources-item-container']}>
+                                <div className={styles['resources-item-inner']}>
+                                    <div className={styles['resources-item-front']}>
+                                        <img 
+                                            src={resource.icon || defaultLogo} 
+                                            alt={`${resource.name} logo`} 
+                                            className={styles['link-item-logo']}
+                                            onError={(e) => { 
+                                                e.target.src = placeholderLogo; 
+                                            }}
+                                        />
+                                    </div>
+                                    <a 
+                                        href={resource.link} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles['resources-item-back']}
+                                    >
+                                        <img 
+                                            src={resource.icon || defaultLogo} 
+                                            alt={`${resource.name} logo`} 
+                                            className={styles['link-item-logo-back']}
+                                            onError={(e) => { 
+                                                e.target.src = placeholderLogo; 
+                                            }}
+                                        />
+                                        <div className={styles['resources-item-details']}>
+                                            <h4>{resource.name}</h4>
+                                            <span className={styles['resources-item-link']}>
+                                                {new URL(resource.link).hostname}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
