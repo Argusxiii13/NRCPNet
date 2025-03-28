@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DownloadableSeeder::class);
         $this->call(AnnouncementSeeder::class);
         $this->call(CalendarScheduleSeeder::class);
+        $this->call(ResourcesLinkSeeder::class);
         User::factory()->count(40)->create();
         Suggestion::factory()->count(40)->create();
         
