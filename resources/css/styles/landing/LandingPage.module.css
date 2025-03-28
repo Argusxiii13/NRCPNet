@@ -82,7 +82,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto auto;
-    background-image: url('/image/HallwayBackground.png');
+    /* background-image: url('/image/HallwayBackground.png'); */
+    /* background-image: linear-gradient( #2a699c , #11326a); */
+    background-color: #f8f9fa;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

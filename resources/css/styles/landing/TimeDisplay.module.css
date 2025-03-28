@@ -1,5 +1,5 @@
 .time-display {
-    background-color: #fff;
+    background-color: #f8f9fa;
     padding: 1rem;
     border-radius: 8px;
     text-align: right;
@@ -8,13 +8,13 @@
 .time-zone {
     font-weight: bold;
     font-size: small;
-    color: #666;
+    color: #000000;
     margin-bottom: 0.5rem;
 }
 
 .current-time {
     font-size: small;
-    color: #333;
+    color: #000000;
 }
 @media (max-width: 768px) {
 .time-display{
