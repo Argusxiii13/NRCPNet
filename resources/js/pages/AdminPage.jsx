@@ -11,6 +11,7 @@ import DivisionManagement from '../components/admin/DivisionManagement';
 import RoleManagement from '../components/admin/RoleManagement';
 import Dashboard from '../components/admin/Dashboard';
 import FormsManagement from '../components/admin/FormsManagement';
+import ResourceManagement from '../components/admin/ResourceManagement';
 
 import styles from '../../css/styles/admin/AdminPage.module.css';
 import '../../css/font.css'; // Keeping font.css as global import
@@ -64,6 +65,8 @@ function Layout() {
                 return <CalendarManagement />;
             case 'Downloadable Forms':
                 return <FormsManagement />;
+            case 'System Links':
+                return <ResourceManagement />;
             default:
                 return <h1>Welcome to Dashboard</h1>;
         }

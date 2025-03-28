@@ -13,7 +13,8 @@ import {
     ChevronDown,
     ChevronRight,
     Building,
-    UserRoundCog
+    UserRoundCog,
+    Link
 } from 'lucide-react';
 import { useState } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
@@ -28,6 +29,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
         { title: "Calendar Management", icon: <CalendarCog size={20} /> },
+        { title: "System Links", icon: <Link size={20} /> },
         { title: "Feature Management", icon: <Newspaper size={20} /> },
         { title: "Announcement Management", icon: <Megaphone size={20} /> },
         { title: "Suggestion Inbox", icon: <Inbox size={20} /> },

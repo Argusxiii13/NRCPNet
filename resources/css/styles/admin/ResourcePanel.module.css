@@ -1,0 +1,252 @@
+/* Panel Styles */
+.panel {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  height: 650px;
+  position: relative;
+}
+  
+.panel-header {
+  padding: 20px 32px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e1e4e8;
+} 
+  
+.panel-resources {
+  padding: 32px;
+  padding-bottom: 100px;
+  height: calc(100% - 80px);
+  overflow-y: auto;
+}
+  
+/* Resources List Styles */
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+  
+.resource-item {
+  padding: 16px;
+  background-color: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+  
+.resource-item:hover {
+  border-color: #348cda;
+  background-color: #f0f9ff;
+}
+  
+.resource-item.selected {
+  border-color: #0ea5e9;
+  background-color: #11326a;
+  box-shadow: 0 0 0 1px #0ea5e9;
+  color: white;
+}
+  
+.resource-item.selected .resource-name,
+.resource-item.selected .resource-meta {
+  color: white;
+}
+  
+/* Resource Info Styles */
+.resource-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+  
+.resource-name {
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 16px;
+}
+  
+.resource-status {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+  
+.resource-status.Active {
+  background-color: #dcfce7;
+  color: #166534;
+}
+  
+.resource-status.Inactive {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+  
+/* Resource Meta Styles */
+.resource-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+  
+.resource-url {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+  
+.resource-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+  
+/* Resource Actions Styles */
+.resource-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e1e4e8;
+}
+  
+.action-button {
+  padding: 6px;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  background: white;
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+  
+.action-button:hover {
+  background-color: #f1f5f9;
+  border-color: #d1d5db;
+  color: #1a1a1a;
+}
+  
+.action-button.delete:hover {
+  background-color: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+  
+/* Pagination Styles */
+.pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  background-color: white;
+}
+  
+.pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+}
+  
+.pagination-buttons {
+  display: flex;
+  gap: 8px;
+}
+  
+.filter-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #11326a;
+  color: white;
+  cursor: pointer;
+}
+  
+.filter-button:hover {
+  background-color: #348cda;
+}
+  
+.filter-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.modal-content {
+  padding: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.cancel-button {
+  padding: 8px 12px;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
+  background-color: white;
+  color: #4b5563;
+}
+
+.save-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #dc2626;
+  color: white;
+}
