@@ -1,3 +1,4 @@
+// ThursdayWellness.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../../css/styles/landing/ThursdayWellness.module.css';
@@ -33,7 +34,8 @@ const formatTime = (timeString) => {
     return `${formattedStartTime} - ${formattedEndTime}`;
 };
 
-const ThursdayWellness = () => {
+// Modified to accept and use onContentChange prop
+const ThursdayWellness = ({ onContentChange }) => {
     const [activities, setActivities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -44,16 +46,28 @@ const ThursdayWellness = () => {
                 setIsLoading(true);
                 const response = await axios.get('/api/wellness-activities');
                 setActivities(response.data);
+                
+                // Notify parent component about content status
+                if (onContentChange) {
+                    onContentChange(response.data && response.data.length > 0);
+                }
+                
                 setIsLoading(false);
             } catch (err) {
                 console.error('Error fetching wellness activities:', err);
                 setError(err);
+                
+                // Notify parent there's no content due to error
+                if (onContentChange) {
+                    onContentChange(false);
+                }
+                
                 setIsLoading(false);
             }
         };
 
         fetchWellnessActivities();
-    }, []);
+    }, [onContentChange]);
 
     // Return null if no activities and not loading
     if (!isLoading && (activities.length === 0 || error)) {

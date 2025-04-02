@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FeatureListPanel from './FeatureListPanel';
-import FileUploadPanel from './PdfUploadPanel';
+import PngUploadPanel from './PngUploadPanel';
 import styles from '../../../css/styles/admin/FeatureManagement.module.css';
 
 const FeatureManagement = () => {
@@ -14,7 +14,7 @@ const FeatureManagement = () => {
         selectedFeature={selectedFeature} 
         setSelectedFeature={setSelectedFeature}
       />
-      <FileUploadPanel 
+      <PngUploadPanel 
         publishTo={publishTo} 
         setPublishTo={setPublishTo} 
         selectedDivision={selectedDivision} 

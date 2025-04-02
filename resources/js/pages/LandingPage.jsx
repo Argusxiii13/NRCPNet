@@ -1,4 +1,5 @@
-import React from 'react';
+// LandingPage.jsx
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
 import FeatureCarousel from '../components/landing/FeatureCarousel';
@@ -15,6 +16,30 @@ import styles from '../../css/styles/landing/LandingPage.module.css';
 import '../../css/font.css';
 
 const LandingPage = () => {
+    // State to track if ThursdayWellness has content
+    const [hasThursdayWellnessContent, setHasThursdayWellnessContent] = useState(true);
+    
+    // Handler function for ThursdayWellness content changes
+    const handleWellnessContentChange = (hasContent) => {
+        setHasThursdayWellnessContent(hasContent);
+    };
+
+    // Dynamically apply class names based on content availability
+    const getThursdayWellnessClassName = () => {
+        if (!hasThursdayWellnessContent) {
+            return `${styles['thursday-wellness']} ${styles['empty-container']}`;
+        }
+        return styles['thursday-wellness'];
+    };
+
+    const getSpecialEventsClassName = () => {
+        // If ThursdayWellness has no content, move SpecialEvents to ThursdayWellness position
+        if (!hasThursdayWellnessContent) {
+            return styles['thursday-wellness']; // Use ThursdayWellness grid position
+        }
+        return styles['special-events'];
+    };
+
     return (
         <div className={styles['app']}>
             <div className={styles['header']}>
@@ -33,7 +58,7 @@ const LandingPage = () => {
 
                 {/* First Section - Event Carousel */}
                 <div className={styles['first-section']}>
-                <div className={styles['feature-carousel']}>
+                    <div className={styles['feature-carousel']}>
                         <FeatureCarousel />
                     </div>
                 </div>
@@ -57,13 +82,22 @@ const LandingPage = () => {
                         <DownloadableForms />
                     </div>
                     
-                    <div className={styles['thursday-wellness']}>
-                        <ThursdayWellness />
-                    </div>
+                    {/* Only render ThursdayWellness if it has content */}
+                    {hasThursdayWellnessContent && (
+                        <div className={getThursdayWellnessClassName()}>
+                            <ThursdayWellness onContentChange={handleWellnessContentChange} />
+                        </div>
+                    )}
                     
-                    <div className={styles['special-events']}>
+                    {/* Always render SpecialEvents but with dynamic positioning */}
+                    <div className={getSpecialEventsClassName()}>
                         <SpecialEvents />
                     </div>
+                    
+                    {/* If ThursdayWellness has no content, render a hidden container in its original place */}
+                    {!hasThursdayWellnessContent && (
+                        <div className={`${styles['special-events']} ${styles['empty-container']}`}></div>
+                    )}
                     
                     <div className={styles['calendar']}>
                         <Calendar />
