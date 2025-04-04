@@ -55,7 +55,19 @@ php artisan config:clear
 php artisan migrate
 ```
 
-11. After all these, run these command each at the terminal :
+11. After migrating, run these command : 
+
+```bash
+php artisan app:cleanup
+```
+
+12. Then this command : 
+
+```bash
+php artisan storage:link
+```
+
+13. After all these, run these command each at the terminal :
 
 ```bash
 npm run dev

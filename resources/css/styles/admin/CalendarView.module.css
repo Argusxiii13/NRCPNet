@@ -95,7 +95,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
-    width: 95%;
+    width: 565px;
     padding: 4px;
 }
 

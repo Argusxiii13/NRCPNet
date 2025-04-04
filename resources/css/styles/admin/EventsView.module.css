@@ -16,23 +16,33 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #333;
-    flex-grow: 1; /* Add this line */
+    flex-grow: 1;
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .toggle-button {
     background-color: #11326a;
     color: white;
-    border-color: #ffffff;
+    border: 1px solid #ffffff;
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: none;
-    margin-left: auto; /* Add this line */
+    margin-left: auto;
 }
 
 .toggle-button:hover {
+    background-color: #348cda;
+}
+
+.toggle-button.active {
     background-color: #348cda;
 }
 
@@ -41,6 +51,7 @@
     border-radius: 8px;
     padding: 16px;
     overflow-y: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Event List Styles */
@@ -52,12 +63,12 @@
 
 .event-item {
     border-radius: 8px;
-    border: 1px solid #ffffff;
+    border: 1px solid #eaeaea;
     padding: 16px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     transition: box-shadow 0.2s;
+    background-color: #fafafa;
 }
 
 .event-item:hover {
@@ -68,12 +79,35 @@
     font-size: 0.8125rem;
     color: #6c757d;
     font-weight: 500;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.event-content {
+    flex-grow: 1;
 }
 
 .event-content h4 {
     margin: 0 0 6px 0;
     font-size: 1rem;
     color: #343a40;
+}
+
+.event-type {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    background-color: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+}
+
+.event-location {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    margin-bottom: 6px;
 }
 
 .event-content p {
@@ -83,8 +117,15 @@
     line-height: 1.5;
 }
 
-.edit-button {
-    align-self: flex-end;
+.event-actions {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+
+.edit-button, 
+.delete-button {
     background: none;
     border: 1px solid #dee2e6;
     border-radius: 4px;
@@ -97,6 +138,20 @@
 .edit-button:hover {
     background-color: #f8f9fa;
     border-color: #ced4da;
+}
+
+.delete-button:hover {
+    background-color: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+
+.loading, 
+.no-events {
+    text-align: center;
+    padding: 32px;
+    color: #6c757d;
+    font-size: 0.9375rem;
 }
 
 /* Event Management Form Styles */
@@ -136,7 +191,7 @@
 .form-group input,
 .form-group textarea,
 .form-group select {
-    width: 550px;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 6px;
@@ -153,6 +208,7 @@
 
 .form-group textarea {
     resize: vertical;
+    min-height: 100px;
 }
 
 .date-picker input {
@@ -177,8 +233,9 @@
 }
 
 .cancel-button:hover {
-    background-color: #dc2626;
-    color: white;
+    background-color: #f8f9fa;
+    border-color: #dc2626;
+    color: #dc2626;
 }
 
 .save-button-cal {
@@ -196,27 +253,36 @@
     background-color: #348cda;
 }
 
+.save-button-cal:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+}
+
 .date-navigation {
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-  
-  .date-nav-button {
+}
+
+.date-nav-button {
     background: #f0f0f0;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
     font-weight: bold;
-  }
-  
-  .date-picker-container {
+}
+
+.date-nav-button:hover {
+    background: #e0e0e0;
+}
+
+.date-picker-container {
     position: relative;
     display: inline-block;
-  }
-  
-  .date-picker-input {
+}
+
+.date-picker-input {
     position: absolute;
     top: 0;
     left: 0;
@@ -224,9 +290,9 @@
     height: 100%;
     opacity: 0;
     cursor: pointer;
-  }
+}
 
-  /* Add these styles to your existing CSS file */
+/* Error styling */
 .error-field input,
 .error-field select,
 .error-field textarea {
@@ -247,4 +313,37 @@
     font-size: 0.75rem;
     margin-top: 4px;
     display: block;
+}
+
+/* Info message styling */
+.info-message {
+    background-color: #ebf5ff;
+    border-left: 4px solid #1e88e5;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #0055b0;
+}
+
+/* Make the form responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .event-item {
+        flex-direction: column;
+    }
+    
+    .event-time {
+        width: auto;
+    }
+    
+    .event-actions {
+        margin-top: 12px;
+        justify-content: flex-end;
+        width: 100%;
+    }
 }

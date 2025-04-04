@@ -7,7 +7,6 @@ const TodaysEvents = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    // Always use today's date
     const [currentDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
     useEffect(() => {
@@ -17,7 +16,6 @@ const TodaysEvents = () => {
                 const response = await axios.get(`/api/calendar/date/${currentDate}`);
                 
                 if (response.data && response.data.length > 0) {
-                    // Sort events by time
                     const sortedEvents = response.data.sort((a, b) => {
                         if (a.time === 'All Day') return -1;
                         if (b.time === 'All Day') return 1;
@@ -27,11 +25,9 @@ const TodaysEvents = () => {
                         return aStartTime.localeCompare(bStartTime);
                     });
                     
-                    // Format times to AM/PM
                     const formattedEvents = sortedEvents.map(event => {
                         if (event.time === 'All Day') return event;
                         
-                        // Handle time ranges (e.g., "09:00 - 10:30")
                         const times = event.time.split(' - ');
                         const formattedTimes = times.map(time => formatTimeToAMPM(time));
                         return {
@@ -55,7 +51,6 @@ const TodaysEvents = () => {
         fetchEvents();
     }, [currentDate]);
 
-    // Format the date for display
     const formatDisplayDate = (dateString) => {
         try {
             return format(new Date(dateString), 'MMMM d, yyyy');
@@ -64,24 +59,26 @@ const TodaysEvents = () => {
         }
     };
 
-    // Format time to AM/PM
     const formatTimeToAMPM = (timeString) => {
         try {
-            // Handle 24-hour format (e.g., "14:30")
             const [hours, minutes] = timeString.split(':');
             const hour = parseInt(hours, 10);
             const ampm = hour >= 12 ? 'PM' : 'AM';
-            const formattedHour = hour % 12 || 12; // Convert 0 to 12
+            const formattedHour = hour % 12 || 12;
             return `${formattedHour}:${minutes} ${ampm}`;
         } catch (err) {
-            return timeString; // Return original if can't parse
+            return timeString;
         }
     };
 
-    // Get lowercase event type for CSS class
     const getEventTypeClass = (type) => {
         return type.toLowerCase();
     };
+
+    // Return null if no events and not loading
+    if (!loading && (events.length === 0 || error)) {
+        return null;
+    }
 
     if (loading) {
         return <div className={styles['loading']}>Loading events...</div>;
