@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import styles from '../../css/styles/login/LoginPage.module.css';
 import '../../css/font.css';
@@ -7,16 +7,69 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberPassword, setRememberPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [csrfToken, setCsrfToken] = useState('');
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // Get the CSRF token from the meta tag
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (token) {
+      setCsrfToken(token);
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log({ email, password, rememberPassword });
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Submit the login request with the CSRF token
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken,
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          email, 
+          password,
+          remember: rememberPassword 
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Redirect to dashboard on success
+        window.location.href = '/dashboard';
+      } else {
+        // Show error message
+        setError(data.message || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className={styles['login-page']}>
       <div className={styles['login-card']}>
+        {/* Back to main page button */}
+        <a href="/" className={styles['back-button']}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
+          </svg>
+          Back to Main Page
+        </a>
+        
         <div className={styles['login-header']}>
           <h2 className={styles['title']}>Login to Account</h2>
           <p className={styles['subtitle']}>
@@ -24,7 +77,17 @@ const LoginPage = () => {
           </p>
         </div>
         <div className={styles['login-content']}>
+          {error && (
+            <div className={styles['error-message']}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style={{ width: '16px', height: '16px' }}>
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-1 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+              </svg>
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className={styles['login-form']}>
+            <input type="hidden" name="_token" value={csrfToken} />
+            
             <div className={styles['form-group']}>
               <label htmlFor="email">Email Address</label>
               <input
@@ -61,8 +124,19 @@ const LoginPage = () => {
               </label>
             </div>
 
-            <button type="submit" className={styles['sign-in-button']}>
-              Sign In
+            <button 
+              type="submit" 
+              className={styles['sign-in-button']}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span className={styles.spinner}></span>
+                  Signing In...
+                </>
+              ) : (
+                'Sign In'
+              )}
             </button>
 
             <div className={styles['forgot-password-link']}>

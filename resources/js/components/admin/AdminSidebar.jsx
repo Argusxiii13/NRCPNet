@@ -14,7 +14,8 @@ import {
     ChevronRight,
     Building,
     UserRoundCog,
-    Link
+    Link,
+    Loader // Added the Loader import
 } from 'lucide-react';
 import { useState } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
@@ -22,6 +23,7 @@ import styles from '../../../css/styles/admin/AdminSidebar.module.css';
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const logo = '/image/NRCP_logo----.png';
     const profilePic = '/image/SampleProfile.jpg';
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     
     // State to track which menus are expanded
     const [expandedMenus, setExpandedMenus] = useState({});
@@ -48,8 +50,37 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         { title: "Settings", icon: <Settings size={20} /> },
     ];
 
-    const handleLogout = () => {
-        console.log('Logging out...');
+    const handleLogout = async () => {
+        if (isLoggingOut) return;
+        
+        setIsLoggingOut(true);
+        try {
+            // Get the CSRF token
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            
+            // Send the logout request
+            const response = await fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                credentials: 'include',
+            });
+            
+            if (response.ok) {
+                // Redirect to login page after successful logout
+                window.location.href = '/login';
+            } else {
+                console.error('Logout failed');
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+        } finally {
+            setIsLoggingOut(false);
+        }
     };
 
     const toggleSubmenu = (title) => {
@@ -160,13 +191,13 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                         <p className={styles['profile-role']}>Admin</p>
                     </div>
                 </div>
-                <div className={styles['menu-item']}>
-                    <div className={styles['menu-content']} onClick={handleLogout}>
+                <div className={styles['menu-item']} onClick={isLoggingOut ? undefined : handleLogout}>
+                    <div className={styles['menu-content']}>
                         <span className={styles['menu-icon']}>
-                            <LogOut size={20} />
+                            {isLoggingOut ? <Loader size={20} className={styles['spin-animation']} /> : <LogOut size={20} />}
                         </span>
                         <span className={`${styles['menu-title']} ${!isExpanded ? styles['hide'] : ''}`}>
-                            Logout
+                            {isLoggingOut ? 'Logging out...' : 'Logout'}
                         </span>
                     </div>
                 </div>
