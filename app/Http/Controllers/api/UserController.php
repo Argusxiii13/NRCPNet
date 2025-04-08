@@ -120,4 +120,25 @@ class UserController extends Controller
         $user->delete();
         return response()->json(null, 204);
     }
+
+    public function getCurrentUser()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            return response()->json([
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'middle_name' => $user->middle_name,
+                'surname' => $user->surname,
+                'position' => $user->position,
+                'division' => $user->division,
+                'section' => $user->section,
+                'status' => $user->status,
+                'role' => $user->role
+            ]);
+        }
+        
+        return response()->json(['message' => 'Not authenticated'], 401);
+    }
 }

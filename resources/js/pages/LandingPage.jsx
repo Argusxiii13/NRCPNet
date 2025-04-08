@@ -1,5 +1,5 @@
 // LandingPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../components/landing/LandingHeader';
 import FeatureCarousel from '../components/landing/FeatureCarousel';
@@ -18,6 +18,40 @@ import '../../css/font.css';
 const LandingPage = () => {
     // State to track if ThursdayWellness has content
     const [hasThursdayWellnessContent, setHasThursdayWellnessContent] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
+    
+    // Fetch current user on component mount
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const rootElement = document.getElementById('root');
+            const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
+            
+            if (isLoggedIn && rootElement.dataset.userId) {
+                try {
+                    // Use the user ID to fetch complete user data
+                    const userId = rootElement.dataset.userId;
+                    const response = await fetch(`/api/users/${userId}`);
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        setCurrentUser(userData);
+                        console.log('Current user:', userData);
+                    } else {
+                        console.error('Failed to fetch user details');
+                        setCurrentUser(null);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    setCurrentUser(null);
+                }
+            } else {
+                console.log('User not authenticated');
+                setCurrentUser(null);
+            }
+        };
+        
+        fetchUserData();
+    }, []);
     
     // Handler function for ThursdayWellness content changes
     const handleWellnessContentChange = (hasContent) => {

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class AnnouncementController extends Controller
@@ -187,4 +189,43 @@ class AnnouncementController extends Controller
             ], 500);
         }
     }
+    // Method to fetch active announcements for the carousel
+// Method to fetch active announcements for the carousel
+public function activeAnnouncements()
+{
+    
+    $user = Auth::user();
+    
+    // Query builder for announcements that are Active
+    $query = Announcement::where('status', 'Active');
+    
+    // If user is logged in, fetch announcements for their division plus general
+    if ($user) {
+        $query->where(function($query) use ($user) {
+            $query->where('division', 'General')
+                  ->orWhere('division', $user->division);
+        });
+    } else {
+        // If not logged in, only show general announcements
+        $query->where('division', 'General');
+    }
+    
+    $announcements = $query->get();
+
+    // Transform the records with all needed fields
+    $formattedAnnouncements = $announcements->map(function ($announcement) {
+        return [
+            'id' => $announcement->id,
+            'title' => $announcement->title,
+            'type' => $announcement->type,
+            'content' => $announcement->content,
+            'altText' => $announcement->title, // Using title as alt text
+            'author' => $announcement->author,
+            'created_at' => $announcement->created_at,
+            'updated_at' => $announcement->updated_at
+        ];
+    });
+
+    return response()->json($formattedAnnouncements);
+}
 }
