@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\api\AuthController;
 
 Route::get('/', function () {
-    return view('landing');
+    return view('landing', [
+        'isLoggedIn' => Auth::check()
+    ]);
 });
 
 // Change this in your web.php

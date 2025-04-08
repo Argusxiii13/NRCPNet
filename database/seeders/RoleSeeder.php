@@ -40,6 +40,16 @@ class RoleSeeder extends Seeder
                     'reports' => ['create' => true, 'read' => true, 'update' => true, 'delete' => false],
                 ]),
             ],
+            [
+                'name' => 'Viewer',
+                'description' => 'Can read only',
+                'permissions' => json_encode([
+                    'users' => ['create' => false, 'read' => true, 'update' => false, 'delete' => false],
+                    'divisions' => ['create' => false, 'read' => true, 'update' => false, 'delete' => false],
+                    'roles' => ['create' => false, 'read' => true, 'update' => false, 'delete' => false],
+                    'reports' => ['create' => false, 'read' => true, 'update' => false, 'delete' => false],
+                ]),
+            ],
         ];
 
         foreach ($roles as $role) {

@@ -15,7 +15,8 @@ import {
     Building,
     UserRoundCog,
     Link,
-    Loader // Added the Loader import
+    Loader,
+    House // Added the House import for Homepage icon
 } from 'lucide-react';
 import { useState } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
@@ -48,6 +49,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         { title: "User Management", icon: <UserPlus size={20} /> },
         { title: "Profile", icon: <UserCog size={20} />, gap: true },
         { title: "Settings", icon: <Settings size={20} /> },
+
     ];
 
     const handleLogout = async () => {
@@ -81,6 +83,11 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         } finally {
             setIsLoggingOut(false);
         }
+    };
+
+    // Homepage navigation handler
+    const handleHomeNavigation = () => {
+        window.location.href = '/';
     };
 
     const toggleSubmenu = (title) => {
@@ -191,6 +198,20 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                         <p className={styles['profile-role']}>Admin</p>
                     </div>
                 </div>
+                
+                {/* New Homepage Button */}
+                <div className={styles['menu-item']} onClick={handleHomeNavigation}>
+                    <div className={styles['menu-content']}>
+                        <span className={styles['menu-icon']}>
+                            <House size={20} />
+                        </span>
+                        <span className={`${styles['menu-title']} ${!isExpanded ? styles['hide'] : ''}`}>
+                            Homepage
+                        </span>
+                    </div>
+                </div>
+                
+                {/* Existing Logout Button */}
                 <div className={styles['menu-item']} onClick={isLoggingOut ? undefined : handleLogout}>
                     <div className={styles['menu-content']}>
                         <span className={styles['menu-icon']}>

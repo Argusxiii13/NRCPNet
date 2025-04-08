@@ -3,8 +3,12 @@ import React from 'react';
 import styles from '../../../css/styles/landing/LandingHeader.module.css';
 
 const LPHeader = () => {
-    const handleLoginClick = () => {
-        window.location.href = '/login';
+    // Get authentication status from the data attributes on the root element
+    const rootElement = document.getElementById('root');
+    const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
+    
+    const handleButtonClick = () => {
+        window.location.href = isLoggedIn ? '/dashboard' : '/login';
     };
 
     return (
@@ -15,7 +19,6 @@ const LPHeader = () => {
                         <img src="image/NRCP_logo----.png" alt="Logo" className={styles['logo']} />
                     </div>
                     <h1 className={styles['title']}>NRCPNet</h1>
-                    
                 </div>
                 <div className={styles['middle-container']}>
                     <a href="https://nrcp.dost.gov.ph/" className={styles['link']}>NRCP Website</a>
@@ -24,7 +27,12 @@ const LPHeader = () => {
                     <a href="#contact" className={styles['link']}>Contact</a>
                 </div>
                 <div className={styles['right-container']}>
-                    <button className={styles['login-button']} onClick={handleLoginClick}>Login</button>
+                    <button 
+                        className={styles['login-button']} 
+                        onClick={handleButtonClick}
+                    >
+                        {isLoggedIn ? 'Dashboard' : 'Login'}
+                    </button>
                 </div>
             </div>
         </header>

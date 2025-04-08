@@ -7,7 +7,11 @@
     <title>React</title>
 </head>
 <body>
-    <div id="root"></div>
+    <div 
+      id="root" 
+      data-is-logged-in="{{ Auth::check() ? 'true' : 'false' }}"
+      data-dashboard-url="{{ url('/dashboard') }}"
+    ></div>
 @viteReactRefresh
 @vite('resources/js/pages/LandingPage.jsx')
 </body>
