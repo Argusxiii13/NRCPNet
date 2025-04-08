@@ -13,6 +13,11 @@ use App\Http\Controllers\api\PaginatedController;
 use App\Http\Controllers\api\CalendarScheduleController;
 use App\Http\Controllers\Api\ResourcesLinkController;
 
+// Fallback for any other API routes
+Route::fallback(function() {
+    return response()->json(['message' => 'API endpoint not found'], 404);
+});
+
 Route::apiResource('suggestion', SuggestionController::class);
 
 Route::apiResource('divisions', DivisionController::class);

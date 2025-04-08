@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Announcement extends Model
 {
     use HasFactory;
 
-    // Specify the table if it's not the plural form of the model name
     protected $table = 'announcements';
 
-    // Specify the fillable properties
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'title',
-        'type', //this will store the stuff whether its image or html
-        'content', // This will store the image or html path
+        'type',
+        'content',
         'author',
-        'status', // Added status to fillable properties
+        'status',
+        'division'
     ];
 }

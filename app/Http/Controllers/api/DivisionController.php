@@ -7,6 +7,7 @@ use App\Models\Division;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class DivisionController extends Controller
 {
@@ -116,5 +117,19 @@ class DivisionController extends Controller
     $division->delete();
 
     return response()->json(['message' => 'Division deleted successfully.']);
+}
+// Add this method to your AuthController or create a new UserController
+public function getCurrentUserDivision()
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+        return response()->json([
+            'division' => $user->division // Assuming the user model has a division field
+        ]);
+    }
+    
+    return response()->json([
+        'division' => 'General' // Default division if not logged in
+    ]);
 }
 }

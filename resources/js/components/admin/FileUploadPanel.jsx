@@ -13,6 +13,8 @@ const FileUploadPanel = () => {
   const [previewUrl, setPreviewUrl] = useState('');
   const [fileType, setFileType] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   
   const fileInputRef = useRef(null);
 
@@ -105,7 +107,20 @@ const FileUploadPanel = () => {
     }
   };
 
-  const handleUpload = () => {
+  const resetForm = () => {
+    setTitle('');
+    setAuthor('');
+    setStatus('Active');
+    setSelectedFile(null);
+    setPreviewUrl('');
+    setFileType('');
+    setSelectedDivision('');
+    setPublishTo('');
+    setErrorMessage('');
+  };
+
+  const handleUpload = async () => {
+    // Validate form data
     if (!selectedFile) {
       setErrorMessage('Please select a file to upload');
       return;
@@ -116,19 +131,82 @@ const FileUploadPanel = () => {
       return;
     }
 
-    const formData = {
-      title,
-      author,
-      status,
-      division: selectedDivision,
-      publishTo,
-      file: selectedFile,
-      fileType
-    };
-    
-    console.log("Form Data to Upload:", formData);
-    // Insert your API call to upload with formData here
-    setErrorMessage('');
+    if (!author) {
+      setErrorMessage('Please provide an author name');
+      return;
+    }
+
+    if (!publishTo) {
+      setErrorMessage('Please select a publishing option');
+      return;
+    }
+
+    if (publishTo === 'specific' && !selectedDivision) {
+      setErrorMessage('Please select a division');
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+      
+      // Create FormData object to send file and other form data
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('author', author);
+      formData.append('status', status);
+      formData.append('publishTo', publishTo);
+      
+      if (publishTo === 'specific') {
+        // Send division code directly - this assumes selectedDivision is the division code
+        const divisionCode = selectedDivision;
+        formData.append('division', divisionCode);
+      }
+      
+      formData.append('file', selectedFile);
+      
+      // Try to get CSRF token if available
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      
+      // Make the API call
+      const response = await fetch('/api/announcements', {
+        method: 'POST',
+        headers: csrfToken ? {
+          'X-CSRF-TOKEN': csrfToken
+        } : {},
+        body: formData,
+      });
+      
+      // First check if response is HTML (error page)
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("text/html") !== -1) {
+        const htmlText = await response.text();
+        console.error("Server returned HTML instead of JSON:", htmlText);
+        throw new Error("Server error occurred. Check server logs for details.");
+      }
+
+      // Try to parse response as JSON
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to upload file');
+      }
+      
+      // Handle successful upload
+      setUploadSuccess(true);
+      setErrorMessage('');
+      
+      // Reset the form after 2 seconds
+      setTimeout(() => {
+        resetForm();
+        setUploadSuccess(false);
+      }, 2000);
+      
+    } catch (error) {
+      console.error("Upload error:", error);
+      setErrorMessage(`Upload failed: ${error.message}`);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -195,6 +273,11 @@ const FileUploadPanel = () => {
                   {errorMessage}
                 </span>
               )}
+              {uploadSuccess && (
+                <span className={styles['success-message']}>
+                  File uploaded successfully!
+                </span>
+              )}
             </div>
 
             {/* First Row: Title, Author, Status */}
@@ -202,7 +285,7 @@ const FileUploadPanel = () => {
               <input 
                 type="text" 
                 className={styles['text-input']}
-                placeholder="Title"
+                placeholder="Title *"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -210,7 +293,7 @@ const FileUploadPanel = () => {
               <input 
                 type="text" 
                 className={styles['text-input']} 
-                placeholder="Author"
+                placeholder="Author *"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
               />
@@ -233,7 +316,6 @@ const FileUploadPanel = () => {
                   value={publishTo}
                   onChange={(e) => setPublishTo(e.target.value)}
                 >
-                  <option value="">Select Publishing Option</option>
                   <option value="everyone">Publish To Everyone</option>
                   <option value="specific">Publish To Specific Division</option>
                 </select>
@@ -246,15 +328,19 @@ const FileUploadPanel = () => {
                 >
                   <option value="">Select Division</option>
                   {divisions.map((division) => (
-                    <option key={division.id} value={division.id}>
+                    <option key={division.id} value={division.code}>
                       ({division.code}) {division.name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <button className={styles['upload-button']} onClick={handleUpload}>
-                Upload
+              <button 
+                className={`${styles['upload-button']} ${isUploading ? styles['uploading'] : ''}`} 
+                onClick={handleUpload}
+                disabled={isUploading}
+              >
+                {isUploading ? 'Uploading...' : 'Upload'}
               </button>
             </div>
           </div>

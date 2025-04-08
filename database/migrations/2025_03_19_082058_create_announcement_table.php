@@ -20,6 +20,7 @@ class CreateAnnouncementTable extends Migration
             $table->text('content'); // Column for the content (image path or HTML)
             $table->string('author'); // Column for the author's name
             $table->string('status'); // Column for the status of the announcement
+            $table->string('division')->default('General'); //This line adds the new column
             $table->timestamps(); // Creates created_at and updated_at columns
         });
     }

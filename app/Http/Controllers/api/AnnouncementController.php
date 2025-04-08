@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class AnnouncementController extends Controller
 {
@@ -108,5 +111,80 @@ class AnnouncementController extends Controller
         $announcement->delete();
 
         return response()->json(['message' => 'Announcement deleted successfully']);
+    }
+    // Add store method for creating announcements with file uploads
+    public function store(Request $request)
+    {
+        try {
+            Log::info('Announcement upload started', $request->except('file'));
+            
+            // Validate the request
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:255',
+                'author' => 'required|string|max:255',
+                'status' => 'required|in:Active,Inactive',
+                'file' => 'required|file|mimes:png,html',
+                'publishTo' => 'required|string'
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+    
+            // Insert the record first to get the ID
+            $announcement = new Announcement();
+            $announcement->title = $request->title;
+            $announcement->author = $request->author;
+            $announcement->status = $request->status;
+            $announcement->content = '';  // Initially empty, will be updated later
+            
+            // Handle file type determination
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            $announcement->type = ($extension === 'png') ? 'image' : 'html';
+            
+            // Handle division-specific publishing
+            if ($request->publishTo === 'specific' && $request->has('division')) {
+                $announcement->division = $request->division; // Store division code
+            } else {
+                $announcement->division = 'General'; // Use default value
+            }
+            
+            // Save to get ID
+            $announcement->save();
+            
+            // Create the proper filename
+            $newFileName = $announcement->type === 'image' 
+                ? 'AnnouncementImage' . $announcement->id . '.png' 
+                : 'AnnouncementHtml' . $announcement->id . '.html';
+            
+            // Store the file in public storage
+            $path = Storage::disk('public')->putFileAs(
+                'announcement', 
+                $file, 
+                $newFileName
+            );
+            
+            // Update the content with the proper path
+            $announcement->content = '/storage/' . $path;
+            $announcement->save();
+            
+            Log::info('Announcement upload completed successfully', [
+                'id' => $announcement->id, 
+                'path' => $announcement->content
+            ]);
+            
+            return response()->json($announcement, 201);
+        } catch (\Exception $e) {
+            Log::error('Announcement upload failed: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'message' => 'Upload failed: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

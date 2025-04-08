@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../.././css/styles/landing/AnnouncementCarousel.module.css';
 
-const AnnouncementCarousel = () => {
+const AnnouncementCarousel = ({ division = 'General' }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [announcements, setAnnouncements] = useState([]); 
     const [htmlContent, setHtmlContent] = useState(null);
     const [htmlBackgroundColor, setHtmlBackgroundColor] = useState(null);
 
-    // Fetch announcements from API
+    // Fetch announcements from API - using the new endpoint
     useEffect(() => {
         const fetchAnnouncements = async () => {
             try {
-                const response = await fetch('/api/announcements');
+                const response = await fetch(`/api/announcements/active/${division}`);
                 const data = await response.json();
                 setAnnouncements(data);
             } catch (error) {
@@ -20,7 +20,7 @@ const AnnouncementCarousel = () => {
         };
 
         fetchAnnouncements();
-    }, []);
+    }, [division]);
 
     // Fetch HTML content when needed
     useEffect(() => {
@@ -103,7 +103,7 @@ const AnnouncementCarousel = () => {
 
     const renderContent = () => {
         if (announcements.length === 0) {
-            return <div>Loading announcements...</div>;
+            return <div>No announcements available</div>;
         }
 
         const currentAnnouncement = announcements[currentIndex];
@@ -114,7 +114,7 @@ const AnnouncementCarousel = () => {
                     <div className={styles['image-announcement']}>
                         <img 
                             src={currentAnnouncement.content} 
-                            alt={currentAnnouncement.altText}
+                            alt={currentAnnouncement.altText || currentAnnouncement.title}
                             className={styles['announcement-image']}
                         />
                     </div>
@@ -133,6 +133,11 @@ const AnnouncementCarousel = () => {
         }
     };
 
+    // Don't render anything if there are no announcements
+    if (announcements.length === 0) {
+        return null;
+    }
+
     // Determine container style based on HTML background
     const containerStyle = htmlBackgroundColor 
         ? { backgroundColor: htmlBackgroundColor }
@@ -150,16 +155,18 @@ const AnnouncementCarousel = () => {
                     {renderContent()}
                 </div>
 
-                <div className={styles['indicators-container']}>
-                    {announcements.map((_, index) => (
-                        <button 
-                            key={index}
-                            className={`${styles['indicator']} ${index === currentIndex ? styles['active'] : ''}`}
-                            onClick={() => goToSlide(index)}
-                            aria-label={`Go to slide ${index + 1}`}
-                        />
-                    ))}
-                </div>
+                {announcements.length > 1 && (
+                    <div className={styles['indicators-container']}>
+                        {announcements.map((_, index) => (
+                            <button 
+                                key={index}
+                                className={`${styles['indicator']} ${index === currentIndex ? styles['active'] : ''}`}
+                                onClick={() => goToSlide(index)}
+                                aria-label={`Go to slide ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
