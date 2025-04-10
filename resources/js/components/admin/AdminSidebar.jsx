@@ -16,9 +16,9 @@ import {
     UserRoundCog,
     Link,
     Loader,
-    House // Added the House import for Homepage icon
+    House
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
 
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
@@ -28,6 +28,52 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     
     // State to track which menus are expanded
     const [expandedMenus, setExpandedMenus] = useState({});
+    
+    // State to store current user data
+    const [currentUser, setCurrentUser] = useState({
+        first_name: '',
+        surname: '',
+        role: ''
+    });
+    
+    // Fetch current user data on component mount
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const rootElement = document.getElementById('admin-root');
+            const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
+            
+            if (isLoggedIn && rootElement.dataset.userId) {
+                try {
+                    // Use the user ID to fetch complete user data
+                    const userId = rootElement.dataset.userId;
+                    const response = await fetch(`/api/users/${userId}`);
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        setCurrentUser(userData);
+                        console.log('Current user:', userData);
+                    } else {
+                        // Alternative approach: fetch current user from dedicated endpoint
+                        const currentUserResponse = await fetch('/user/current');
+                        
+                        if (currentUserResponse.ok) {
+                            const currentUserData = await currentUserResponse.json();
+                            setCurrentUser(currentUserData);
+                            console.log('Current user (alternative):', currentUserData);
+                        } else {
+                            console.error('Failed to fetch user details');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                }
+            } else {
+                console.log('User not authenticated');
+            }
+        };
+        
+        fetchUserData();
+    }, []);
 
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
@@ -49,7 +95,6 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         { title: "User Management", icon: <UserPlus size={20} /> },
         { title: "Profile", icon: <UserCog size={20} />, gap: true },
         { title: "Settings", icon: <Settings size={20} /> },
-
     ];
 
     const handleLogout = async () => {
@@ -117,6 +162,22 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         onMenuSelect(`${parentTitle}: ${submenuTitle}`);
         // Stop propagation to prevent the parent menu from toggling
         e.stopPropagation();
+    };
+    
+    // Format user's name for display
+    const getUserDisplayName = () => {
+        if (currentUser && currentUser.first_name && currentUser.surname) {
+            return `${currentUser.first_name} ${currentUser.surname}`;
+        }
+        return "Loading...";
+    };
+    
+    // Get user's role
+    const getUserRole = () => {
+        if (currentUser && currentUser.role) {
+            return currentUser.role;
+        }
+        return "Loading...";
     };
 
     return (
@@ -194,12 +255,12 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                         />
                     </div>
                     <div className={`${styles['profile-info']} ${!isExpanded ? styles['hide'] : ''}`}>
-                        <h3 className={styles['profile-name']}>John Doe</h3>
-                        <p className={styles['profile-role']}>Admin</p>
+                        <h3 className={styles['profile-name']}>{getUserDisplayName()}</h3>
+                        <p className={styles['profile-role']}>{getUserRole()}</p>
                     </div>
                 </div>
                 
-                {/* New Homepage Button */}
+                {/* Homepage Button */}
                 <div className={styles['menu-item']} onClick={handleHomeNavigation}>
                     <div className={styles['menu-content']}>
                         <span className={styles['menu-icon']}>
@@ -211,7 +272,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                     </div>
                 </div>
                 
-                {/* Existing Logout Button */}
+                {/* Logout Button */}
                 <div className={styles['menu-item']} onClick={isLoggingOut ? undefined : handleLogout}>
                     <div className={styles['menu-content']}>
                         <span className={styles['menu-icon']}>
