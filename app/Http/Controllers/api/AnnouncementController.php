@@ -191,26 +191,49 @@ class AnnouncementController extends Controller
     }
     // Method to fetch active announcements for the carousel
 // Method to fetch active announcements for the carousel
-public function activeAnnouncements()
+public function activeAnnouncements(Request $request)
 {
+    // Check if division is passed as a query parameter
+    $divisionFromQuery = $request->query('division');
     
+    // Get authenticated user
     $user = Auth::user();
+    
+    // Log debugging info
+    Log::info('Active announcements request', [
+        'user_authenticated' => Auth::check(),
+        'user_division' => $user ? $user->division : 'none',
+        'division_from_query' => $divisionFromQuery
+    ]);
     
     // Query builder for announcements that are Active
     $query = Announcement::where('status', 'Active');
     
-    // If user is logged in, fetch announcements for their division plus general
-    if ($user) {
-        $query->where(function($query) use ($user) {
+    // If division is provided in query or user is authenticated, use that division plus General
+    if ($divisionFromQuery || ($user && $user->division)) {
+        $division = $divisionFromQuery ?: $user->division;
+        
+        $query->where(function($query) use ($division) {
             $query->where('division', 'General')
-                  ->orWhere('division', $user->division);
+                  ->orWhere('division', $division);
         });
+        
+        Log::info('Query looking for announcements with division:', [
+            'General', 
+            $division
+        ]);
     } else {
-        // If not logged in, only show general announcements
+        // If no division info available, only show general announcements
         $query->where('division', 'General');
+        Log::info('Query looking for General announcements only');
     }
     
     $announcements = $query->get();
+    
+    Log::info('Announcements returned by query:', [
+        'count' => $announcements->count(),
+        'divisions' => $announcements->pluck('division')->toArray()
+    ]);
 
     // Transform the records with all needed fields
     $formattedAnnouncements = $announcements->map(function ($announcement) {

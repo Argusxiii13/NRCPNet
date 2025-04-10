@@ -54,6 +54,6 @@ Route::prefix('resources')->group(function () {
 });
 
 // In your api.php routes file
-Route::get('/active-announcements', [AnnouncementController::class, 'activeAnnouncements']);
+Route::get('active-announcements', [AnnouncementController::class, 'activeAnnouncements']);
 
-Route::get('/user/current', [UserController::class, 'getCurrentUser']);
+Route::get('user/current', [UserController::class, 'getCurrentUser']);

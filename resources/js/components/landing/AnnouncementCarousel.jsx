@@ -3,24 +3,70 @@ import styles from '../../.././css/styles/landing/AnnouncementCarousel.module.cs
 
 const AnnouncementCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [announcements, setAnnouncements] = useState([]); 
+    const [announcements, setAnnouncements] = useState([]);
     const [htmlContent, setHtmlContent] = useState(null);
     const [htmlBackgroundColor, setHtmlBackgroundColor] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
-    // Fetch announcements from API
+    // Use the same approach as LandingPage to get user data
     useEffect(() => {
-        const fetchAnnouncements = async () => {
-            try {
-                const response = await fetch('/api/announcements');
-                const data = await response.json();
-                setAnnouncements(data);
-            } catch (error) {
-                console.error('Error fetching announcements:', error);
+        const fetchUserData = async () => {
+            const rootElement = document.getElementById('root');
+            const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
+            
+            if (isLoggedIn && rootElement.dataset.userId) {
+                try {
+                    // Use the user ID to fetch complete user data
+                    const userId = rootElement.dataset.userId;
+                    const response = await fetch(`/api/users/${userId}`);
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        setCurrentUser(userData);
+                        console.log('Announcement component - Current user:', userData);
+                    } else {
+                        console.error('Failed to fetch user details');
+                        setCurrentUser(null);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    setCurrentUser(null);
+                }
+            } else {
+                console.log('User not authenticated');
+                setCurrentUser(null);
             }
         };
-
-        fetchAnnouncements();
+        
+        fetchUserData();
     }, []);
+
+ 
+// Fetch announcements after we know the user's status
+useEffect(() => {
+    const fetchAnnouncements = async () => {
+        try {
+            // Add division as query parameter if user is logged in
+            let url = '/api/active-announcements';
+            if (currentUser && currentUser.division) {
+                url += `?division=${encodeURIComponent(currentUser.division)}`;
+            }
+            
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setAnnouncements(data);
+                console.log('Announcements loaded:', data.length);
+            } else {
+                console.error('Failed to fetch announcements:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching announcements:', error);
+        }
+    };
+
+    fetchAnnouncements();
+}, [currentUser]);
 
     // Fetch HTML content when needed
     useEffect(() => {
