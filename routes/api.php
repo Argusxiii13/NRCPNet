@@ -57,3 +57,17 @@ Route::prefix('resources')->group(function () {
 Route::get('active-announcements', [AnnouncementController::class, 'activeAnnouncements']);
 
 Route::get('user/current', [UserController::class, 'getCurrentUser']);
+
+// In your routes/api.php
+Route::middleware('auth:sanctum')->get('/user-session', function (Request $request) {
+    return response()->json([
+        'id' => $request->user()->id,
+        'first_name' => $request->user()->first_name,
+        'surname' => $request->user()->surname,
+        'email' => $request->user()->email,
+        'role' => session('user_role', $request->user()->role),
+        'division' => session('user_division', $request->user()->division),
+        'position' => session('user_position', $request->user()->position),
+        'section' => session('user_section', $request->user()->section)
+    ]);
+});

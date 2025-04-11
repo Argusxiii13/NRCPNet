@@ -20,60 +20,18 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
+import { useAuth } from '../../hooks/useAuth'; // Import the auth hook
 
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const logo = '/image/NRCP_logo----.png';
     const profilePic = '/image/SampleProfile.jpg';
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     
+    // Use the auth hook to access user data and authentication functions
+    const { user, logout: authLogout } = useAuth();
+    
     // State to track which menus are expanded
     const [expandedMenus, setExpandedMenus] = useState({});
-    
-    // State to store current user data
-    const [currentUser, setCurrentUser] = useState({
-        first_name: '',
-        surname: '',
-        role: ''
-    });
-    
-    // Fetch current user data on component mount
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const rootElement = document.getElementById('admin-root');
-            const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
-            
-            if (isLoggedIn && rootElement.dataset.userId) {
-                try {
-                    // Use the user ID to fetch complete user data
-                    const userId = rootElement.dataset.userId;
-                    const response = await fetch(`/api/users/${userId}`);
-                    
-                    if (response.ok) {
-                        const userData = await response.json();
-                        setCurrentUser(userData);
-                        console.log('Current user:', userData);
-                    } else {
-                        // Alternative approach: fetch current user from dedicated endpoint
-                        const currentUserResponse = await fetch('/user/current');
-                        
-                        if (currentUserResponse.ok) {
-                            const currentUserData = await currentUserResponse.json();
-                            setCurrentUser(currentUserData);
-                            console.log('Current user (alternative):', currentUserData);
-                        } else {
-                            console.error('Failed to fetch user details');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                }
-            } else {
-                console.log('User not authenticated');
-            }
-        };
-        
-        fetchUserData();
-    }, []);
 
     const menuItems = [
         { title: "Dashboard", icon: <Gauge size={20} /> },
@@ -117,14 +75,22 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                 credentials: 'include',
             });
             
+            // Call the logout function from auth hook to clear local state
+            authLogout();
+            
             if (response.ok) {
                 // Redirect to login page after successful logout
                 window.location.href = '/login';
             } else {
                 console.error('Logout failed');
+                // Still redirect to login even if server-side logout fails
+                window.location.href = '/login';
             }
         } catch (error) {
             console.error('Error during logout:', error);
+            // Clear user state via auth hook and redirect to login even if there's an error
+            authLogout();
+            window.location.href = '/login';
         } finally {
             setIsLoggingOut(false);
         }
@@ -166,16 +132,16 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     
     // Format user's name for display
     const getUserDisplayName = () => {
-        if (currentUser && currentUser.first_name && currentUser.surname) {
-            return `${currentUser.first_name} ${currentUser.surname}`;
+        if (user && user.first_name && user.surname) {
+            return `${user.first_name} ${user.surname}`;
         }
         return "Loading...";
     };
     
     // Get user's role
     const getUserRole = () => {
-        if (currentUser && currentUser.role) {
-            return currentUser.role;
+        if (user && user.role) {
+            return user.role;
         }
         return "Loading...";
     };

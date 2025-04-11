@@ -25,7 +25,6 @@ const LoginPage = () => {
     setError('');
 
     try {
-      // Submit the login request with the CSRF token
       const response = await fetch('/login', {
         method: 'POST',
         headers: {
@@ -45,8 +44,13 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // Store user data in localStorage for client-side access
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+        
         // Redirect to dashboard on success
-        window.location.href = '/dashboard';
+        window.location.href = data.redirect || '/dashboard';
       } else {
         // Show error message
         setError(data.message || 'Invalid credentials');
@@ -57,7 +61,7 @@ const LoginPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+};
 
   return (
     <div className={styles['login-page']}>

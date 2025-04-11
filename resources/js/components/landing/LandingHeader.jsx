@@ -1,14 +1,13 @@
 // Header.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../../css/styles/landing/LandingHeader.module.css';
+import { useAuth } from '../../hooks/useAuth';
 
 const LPHeader = () => {
-    // Get authentication status from the data attributes on the root element
-    const rootElement = document.getElementById('root');
-    const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
+    const { user, isAuthenticated } = useAuth();
     
     const handleButtonClick = () => {
-        window.location.href = isLoggedIn ? '/dashboard' : '/login';
+        window.location.href = isAuthenticated ? '/dashboard' : '/login';
     };
 
     return (
@@ -31,7 +30,7 @@ const LPHeader = () => {
                         className={styles['login-button']} 
                         onClick={handleButtonClick}
                     >
-                        {isLoggedIn ? 'Dashboard' : 'Login'}
+                        {isAuthenticated ? 'Dashboard' : 'Login'}
                     </button>
                 </div>
             </div>
