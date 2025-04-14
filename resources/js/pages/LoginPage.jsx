@@ -17,6 +17,12 @@ const LoginPage = () => {
     if (token) {
       setCsrfToken(token);
     }
+    
+    // Fetch CSRF cookie
+    fetch('/sanctum/csrf-cookie', {
+      method: 'GET',
+      credentials: 'include'
+    });
   }, []);
 
   const handleSubmit = async (e) => {
@@ -44,11 +50,6 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store user data in localStorage for client-side access
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-        }
-        
         // Redirect to dashboard on success
         window.location.href = data.redirect || '/dashboard';
       } else {
@@ -61,7 +62,7 @@ const LoginPage = () => {
     } finally {
       setIsLoading(false);
     }
-};
+  };
 
   return (
     <div className={styles['login-page']}>

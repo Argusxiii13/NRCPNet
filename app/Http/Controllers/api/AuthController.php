@@ -61,11 +61,35 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         
         // Return JSON response when requested via API
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
             return response()->json(['message' => 'Logged out successfully']);
         }
         
         // Redirect for regular requests
         return redirect('/');
+    }
+
+    // Improved auth check method
+    public function check(Request $request)
+    {
+        // This works for both web and API requests
+        if (Auth::check()) {
+            $user = Auth::user();
+            return response()->json([
+                'authenticated' => true,
+                'user' => [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'surname' => $user->surname,
+                    'email' => $user->email,
+                    'role' => session('user_role', $user->role),
+                    'division' => session('user_division', $user->division),
+                    'position' => session('user_position', $user->position),
+                    'section' => session('user_section', $user->section)
+                ]
+            ]);
+        }
+        
+        return response()->json(['authenticated' => false], 401);
     }
 }

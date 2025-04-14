@@ -12,6 +12,7 @@ use App\Http\Controllers\api\AnnouncementController;
 use App\Http\Controllers\api\PaginatedController;
 use App\Http\Controllers\api\CalendarScheduleController;
 use App\Http\Controllers\Api\ResourcesLinkController;
+use App\Http\Controllers\Api\AuthController;
 
 // Fallback for any other API routes
 Route::fallback(function() {
@@ -58,7 +59,12 @@ Route::get('active-announcements', [AnnouncementController::class, 'activeAnnoun
 
 Route::get('user/current', [UserController::class, 'getCurrentUser']);
 
-// In your routes/api.php
+// Standard Laravel user endpoint - this works with Sanctum by default
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Your custom user-session endpoint
 Route::middleware('auth:sanctum')->get('/user-session', function (Request $request) {
     return response()->json([
         'id' => $request->user()->id,
@@ -71,3 +77,6 @@ Route::middleware('auth:sanctum')->get('/user-session', function (Request $reque
         'section' => session('user_section', $request->user()->section)
     ]);
 });
+
+// Auth check endpoint
+Route::get('/auth/check', [AuthController::class, 'check']);
