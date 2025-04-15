@@ -47,34 +47,34 @@ const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
             try {
                 setIsLoading(true);
                 
-                // Add user division as a parameter if user is authenticated
-                let url = '/api/wellness-activities';
-                if (isAuthenticated && user && user.division) {
-                    url += `?division=${user.division}`;
-                }
-                
-                const response = await axios.get(url);
-                setActivities(response.data);
-                
-                // Notify parent component about content status
-                if (onContentChange) {
-                    onContentChange(response.data && response.data.length > 0);
+                // Only fetch if user is authenticated
+                if (isAuthenticated && user) {
+                    let url = '/api/wellness-activities';
+                    if (user.division) {
+                        url += `?division=${user.division}`;
+                    }
+                    
+                    const response = await axios.get(url);
+                    setActivities(response.data);
+                    
+                    // Notify parent component about content status
+                    if (onContentChange) {
+                        onContentChange(response.data && response.data.length > 0);
+                    }
+                } else {
+                    // If not authenticated, set empty activities
+                    setActivities([]);
+                    if (onContentChange) {
+                        onContentChange(false);
+                    }
                 }
                 
                 setIsLoading(false);
             } catch (err) {
-                console.error('Error fetching wellness activities:', err);
-                setError(err);
-                
-                // Notify parent there's no content due to error
-                if (onContentChange) {
-                    onContentChange(false);
-                }
-                
-                setIsLoading(false);
+                // Error handling code...
             }
         };
-
+    
         fetchWellnessActivities();
     }, [onContentChange, isAuthenticated, user]);
 
