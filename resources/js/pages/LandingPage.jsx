@@ -1,6 +1,7 @@
 // LandingPage.jsx
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import { useAuth } from '../hooks/useAuth'; // Import the auth hook
 import Header from '../components/landing/LandingHeader';
 import FeatureCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
@@ -16,42 +17,29 @@ import styles from '../../css/styles/landing/LandingPage.module.css';
 import '../../css/font.css';
 
 const LandingPage = () => {
+    // Use the useAuth hook for authentication data
+    const { user, isAuthenticated, loading } = useAuth();
+    
     // State to track if ThursdayWellness has content
     const [hasThursdayWellnessContent, setHasThursdayWellnessContent] = useState(true);
-    const [currentUser, setCurrentUser] = useState(null);
     
-    // Fetch current user on component mount
+    // Add effect to verify user data is being fetched properly
     useEffect(() => {
-        const fetchUserData = async () => {
-            const rootElement = document.getElementById('root');
-            const isLoggedIn = rootElement?.dataset.isLoggedIn === 'true';
-            
-            if (isLoggedIn && rootElement.dataset.userId) {
-                try {
-                    // Use the user ID to fetch complete user data
-                    const userId = rootElement.dataset.userId;
-                    const response = await fetch(`/api/users/${userId}`);
-                    
-                    if (response.ok) {
-                        const userData = await response.json();
-                        setCurrentUser(userData);
-                        console.log('Current user:', userData);
-                    } else {
-                        console.error('Failed to fetch user details');
-                        setCurrentUser(null);
-                    }
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                    setCurrentUser(null);
-                }
-            } else {
-                console.log('User not authenticated');
-                setCurrentUser(null);
-            }
-        };
+        console.log('Authentication state:', { 
+            isAuthenticated, 
+            loading,
+            user 
+        });
         
-        fetchUserData();
-    }, []);
+        if (user) {
+            console.log('User data successfully fetched:', user);
+            console.log('User ID:', user.id);
+            console.log('User role:', user.role);
+            console.log('User full name:', `${user.first_name} ${user.surname}`);
+        } else if (!loading) {
+            console.log('No user data available - user is not authenticated');
+        }
+    }, [user, isAuthenticated, loading]);
     
     // Handler function for ThursdayWellness content changes
     const handleWellnessContentChange = (hasContent) => {
@@ -73,11 +61,20 @@ const LandingPage = () => {
         }
         return styles['special-events'];
     };
+    
+    // Display a loading indicator while auth data is being fetched
+    if (loading) {
+        return (
+            <div className={styles['loading-container']}>
+                <div className={styles['loading']}>Loading user data...</div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles['app']}>
             <div className={styles['header']}>
-                <Header />
+                <Header user={user} isAuthenticated={isAuthenticated} />
             </div>
             
             <div className={styles['main-content']}>
@@ -86,6 +83,12 @@ const LandingPage = () => {
                     <div className={styles['welcome-text']}>
                         <h2>Welcome to NRCPNet</h2>
                         <p>Your central hub for information and resources.</p>
+                        {/* Display personalized greeting if user is authenticated */}
+                        {isAuthenticated && user && (
+                            <p className={styles['personal-welcome']}>
+                                Welcome back, {user.first_name} {user.surname}!
+                            </p>
+                        )}
                     </div>
                     <TimeDisplay />
                 </div>
@@ -106,26 +109,30 @@ const LandingPage = () => {
                         <AnnouncementCarousel />
                     </div>
                     <div className={styles['resources']}>
-                        <Resources />
+                        <Resources user={user} isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
 
                 {/* Third Section - Complex Layout */}
                 <div className={styles['third-section']}>
                     <div className={styles['downloadable-forms']}>
-                        <DownloadableForms />
+                        <DownloadableForms user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
                     {/* Only render ThursdayWellness if it has content */}
                     {hasThursdayWellnessContent && (
                         <div className={getThursdayWellnessClassName()}>
-                            <ThursdayWellness onContentChange={handleWellnessContentChange} />
+                            <ThursdayWellness 
+                                onContentChange={handleWellnessContentChange} 
+                                user={user} 
+                                isAuthenticated={isAuthenticated}
+                            />
                         </div>
                     )}
                     
                     {/* Always render SpecialEvents but with dynamic positioning */}
                     <div className={getSpecialEventsClassName()}>
-                        <SpecialEvents />
+                        <SpecialEvents user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
                     {/* If ThursdayWellness has no content, render a hidden container in its original place */}
@@ -134,11 +141,11 @@ const LandingPage = () => {
                     )}
                     
                     <div className={styles['calendar']}>
-                        <Calendar />
+                        <Calendar user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
                     <div className={styles['suggestion-box']}>
-                        <SuggestionBox />
+                        <SuggestionBox user={user} isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
             </div>
@@ -154,4 +161,5 @@ const LandingPage = () => {
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<LandingPage />);
+
 export default LandingPage;

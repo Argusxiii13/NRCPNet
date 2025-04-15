@@ -7,10 +7,8 @@
     <title>React</title>
 </head>
 <body>
-    <div 
-      id="root" 
-    ></div>
-@viteReactRefresh
-@vite('resources/js/pages/LandingPage.jsx')
+    <div id="root"></div>
+    @viteReactRefresh
+    @vite('resources/js/pages/LandingPage.jsx')
 </body>
 </html>
