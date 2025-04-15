@@ -3,17 +3,26 @@ import axios from 'axios';
 import styles from '../../../css/styles/landing/TodaysEvents.module.css';
 import { format } from 'date-fns';
 
-const TodaysEvents = () => {
+const TodaysEvents = ({user, isAuthenticated}) => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    console.log('User in Todays Event:', user);
+    console.log('Is Authenticated in Todays Event:', isAuthenticated);
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`/api/calendar/date/${currentDate}`);
+                let url = `/api/calendar/date/${currentDate}`;
+                
+                // Add user division as a parameter if user is authenticated
+                if (isAuthenticated && user && user.division) {
+                    url += `?division=${user.division}`;
+                }
+                
+                const response = await axios.get(url);
                 
                 if (response.data && response.data.length > 0) {
                     const sortedEvents = response.data.sort((a, b) => {
@@ -49,7 +58,7 @@ const TodaysEvents = () => {
         };
 
         fetchEvents();
-    }, [currentDate]);
+    }, [currentDate, isAuthenticated, user]);
 
     const formatDisplayDate = (dateString) => {
         try {

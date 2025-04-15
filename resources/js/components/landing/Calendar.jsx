@@ -32,11 +32,7 @@ const Calendar = ({user, isAuthenticated}) => {
     const [isLocked, setIsLocked] = useState(false);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
-
     const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
-    console.log('User in Calendar:', user);
-    console.log('Is Authenticated in Calendar:', isAuthenticated);
-
     const days = eachDayOfInterval({
         start: startOfMonth(firstDayCurrentMonth),
         end: endOfMonth(firstDayCurrentMonth),

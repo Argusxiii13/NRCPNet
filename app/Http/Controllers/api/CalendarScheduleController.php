@@ -162,10 +162,21 @@ return response()->json($events);
      * @param  string  $date
      * @return \Illuminate\Http\Response
      */
-    public function getEventsByDate($date)
+    public function getEventsByDate($date, Request $request)
     {
         try {
-            $events = CalendarSchedule::whereDate('date', $date)->get();
+            $query = CalendarSchedule::whereDate('date', $date);
+            
+            // If division parameter is provided, filter by General and the user's division
+            if ($request->has('division')) {
+                $userDivision = $request->query('division');
+                $query->where(function ($q) use ($userDivision) {
+                    $q->where('division', 'General')
+                      ->orWhere('division', $userDivision);
+                });
+            }
+            
+            $events = $query->get();
             
             Log::debug('Events for date ' . $date . ': ' . $events->count());
             return response()->json($events);
