@@ -13,14 +13,17 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: '',
         endTime: '',
         location: '',
-        description: ''
+        description: '',
+        division: 'General' // Initialize with 'General' as default
     });
     const [editingEvent, setEditingEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [timeDisabled, setTimeDisabled] = useState(false);
+    const [divisions, setDivisions] = useState([]); // Added state for divisions list
+    const [loadingDivisions, setLoadingDivisions] = useState(false); // Added loading state for divisions
     
-    // NEW: Add state to track validation errors
+    // Validation errors state
     const [validationErrors, setValidationErrors] = useState({
         title: false,
         type: false,
@@ -28,7 +31,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: false,
         endTime: false,
         location: false,
-        description: false
+        description: false,
+        division: false // Added division validation
     });
 
     // Format date for date input (YYYY-MM-DD)
@@ -44,7 +48,27 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         return new Date(date).getDay() === 4; // 0 is Sunday, 4 is Thursday
     };
 
-    // NEW: Validation function
+    // Fetch divisions from API
+    useEffect(() => {
+        const fetchDivisions = async () => {
+            setLoadingDivisions(true);
+            try {
+                const response = await axios.get('/api/divisions');
+                // Filter out 'General' if it exists in the API response to avoid duplicates
+                const filteredDivisions = response.data.filter(div => div.code !== 'General');
+                setDivisions(filteredDivisions);
+            } catch (err) {
+                console.error('Error fetching divisions:', err);
+                setError('Failed to load divisions. Please refresh the page.');
+            } finally {
+                setLoadingDivisions(false);
+            }
+        };
+
+        fetchDivisions();
+    }, []);
+
+    // Validation function
     const validateFields = () => {
         const newValidationErrors = {
             title: !formData.title.trim(),
@@ -53,7 +77,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: !timeDisabled && !formData.startTime,
             endTime: !timeDisabled && !formData.endTime,
             location: !formData.location.trim(),
-            description: !formData.description.trim()
+            description: !formData.description.trim(),
+            division: !formData.division // Modified division validation
         };
 
         setValidationErrors(newValidationErrors);
@@ -202,7 +227,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: formData.startTime,
                 endTime: formData.endTime,
                 location: formData.location,
-                description: formData.description
+                description: formData.description,
+                division: formData.division // Added division to payload
             };
 
             let response;
@@ -230,7 +256,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: false,
                 endTime: false,
                 location: false,
-                description: false
+                description: false,
+                division: false
             });
         } catch (err) {
             setError('Failed to save event. Please check your inputs and try again.');
@@ -261,7 +288,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: startTime,
             endTime: endTime,
             location: event.location || '',
-            description: event.description || ''
+            description: event.description || '',
+            division: event.division || 'General' // Set to General if empty
         };
 
         // Set time disabled based on event type and day
@@ -297,7 +325,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: '',
             endTime: '',
             location: '',
-            description: ''
+            description: '',
+            division: 'General' // Reset division to General as default
         });
         setTimeDisabled(false);
     };
@@ -418,7 +447,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                 </div>
                             </div>
                             
-                            {/* Second Row: Date and Location */}
+                            {/* Second Row: Date and Division (new) */}
                             <div className={styles['form-row']}>
                                 <div className={`${styles['form-group']} ${validationErrors.date ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventDate">Event Date</label>
@@ -433,6 +462,33 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                     </div>
                                     {validationErrors.date && <span className={styles['error-message']}>Date is required</span>}
                                 </div>
+                                <div className={`${styles['form-group']} ${validationErrors.division ? styles['error-field'] : ''}`}>
+                                    <label htmlFor="division">Division</label>
+                                    <select 
+                                        id="division"
+                                        value={formData.division} // Use the value from state, which defaults to 'General'
+                                        onChange={handleInputChange}
+                                        required
+                                        disabled={loadingDivisions}
+                                    >
+                                        <option value="General">General</option>
+                                        {/* Render all divisions from API */}
+                                        {loadingDivisions ? (
+                                            <option value="" disabled>Loading divisions...</option>
+                                        ) : (
+                                            divisions.map(division => (
+                                                <option key={division.id} value={division.code}>
+                                                    {division.code}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+                                    {validationErrors.division && <span className={styles['error-message']}>Division is required</span>}
+                                </div>
+                            </div>
+                            
+                            {/* Third Row: Location */}
+                            <div className={styles['form-row']}>
                                 <div className={`${styles['form-group']} ${validationErrors.location ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventLocation">Location</label>
                                     <input 
@@ -447,7 +503,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                 </div>
                             </div>
                             
-                            {/* Third Row: Start Time and End Time */}
+                            {/* Fourth Row: Start Time and End Time */}
                             <div className={styles['form-row']}>
                                 <div className={`${styles['form-group']} ${!timeDisabled && validationErrors.startTime ? styles['error-field'] : ''}`}>
                                     <label htmlFor="startTime">Start Time</label>
@@ -534,6 +590,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                         <h4>{event.title}</h4>
                                         <div className={styles['event-type']}>{event.type}</div>
                                         {event.location && <div className={styles['event-location']}>{event.location}</div>}
+                                        {event.division && <div className={styles['event-division']}>Division: {event.division}</div>}
                                         {event.description && <p>{event.description}</p>}
                                     </div>
                                     <div className={styles['event-actions']}>
