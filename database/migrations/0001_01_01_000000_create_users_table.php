@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamp('last_login')->nullable();
             $table->text('user_activity')->nullable();
             $table->string('role')->nullable()->default('Contributor'); // Default role
-            $table->string('password')->default('zxcvbnm'); // Default status
+            $table->string('password')->default('qweasdzxc'); // Default status
             $table->rememberToken();
             $table->timestamps();
         });

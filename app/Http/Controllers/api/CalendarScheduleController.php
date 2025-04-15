@@ -191,18 +191,28 @@ return response()->json($events);
      *
      * @return \Illuminate\Http\Response
      */
-    public function getWellnessActivities()
+    public function getWellnessActivities(Request $request)
     {
         try {
             // Get the start and end of the current week
             $startOfWeek = Carbon::now()->startOfWeek();
             $endOfWeek = Carbon::now()->endOfWeek();
-
-            // Fetch wellness activities for the current week
-            $activities = CalendarSchedule::where('type', 'wellness')
-                ->whereBetween('date', [$startOfWeek, $endOfWeek])
-                ->get();
-
+    
+            // Start building the query
+            $query = CalendarSchedule::where('type', 'wellness')
+                ->whereBetween('date', [$startOfWeek, $endOfWeek]);
+            
+            // If division parameter is provided, filter by General and the user's division
+            if ($request->has('division')) {
+                $userDivision = $request->query('division');
+                $query->where(function ($q) use ($userDivision) {
+                    $q->where('division', 'General')
+                      ->orWhere('division', $userDivision);
+                });
+            }
+            
+            $activities = $query->get();
+    
             Log::debug('Wellness activities found: ' . $activities->count());
             return response()->json($activities);
         } catch (\Exception $e) {

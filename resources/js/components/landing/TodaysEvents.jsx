@@ -8,9 +8,6 @@ const TodaysEvents = ({user, isAuthenticated}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-    console.log('User in Todays Event:', user);
-    console.log('Is Authenticated in Todays Event:', isAuthenticated);
-
     useEffect(() => {
         const fetchEvents = async () => {
             try {

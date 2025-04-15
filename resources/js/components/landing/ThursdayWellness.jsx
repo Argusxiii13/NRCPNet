@@ -35,16 +35,25 @@ const formatTime = (timeString) => {
 };
 
 // Modified to accept and use onContentChange prop
-const ThursdayWellness = ({ onContentChange }) => {
+const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
     const [activities, setActivities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    console.log('User in Wellness:', user);
+    console.log('Is Authenticated in Wellness:', isAuthenticated);
 
     useEffect(() => {
         const fetchWellnessActivities = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get('/api/wellness-activities');
+                
+                // Add user division as a parameter if user is authenticated
+                let url = '/api/wellness-activities';
+                if (isAuthenticated && user && user.division) {
+                    url += `?division=${user.division}`;
+                }
+                
+                const response = await axios.get(url);
                 setActivities(response.data);
                 
                 // Notify parent component about content status
@@ -67,7 +76,7 @@ const ThursdayWellness = ({ onContentChange }) => {
         };
 
         fetchWellnessActivities();
-    }, [onContentChange]);
+    }, [onContentChange, isAuthenticated, user]);
 
     // Return null if no activities and not loading
     if (!isLoading && (activities.length === 0 || error)) {

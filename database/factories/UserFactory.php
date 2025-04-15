@@ -42,7 +42,7 @@ class UserFactory extends Factory
             'last_login' => $this->faker->dateTime(), 
             'user_activity' => $this->faker->text(),
             'role' => $roles->random()->name, // Randomly select a role
-            'password' => Hash::make('zxcvbnm'), // Default password
+            'password' => Hash::make('qweasdzxc'), // Default password
             'remember_token' => Str::random(10),
         ];
     }
@@ -82,7 +82,7 @@ class UserFactory extends Factory
             'status' => 'Active', // Set a fixed status for consistent testing
             'last_login' => now(),
             'user_activity' => 'Initial login',
-            'password' => Hash::make('zxcvbnm'),
+            'password' => Hash::make('qweasdzxc'),
             'remember_token' => Str::random(10),
         ])->create(); // Add create() here to actually create the user
     }
