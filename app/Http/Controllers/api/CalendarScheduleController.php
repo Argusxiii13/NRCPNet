@@ -196,4 +196,60 @@ public function getEventsByDate($date)
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    /**
+ * Get events filtered by month and division.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Illuminate\Http\Response
+ */
+public function getFilteredEvents(Request $request)
+{
+    try {
+        $query = CalendarSchedule::query();
+        
+        // Filter by month if provided
+        if ($request->has('month')) {
+            $dateString = $request->month; // "Mar-2025"
+            Log::debug('Filtered date string received: ' . $dateString);
+            
+            // Split the date string
+            list($monthStr, $yearStr) = explode('-', $dateString);
+            
+            // Convert month name to number (Mar -> 3)
+            $monthNum = date('m', strtotime("1 $monthStr"));
+            
+            Log::debug('Filtered parsed month: ' . $monthNum);
+            Log::debug('Filtered parsed year: ' . $yearStr);
+            
+            $query->whereMonth('date', $monthNum)
+                  ->whereYear('date', $yearStr);
+        }
+        
+        // Filter by division
+        if ($request->has('division')) {
+            $divisions = explode(',', $request->division);
+            
+            // Always include "General" events plus the user's division events
+            $query->where(function($q) use ($divisions) {
+                $q->whereIn('division', $divisions)
+                  ->orWhere('division', 'General');
+            });
+            
+            Log::debug('Filtering by divisions: ' . implode(', ', $divisions) . ' and General');
+        } else {
+            // If no division specified, only show General events
+            $query->where('division', 'General');
+            Log::debug('Filtering by General division only');
+        }
+        
+        $events = $query->get();
+        Log::debug('Filtered events count: ' . $events->count());
+        
+        return response()->json($events);
+    } catch (\Exception $e) {
+        Log::error('Filtered event fetch error: ' . $e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 }

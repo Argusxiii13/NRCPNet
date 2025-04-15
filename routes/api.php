@@ -80,3 +80,5 @@ Route::middleware('auth:sanctum')->get('/user-session', function (Request $reque
 
 // Auth check endpoint
 Route::get('/auth/check', [AuthController::class, 'check']);
+
+Route::get('/calendar-filtered', [App\Http\Controllers\api\CalendarScheduleController::class, 'getFilteredEvents']);

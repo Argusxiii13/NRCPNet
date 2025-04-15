@@ -23,7 +23,7 @@ const formatTime = (timeString) => {
     return formattedTimes.join(' - ');
 };
 
-const Calendar = () => {
+const Calendar = ({user, isAuthenticated}) => {
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState(today);
     const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'));
@@ -34,6 +34,8 @@ const Calendar = () => {
     const [loading, setLoading] = useState(false);
 
     const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
+    console.log('User in Calendar:', user);
+    console.log('Is Authenticated in Calendar:', isAuthenticated);
 
     const days = eachDayOfInterval({
         start: startOfMonth(firstDayCurrentMonth),
@@ -46,21 +48,29 @@ const Calendar = () => {
     const totalCells = 42;
     const emptyDaysEnd = Array(totalCells - days.length - startDay).fill(null);
 
-    // Fetch events for the current month
-    const fetchEvents = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get('/api/calendar', {
-                params: { month: currentMonth }
-            });
-            setEvents(response.data);
-        } catch (error) {
-            console.error('Error fetching events:', error);
-            setEvents([]);
-        } finally {
-            setLoading(false);
+// Fetch events for the current month
+const fetchEvents = async () => {
+    try {
+        setLoading(true);
+        
+        // Set up parameters
+        const params = { month: currentMonth };
+        
+        // Add division parameter if user is authenticated
+        if (isAuthenticated && user && user.division) {
+            params.division = user.division;
         }
-    };
+        
+        // Use the new endpoint
+        const response = await axios.get('/api/calendar-filtered', { params });
+        setEvents(response.data);
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        setEvents([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
     useEffect(() => {
         fetchEvents();

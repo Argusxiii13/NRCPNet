@@ -20,6 +20,7 @@ class CalendarSchedule extends Model
         'title',
         'time',
         'location',
+        'division',
         'description',
     ];
     
