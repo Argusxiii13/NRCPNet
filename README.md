@@ -1,5 +1,6 @@
 
 ## Make sure to have Visual Studio Code
+0. Make sure to install Xampp with 8.2.12 / PHP 8.2.12, Latest Node JS, and Latest Composer.
 
 1. First Create a Empty Folder, then access that directory before you create the clone. 
 
@@ -51,11 +52,8 @@ DB_PASSWORD=
 ```bash
 php artisan config:clear
 ```
-```bash
-php artisan migrate
-```
 
-11. After migrating, run these command : 
+11. Run these command : 
 
 ```bash
 php artisan app:cleanup
