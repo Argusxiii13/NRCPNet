@@ -90,3 +90,5 @@ Route::get('/forms-by-type', [App\Http\Controllers\api\DownloadableController::c
 Route::put('/downloadables/update-form/{id}', [DownloadableController::class, 'updateForm']);
 
 Route::post('/downloadables/with-metadata', [App\Http\Controllers\api\DownloadableController::class, 'storeWithMetadata']);
+// Add this new route
+Route::get('/forms-by-division', [DownloadableController::class, 'getFormsByDivision']);

@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../css/styles/landing/DownloadableForms.module.css';
+import { useAuth } from '../../hooks/useAuth'; // Adjust path as needed
 
 const DownloadableForms = () => {
+    const { user, isAuthenticated, loading: authLoading } = useAuth();
     const [regularForms, setRegularForms] = useState([]);
     const [requestForms, setRequestForms] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchForms();
-    }, []);
+        // Only fetch forms after authentication status is determined
+        if (!authLoading) {
+            fetchForms();
+        }
+    }, [authLoading, user]);
 
     const fetchForms = async () => {
         try {
             setIsLoading(true);
             
-            // Use the new endpoint that returns both form types
-            const response = await fetch('/api/forms-by-type?status=Active');
+            // Build the API URL with or without division
+            let apiUrl = '/api/forms-by-division?status=Active';
+            
+            // If user is authenticated and has a division, pass it to the API
+            if (isAuthenticated && user && user.division) {
+                apiUrl += `&division=${encodeURIComponent(user.division)}`;
+            }
+            
+            // Use the new endpoint that returns filtered forms
+            const response = await fetch(apiUrl);
             
             if (!response.ok) {
                 throw new Error('Error fetching forms');
@@ -24,7 +37,7 @@ const DownloadableForms = () => {
             
             const data = await response.json();
             
-            // Data is now organized by type
+            // Set the forms directly as they're already filtered by the server
             setRegularForms(data.downloadable || []);
             setRequestForms(data.request || []);
         } catch (err) {
@@ -39,6 +52,16 @@ const DownloadableForms = () => {
         // Use the link's href as is, since it points to the file's location
         // No need to preventDefault - let the browser handle the download
     };
+
+    // If still checking authentication status, show loading
+    if (authLoading) {
+        return (
+            <div className={styles['downloadable-forms-container']}>
+                <h3 className={styles['downloadable-forms-title']}>Forms</h3>
+                <p className={styles['loading-message']}>Loading user information...</p>
+            </div>
+        );
+    }
 
     return (
         <div className={styles['downloadable-forms-container']}>

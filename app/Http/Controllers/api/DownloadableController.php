@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Downloadable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class DownloadableController extends Controller
 {
@@ -293,6 +294,69 @@ public function getAllFormsByType(Request $request)
             
         } catch (\Exception $e) {
             Log::error('Upload downloadable with metadata error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+    // ... existing methods ...
+
+    /**
+     * Fetch forms filtered by division
+     * This accepts a division parameter and returns forms from that division and General
+     */
+    public function getFormsByDivision(Request $request)
+    {
+        try {
+            // Start with a base query
+            $query = Downloadable::query();
+            
+            // Apply status filter if provided (default to Active)
+            $status = $request->has('status') ? $request->status : 'Active';
+            $query->where('status', $status);
+            
+            // Get division from request or use authenticated user's division
+            $division = null;
+            
+            if ($request->has('division') && !empty($request->division)) {
+                $division = $request->division;
+            } elseif (Auth::check() && Auth::user()->division) {
+                $division = Auth::user()->division;
+            }
+            
+            // If we have a division, filter to show General and that division
+            if ($division) {
+                $query->where(function($q) use ($division) {
+                    $q->where('division', 'General')
+                      ->orWhere('division', $division);
+                });
+            } else {
+                // If no division specified, only show General forms
+                $query->where('division', 'General');
+            }
+            
+            // Sort by created_at desc by default (newest first)
+            $query->orderBy('created_at', 'desc');
+            
+            // Get all forms matching criteria
+            $forms = $query->get(['id', 'title', 'content', 'author', 'status', 'type', 'division']);
+            
+            // Group forms by type
+            $downloadableForms = $forms->filter(function($form) {
+                return $form->type === 'Regular' || !$form->type;
+            })->values();
+            
+            $requestForms = $forms->filter(function($form) {
+                return $form->type === 'Request';
+            })->values();
+            
+            return response()->json([
+                'downloadable' => $downloadableForms,
+                'request' => $requestForms
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Fetch forms by division error: ' . $e->getMessage());
             return response()->json([
                 'status' => 500,
                 'message' => 'Error: ' . $e->getMessage(),
