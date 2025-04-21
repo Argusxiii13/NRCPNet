@@ -149,5 +149,56 @@ class DownloadableController extends Controller
         ], 500);
     }
 }
+/**
+ * Fetch all forms by type (downloadable or request)
+ * This is a new method that won't interfere with existing ones
+ */
+/**
+ * Fetch both downloadable and request forms
+ * This is a new method that won't touch existing functionality
+ */
+public function getAllFormsByType(Request $request)
+{
+    try {
+        // Start with a base query
+        $query = Downloadable::query();
+        
+        // Apply status filter if provided
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+        
+        // Apply type filter if provided
+        if ($request->has('type') && !empty($request->type)) {
+            $query->where('type', $request->type);
+        }
+        
+        // Sort by created_at desc by default (newest first)
+        $query->orderBy('created_at', 'desc');
+        
+        // Get all forms matching criteria
+        $forms = $query->get(['id', 'title', 'content', 'author', 'status', 'type']);
+        
+        // Group forms by type - updating to match the seeder types
+        $downloadableForms = $forms->filter(function($form) {
+            return $form->type === 'Regular' || !$form->type;
+        })->values();
+        
+        $requestForms = $forms->filter(function($form) {
+            return $form->type === 'Request';
+        })->values();
+        
+        return response()->json([
+            'downloadable' => $downloadableForms,
+            'request' => $requestForms
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Fetch forms by type error: ' . $e->getMessage());
+        return response()->json([
+            'status' => 500,
+            'message' => 'Error: ' . $e->getMessage(),
+        ], 500);
+    }
+}
     
 }

@@ -82,3 +82,6 @@ Route::middleware('auth:sanctum')->get('/user-session', function (Request $reque
 Route::get('/auth/check', [AuthController::class, 'check']);
 
 Route::get('/calendar-filtered', [App\Http\Controllers\api\CalendarScheduleController::class, 'getFilteredEvents']);
+
+// Add this to your routes/api.php file
+Route::get('/forms-by-type', [App\Http\Controllers\api\DownloadableController::class, 'getAllFormsByType']);
