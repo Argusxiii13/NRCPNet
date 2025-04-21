@@ -121,7 +121,19 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    gap: 10px;
+    gap: 16px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.control-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563;
 }
 
 .title-input {
@@ -129,36 +141,65 @@
     border: 1px solid #e1e4e8;
     border-radius: 6px;
     font-size: 14px;
+    width: 100%;
 }
 
 .status-dropdown {
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #e1e4e8;
     border-radius: 6px;
     font-size: 14px;
-    width: 150px;
+    width: 100%;
+    background-color: white;
+}
+
+/* Error and Success Messages */
+.error-message, .success-message {
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.error-message {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.success-message {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #dcfce7;
 }
 
 /* Publishing Controls Styles */
 .publish-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 24px;
     gap: 20px;
 }
 
 .upload-button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #11326a;
     color: white;
     border: none;
     border-radius: 6px;
     font-weight: 500;
+    font-size: 16px;
     transition: background-color 0.2s ease;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .upload-button:hover {
-    background-color: #348cda;
-  }
+    background-color: #1e40af;
+}
+
+.upload-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}

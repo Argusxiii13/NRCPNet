@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import styles from '../../../css/styles/admin/PdfUploadPanel.module.css';
 
@@ -6,10 +6,36 @@ const PdfUploadPanel = ({ refreshForms }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState('');
   const [title, setTitle] = useState('');
-  const [status, setStatus] = useState('Active'); 
+  const [status, setStatus] = useState('Active');
+  // New state variables for division and type
+  const [division, setDivision] = useState('General');
+  const [type, setType] = useState('Regular');
+  const [divisions, setDivisions] = useState([]);
+  const [loadingDivisions, setLoadingDivisions] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+
+  // Fetch divisions on component mount
+  useEffect(() => {
+    fetchDivisions();
+  }, []);
+
+  const fetchDivisions = async () => {
+    try {
+      setLoadingDivisions(true);
+      const response = await fetch('/api/divisions');
+      if (!response.ok) {
+        throw new Error('Failed to fetch divisions');
+      }
+      const data = await response.json();
+      setDivisions(data);
+    } catch (error) {
+      console.error('Error fetching divisions:', error);
+    } finally {
+      setLoadingDivisions(false);
+    }
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -40,6 +66,11 @@ const PdfUploadPanel = ({ refreshForms }) => {
       return;
     }
 
+    if (!division) {
+      setUploadError('Please select a division');
+      return;
+    }
+
     setIsUploading(true);
     setUploadError(null);
     
@@ -48,10 +79,12 @@ const PdfUploadPanel = ({ refreshForms }) => {
     formData.append('file', file);
     formData.append('title', title);
     formData.append('status', status);
+    formData.append('division', division);
+    formData.append('type', type);
     
     try {
-      // Fixed endpoint to match Laravel API route (plural 'downloadables')
-      const response = await fetch('/api/downloadables', {
+      // Use the new endpoint for uploading with metadata
+      const response = await fetch('/api/downloadables/with-metadata', {
         method: 'POST',
         body: formData,
         // Don't set Content-Type header when sending FormData
@@ -81,6 +114,8 @@ const PdfUploadPanel = ({ refreshForms }) => {
         setFilePreview('');
         setTitle('');
         setStatus('Active');
+        setDivision('General');
+        setType('Regular');
         setUploadSuccess(false);
         
         // Refresh the forms list to show the new upload
@@ -137,21 +172,67 @@ const PdfUploadPanel = ({ refreshForms }) => {
             </div>
             
             <div className={styles['form-controls']}>
-              <input 
-                type="text" 
-                placeholder="Title" 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
-                className={styles['title-input']}
-              />
-              <select 
-                value={status} 
-                onChange={(e) => setStatus(e.target.value)} 
-                className={styles['status-dropdown']}
-              >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+              <div className={styles['control-group']}>
+                <label htmlFor="title-input" className={styles['control-label']}>Title:</label>
+                <input 
+                  id="title-input"
+                  type="text" 
+                  placeholder="Enter form title" 
+                  value={title} 
+                  onChange={(e) => setTitle(e.target.value)} 
+                  className={styles['title-input']}
+                />
+              </div>
+              
+              <div className={styles['control-group']}>
+                <label htmlFor="division-select" className={styles['control-label']}>Division:</label>
+                <select 
+                  id="division-select"
+                  value={division} 
+                  onChange={(e) => setDivision(e.target.value)}
+                  className={styles['status-dropdown']}
+                  disabled={loadingDivisions}
+                >
+                  {loadingDivisions ? (
+                    <option value="">Loading divisions...</option>
+                  ) : (
+                    <>
+                      <option value="General">General</option>
+                      {divisions.map((division) => (
+                        <option key={division.code} value={division.code}>
+                          {division.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+              </div>
+              
+              <div className={styles['control-group']}>
+                <label htmlFor="type-select" className={styles['control-label']}>Type:</label>
+                <select 
+                  id="type-select"
+                  value={type} 
+                  onChange={(e) => setType(e.target.value)}
+                  className={styles['status-dropdown']}
+                >
+                  <option value="Regular">Regular</option>
+                  <option value="Request">Request</option>
+                </select>
+              </div>
+              
+              <div className={styles['control-group']}>
+                <label htmlFor="status-select" className={styles['control-label']}>Status:</label>
+                <select 
+                  id="status-select"
+                  value={status} 
+                  onChange={(e) => setStatus(e.target.value)}
+                  className={styles['status-dropdown']}
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
             </div>
             
             {uploadError && (

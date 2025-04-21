@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, Edit2, Trash2, Eye } from 'lucide-react';
 import styles from '../../../css/styles/admin/DownloadableFormsList.module.css';
 
@@ -6,12 +6,37 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [formToDelete, setFormToDelete] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [editedForm, setEditedForm] = useState({ title: '', status: '', division: '', section: '' });
+  const [editedForm, setEditedForm] = useState({ title: '', status: '', division: '', section: '', type: '' });
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfError, setPdfError] = useState(null);
+  const [divisions, setDivisions] = useState([]);
+  const [loadingDivisions, setLoadingDivisions] = useState(false);
 
   const totalPages = Math.ceil(totalForms / itemsPerPage);
+
+  // Fetch divisions when edit modal opens
+  useEffect(() => {
+    if (isEditOpen) {
+      fetchDivisions();
+    }
+  }, [isEditOpen]);
+
+  const fetchDivisions = async () => {
+    try {
+      setLoadingDivisions(true);
+      const response = await fetch('/api/divisions');
+      if (!response.ok) {
+        throw new Error('Failed to fetch divisions');
+      }
+      const data = await response.json();
+      setDivisions(data);
+    } catch (error) {
+      console.error('Error fetching divisions:', error);
+    } finally {
+      setLoadingDivisions(false);
+    }
+  };
 
   const handleFormClick = (form) => {
     setSelectedForm(selectedForm?.id === form.id ? null : form);
@@ -29,7 +54,8 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
       id: form.id,
       title: form.title,
       status: form.status,
-      division: form.division,
+      division: form.division || 'General',
+      type: form.type || 'Downloadable',
       section: form.section
     });
     setIsEditOpen(true);
@@ -88,14 +114,22 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
   const handleEditSubmit = async () => {
     try {
-      const response = await fetch(`/api/downloadables/${editedForm.id}`, {
+      // Check if division is valid
+      if (!editedForm.division) {
+        console.error('Division is required');
+        return;
+      }
+
+      const response = await fetch(`/api/downloadables/update-form/${editedForm.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           title: editedForm.title,
-          status: editedForm.status
+          status: editedForm.status,
+          division: editedForm.division,
+          type: editedForm.type
         })
       });
       
@@ -104,7 +138,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
       }
       
       setIsEditOpen(false);
-      setEditedForm({ id: null, title: '', status: '' });
+      setEditedForm({ id: null, title: '', status: '', division: '', type: '' });
       refreshForms();
     } catch (error) {
       console.error('Error updating form:', error);
@@ -166,30 +200,30 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         </div>
       </div>
 
-{/* Integrated Pagination - Corrected class names */}
-<div className={styles['pagination']}>
-  <div className={styles['pagination-info']}>
-    {loading ? 'Loading...' :
-      `Showing ${totalForms > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalForms)} of ${totalForms} features`
-    }
-  </div>
-  <div className={styles['pagination-buttons']}>
-    <button
-      onClick={() => setCurrentPage(currentPage - 1)}
-      disabled={currentPage === 1 || loading}
-      className={styles['filter-button']}
-    >
-      Previous
-    </button>
-    <button
-      onClick={() => setCurrentPage(currentPage + 1)}
-      disabled={currentPage * itemsPerPage >= totalForms || loading}
-      className={styles['filter-button']}
-    >
-      Next
-    </button>
-  </div>
-</div>
+      {/* Integrated Pagination - Corrected class names */}
+      <div className={styles['pagination']}>
+        <div className={styles['pagination-info']}>
+          {loading ? 'Loading...' :
+            `Showing ${totalForms > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalForms)} of ${totalForms} features`
+          }
+        </div>
+        <div className={styles['pagination-buttons']}>
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1 || loading}
+            className={styles['filter-button']}
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage * itemsPerPage >= totalForms || loading}
+            className={styles['filter-button']}
+          >
+            Next
+          </button>
+        </div>
+      </div>
       
       {/* Confirmation Modal */}
       {isConfirmOpen && (
@@ -210,7 +244,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Edit Modal with Dynamic Divisions */}
       {isEditOpen && (
         <div className={styles['modal-overlay']}>
           <div className={styles['modal-container']}>
@@ -239,6 +273,41 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div className={styles['modal-field']}>
+                <label htmlFor="division">Division:</label>
+                <select
+                  id="division"
+                  value={editedForm.division}
+                  onChange={(e) => setEditedForm({ ...editedForm, division: e.target.value })}
+                  className={styles['modal-select']}
+                  disabled={loadingDivisions}
+                >
+                  {loadingDivisions ? (
+                    <option value="">Loading divisions...</option>
+                  ) : (
+                    <>
+                      <option value="General">General</option>
+                      {divisions.map((division) => (
+                        <option key={division.code} value={division.code}>
+                          {division.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+              </div>
+              <div className={styles['modal-field']}>
+                <label htmlFor="type">Type:</label>
+                <select
+                  id="type"
+                  value={editedForm.type}
+                  onChange={(e) => setEditedForm({ ...editedForm, type: e.target.value })}
+                  className={styles['modal-select']}
+                >
+                  <option value="Regular">Regular</option>
+                  <option value="Request">Request</option>
                 </select>
               </div>
               {editedForm.section && (

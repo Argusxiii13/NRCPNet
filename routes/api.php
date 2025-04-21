@@ -85,3 +85,8 @@ Route::get('/calendar-filtered', [App\Http\Controllers\api\CalendarScheduleContr
 
 // Add this to your routes/api.php file
 Route::get('/forms-by-type', [App\Http\Controllers\api\DownloadableController::class, 'getAllFormsByType']);
+
+// Add this to your routes/api.php file
+Route::put('/downloadables/update-form/{id}', [DownloadableController::class, 'updateForm']);
+
+Route::post('/downloadables/with-metadata', [App\Http\Controllers\api\DownloadableController::class, 'storeWithMetadata']);

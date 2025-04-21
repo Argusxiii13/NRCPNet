@@ -200,5 +200,104 @@ public function getAllFormsByType(Request $request)
         ], 500);
     }
 }
+/**
+     * Update a downloadable form with extended fields
+     * This is a new method that won't interfere with existing components
+     */
+    public function updateForm(Request $request, $id)
+    {
+        // Validate the request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'status' => 'required|in:Active,Inactive',
+            'division' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+        ]);
+
+        try {
+            // Find the downloadable form by ID
+            $downloadable = Downloadable::findOrFail($id);
+            
+            // Update the form data with all fields
+            $downloadable->title = $request->title;
+            $downloadable->status = $request->status;
+            $downloadable->division = $request->division;
+            $downloadable->type = $request->type;
+            
+            // Save the changes
+            $downloadable->save();
+            
+            return response()->json([
+                'message' => 'Downloadable form updated successfully',
+                'data' => $downloadable
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Update downloadable form error: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update downloadable form',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    /**
+     * Store a new downloadable form with additional metadata
+     * This is a new method that won't interfere with existing components
+     */
+    public function storeWithMetadata(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'file' => 'required|file|mimes:pdf',
+            'status' => 'required|in:active,inactive,Active,Inactive',
+            'division' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+        ]);
+
+        try {
+            // Handle file upload
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                
+                // Create a new downloadable record with all fields
+                $downloadable = new Downloadable();
+                $downloadable->title = $request->title;
+                $downloadable->author = 'Admin'; // Set author to Admin by default
+                $downloadable->status = ucfirst(strtolower($request->status)); // Ensure consistent casing
+                $downloadable->division = $request->division;
+                $downloadable->type = $request->type;
+                $downloadable->content = ''; // Temporary placeholder
+                $downloadable->save();
+                
+                // Generate a unique filename using the new ID
+                $filename = 'Downloadable' . $downloadable->id . '.' . $file->getClientOriginalExtension();
+                
+                // Store the file in the storage/app/public/downloadable directory
+                $path = $file->storeAs('downloadable', $filename, 'public');
+                
+                // Update the content field with the file path
+                $downloadable->content = '/storage/' . $path;
+                $downloadable->save();
+                
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Form with metadata uploaded successfully',
+                    'data' => $downloadable
+                ], 200);
+            }
+            
+            return response()->json([
+                'status' => 400,
+                'message' => 'No file was uploaded',
+            ], 400);
+            
+        } catch (\Exception $e) {
+            Log::error('Upload downloadable with metadata error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
     
 }
