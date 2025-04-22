@@ -19,15 +19,31 @@ class ResourcesLinkSeeder extends Seeder
             '/resources/Resources1.png',
             '/resources/Resources2.png',
             '/resources/Resources3.png',
-            '/resources/Resources4.png'
+        ];
+
+        // Hardcoded resources data
+        $resources = [
+            [
+                'name' => 'eRecords',
+                'link' => 'http://10.10.128.19/rmas'
+            ],
+            [
+                'name' => 'eTicket',
+                'link' => 'https://iservice.nrcp.dost.gov.ph'
+            ],
+            [
+                'name' => 'HRMIS',
+                'link' => 'http://10.10.128.11/hrmis'
+            ]
         ];
 
         foreach ($images as $index => $imagePath) {
             // Check if the file exists
             $fullPath = public_path($imagePath);
             if (file_exists($fullPath)) {
-                // Define a name for the resource
-                $resourceName = 'Example System ' . ($index + 1);
+                // Get the resource data for this index
+                $resourceName = $resources[$index]['name'];
+                $resourceLink = $resources[$index]['link'];
                 
                 // Replace spaces with underscores in the name for the filename
                 $formattedName = str_replace(' ', '_', $resourceName);
@@ -35,7 +51,7 @@ class ResourcesLinkSeeder extends Seeder
                 // Insert the record first to get the ID
                 $resourceId = DB::table('resources_link')->insertGetId([
                     'name' => $resourceName,
-                    'link' => 'https://www.example' . ($index + 1) . '.com',
+                    'link' => $resourceLink,
                     'icon' => '', // Initially empty, will be updated with path later
                     'status' => 'Active',
                     'created_at' => now(),
