@@ -4,10 +4,19 @@
     padding: 1rem;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    height: 794px;
+    height: 900px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    position: relative;
+    height: 3rem;
 }
 
 .downloadable-forms-title {
@@ -16,6 +25,77 @@
     margin-top: 0.5rem;
     text-align: center;
     color: rgb(0, 0, 0);
+    flex: 1;
+}
+
+/* Search Bar Styles */
+.search-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    transition: all 0.3s ease;
+    height: 2.5rem;
+    border-radius: 2rem;
+}
+
+.search-container.expanded {
+    width: 97%;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0 0.5rem;
+}
+
+.search-container:hover:not(.expanded) .search-icon {
+    transform: scale(1.05);
+    background-color: #f0f0f0;
+}
+
+.search-input {
+    flex: 1;
+    height: 100%;
+    padding: 0 1rem;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: transparent;
+    width: 100%;
+}
+
+.search-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.search-icon:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.search-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #444;
+}
+
+/* Sections Container - to hold all three sections */
+.sections-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 }
 
 .section {
@@ -24,6 +104,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    max-height: 300px; /* Adjust to fit three sections */
 }
 
 .section-title {
@@ -45,7 +126,31 @@
     padding: 0.5rem;
     margin: 0 auto;
     flex: 1;
-    max-height: 300px; /* Limit height to fit both sections */
+    max-height: 190px; /* Reduced to accommodate three sections */
+}
+
+/* Custom scrollbar styling */
+.downloadable-forms-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.downloadable-forms-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.downloadable-forms-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.downloadable-forms-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar styling */
+.downloadable-forms-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 .downloadable-form-item-container {

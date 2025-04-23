@@ -306,8 +306,9 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
                   onChange={(e) => setEditedForm({ ...editedForm, type: e.target.value })}
                   className={styles['modal-select']}
                 >
-                  <option value="Regular">Regular</option>
                   <option value="Request">Request</option>
+                  <option value="Memo">Memo</option>
+                  <option value="Miscellaneous">Miscellaneous</option>
                 </select>
               </div>
               {editedForm.section && (

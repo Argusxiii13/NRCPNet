@@ -37,28 +37,32 @@ class DownloadableSeeder extends Seeder
             '/downloadable/Document19.pdf',
         ];
 
+        // Form types array - our new classification
+        $formTypes = ['Request', 'Memo', 'Miscellaneous'];
+
         foreach ($files as $filePath) {
             // Check if the file exists
             $fullPath = public_path($filePath);
             if (file_exists($fullPath)) {
                 // Randomly assign status
-                $status = rand(0, 1) ? 'Active' : 'Inactive';
                 
-                // Randomly assign type (Regular or Request)
-                $type = rand(0, 1) ? 'Regular' : 'Request';
+                
+                // Randomly assign one of the three form types
+                $type = $formTypes[array_rand($formTypes)];
 
                 // Insert the record first to get the ID
                 $downloadableId = DB::table('downloadable')->insertGetId([
                     'title' => basename($filePath), // Use the filename as the title
                     'content' => '', // Initially empty, will be updated with path later
                     'author' => 'Admin',
-                    'type' => $type, // Add the random type (Regular or Request)
-                    'status' => $status, // Store the random status
+                    'type' => $type, // Add the random type from the new types
+                    'division' => 'General', // Add the random division
+                    'status' => 'Active', // Store the random status
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
 
-                // Define the new file name and path
+                // Define the new file name and path 
                 $newFileName = 'Downloadable' . $downloadableId . '.' . pathinfo($fullPath, PATHINFO_EXTENSION);
 
                 // Store the file in the public storage

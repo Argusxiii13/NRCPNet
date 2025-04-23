@@ -34,7 +34,7 @@ class DownloadableController extends Controller
             }
             
             // Return all forms if no pagination is requested
-            $downloadables = Downloadable::all(['id', 'title', 'content', 'author', 'status']);
+            $downloadables = Downloadable::all(['id', 'title', 'content', 'author', 'status', 'type', 'division']);
             return response()->json($downloadables);
         } catch (\Exception $e) {
             Log::error('Fetch downloadables error: ' . $e->getMessage());
@@ -99,109 +99,127 @@ class DownloadableController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validate the request data
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'file' => 'required|file|mimes:pdf',
-        'status' => 'required|in:active,inactive,Active,Inactive',
-    ]);
+    {
+        // Validate the request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'file' => 'required|file|mimes:pdf',
+            'status' => 'required|in:active,inactive,Active,Inactive',
+            'type' => 'sometimes|string|in:Request,Memo,Miscellaneous', // Add optional type validation
+            'division' => 'sometimes|string|max:255', // Add optional division validation
+        ]);
 
-    try {
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            
-            // Create a new downloadable record first to get the ID
-            $downloadable = new Downloadable();
-            $downloadable->title = $request->title;
-            $downloadable->author = 'Admin'; // Set author to Admin by default
-            $downloadable->status = ucfirst(strtolower($request->status)); // Ensure consistent casing
-            $downloadable->content = ''; // Temporary placeholder
-            $downloadable->save();
-            
-            // Generate a unique filename using the new ID
-            $filename = 'Downloadable' . $downloadable->id . '.' . $file->getClientOriginalExtension();
-            
-            // Store the file in the storage/app/public/downloadable directory
-            $path = $file->storeAs('downloadable', $filename, 'public');
-            
-            // Update the content field with the file path
-            $downloadable->content = '/storage/' . $path;
-            $downloadable->save();
+        try {
+            // Handle file upload
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                
+                // Create a new downloadable record first to get the ID
+                $downloadable = new Downloadable();
+                $downloadable->title = $request->title;
+                $downloadable->author = 'Admin'; // Set author to Admin by default
+                $downloadable->status = ucfirst(strtolower($request->status)); // Ensure consistent casing
+                
+                // Set type if provided, default to Miscellaneous if not
+                $downloadable->type = $request->has('type') ? $request->type : 'Miscellaneous';
+                
+                // Set division if provided, default to General if not
+                $downloadable->division = $request->has('division') ? $request->division : 'General';
+                
+                $downloadable->content = ''; // Temporary placeholder
+                $downloadable->save();
+                
+                // Generate a unique filename using the new ID
+                $filename = 'Downloadable' . $downloadable->id . '.' . $file->getClientOriginalExtension();
+                
+                // Store the file in the storage/app/public/downloadable directory
+                $path = $file->storeAs('downloadable', $filename, 'public');
+                
+                // Update the content field with the file path
+                $downloadable->content = '/storage/' . $path;
+                $downloadable->save();
+                
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Form uploaded successfully',
+                    'data' => $downloadable
+                ], 200);
+            }
             
             return response()->json([
-                'status' => 200,
-                'message' => 'Form uploaded successfully',
-                'data' => $downloadable
-            ], 200);
+                'status' => 400,
+                'message' => 'No file was uploaded',
+            ], 400);
+            
+        } catch (\Exception $e) {
+            Log::error('Upload downloadable error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
         }
-        
-        return response()->json([
-            'status' => 400,
-            'message' => 'No file was uploaded',
-        ], 400);
-        
-    } catch (\Exception $e) {
-        Log::error('Upload downloadable error: ' . $e->getMessage());
-        return response()->json([
-            'status' => 500,
-            'message' => 'Error: ' . $e->getMessage(),
-        ], 500);
     }
-}
-/**
- * Fetch all forms by type (downloadable or request)
- * This is a new method that won't interfere with existing ones
- */
-/**
- * Fetch both downloadable and request forms
- * This is a new method that won't touch existing functionality
- */
-public function getAllFormsByType(Request $request)
-{
-    try {
-        // Start with a base query
-        $query = Downloadable::query();
-        
-        // Apply status filter if provided
-        if ($request->has('status') && !empty($request->status)) {
-            $query->where('status', $request->status);
+    
+    /**
+     * Fetch forms by type (updated to use new types)
+     * This method now returns forms grouped by the three types: Request, Memo, and Miscellaneous
+     */
+    public function getAllFormsByType(Request $request)
+    {
+        try {
+            // Start with a base query
+            $query = Downloadable::query();
+            
+            // Apply status filter if provided
+            if ($request->has('status') && !empty($request->status)) {
+                $query->where('status', $request->status);
+            }
+            
+            // Apply type filter if provided
+            if ($request->has('type') && !empty($request->type)) {
+                $query->where('type', $request->type);
+            }
+            
+            // Apply search filter if provided
+            if ($request->has('search') && !empty($request->search)) {
+                $search = $request->search;
+                $query->where('title', 'like', "%{$search}%");
+            }
+            
+            // Sort by created_at desc by default (newest first)
+            $query->orderBy('created_at', 'desc');
+            
+            // Get all forms matching criteria
+            $forms = $query->get(['id', 'title', 'content', 'author', 'status', 'type', 'division']);
+            
+            // Group forms by type - updated to use the new types
+            $requestForms = $forms->filter(function($form) {
+                return $form->type === 'Request';
+            })->values();
+            
+            $memoForms = $forms->filter(function($form) {
+                return $form->type === 'Memo';
+            })->values();
+            
+            $miscForms = $forms->filter(function($form) {
+                return $form->type === 'Miscellaneous' || !$form->type;
+            })->values();
+            
+            return response()->json([
+                'request' => $requestForms,
+                'memo' => $memoForms,
+                'miscellaneous' => $miscForms
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Fetch forms by type error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
         }
-        
-        // Apply type filter if provided
-        if ($request->has('type') && !empty($request->type)) {
-            $query->where('type', $request->type);
-        }
-        
-        // Sort by created_at desc by default (newest first)
-        $query->orderBy('created_at', 'desc');
-        
-        // Get all forms matching criteria
-        $forms = $query->get(['id', 'title', 'content', 'author', 'status', 'type']);
-        
-        // Group forms by type - updating to match the seeder types
-        $downloadableForms = $forms->filter(function($form) {
-            return $form->type === 'Regular' || !$form->type;
-        })->values();
-        
-        $requestForms = $forms->filter(function($form) {
-            return $form->type === 'Request';
-        })->values();
-        
-        return response()->json([
-            'downloadable' => $downloadableForms,
-            'request' => $requestForms
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Fetch forms by type error: ' . $e->getMessage());
-        return response()->json([
-            'status' => 500,
-            'message' => 'Error: ' . $e->getMessage(),
-        ], 500);
     }
-}
-/**
+    
+    /**
      * Update a downloadable form with extended fields
      * This is a new method that won't interfere with existing components
      */
@@ -212,7 +230,7 @@ public function getAllFormsByType(Request $request)
             'title' => 'required|string|max:255',
             'status' => 'required|in:Active,Inactive',
             'division' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'required|string|in:Request,Memo,Miscellaneous', // Updated valid types
         ]);
 
         try {
@@ -240,6 +258,7 @@ public function getAllFormsByType(Request $request)
             ], 500);
         }
     }
+    
     /**
      * Store a new downloadable form with additional metadata
      * This is a new method that won't interfere with existing components
@@ -252,7 +271,7 @@ public function getAllFormsByType(Request $request)
             'file' => 'required|file|mimes:pdf',
             'status' => 'required|in:active,inactive,Active,Inactive',
             'division' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'required|string|in:Request,Memo,Miscellaneous', // Updated valid types
         ]);
 
         try {
@@ -300,8 +319,7 @@ public function getAllFormsByType(Request $request)
             ], 500);
         }
     }
-    // ... existing methods ...
-
+    
     /**
      * Fetch forms filtered by division
      * This accepts a division parameter and returns forms from that division and General
@@ -325,6 +343,12 @@ public function getAllFormsByType(Request $request)
                 $division = Auth::user()->division;
             }
             
+            // Apply search filter if provided
+            if ($request->has('search') && !empty($request->search)) {
+                $search = $request->search;
+                $query->where('title', 'like', "%{$search}%");
+            }
+            
             // If we have a division, filter to show General and that division
             if ($division) {
                 $query->where(function($q) use ($division) {
@@ -343,17 +367,22 @@ public function getAllFormsByType(Request $request)
             $forms = $query->get(['id', 'title', 'content', 'author', 'status', 'type', 'division']);
             
             // Group forms by type
-            $downloadableForms = $forms->filter(function($form) {
-                return $form->type === 'Regular' || !$form->type;
-            })->values();
-            
             $requestForms = $forms->filter(function($form) {
                 return $form->type === 'Request';
             })->values();
             
+            $memoForms = $forms->filter(function($form) {
+                return $form->type === 'Memo';
+            })->values();
+            
+            $miscForms = $forms->filter(function($form) {
+                return $form->type === 'Miscellaneous' || !$form->type;
+            })->values();
+            
             return response()->json([
-                'downloadable' => $downloadableForms,
-                'request' => $requestForms
+                'request' => $requestForms,
+                'memo' => $memoForms,
+                'miscellaneous' => $miscForms
             ]);
         } catch (\Exception $e) {
             Log::error('Fetch forms by division error: ' . $e->getMessage());
@@ -363,5 +392,4 @@ public function getAllFormsByType(Request $request)
             ], 500);
         }
     }
-    
 }

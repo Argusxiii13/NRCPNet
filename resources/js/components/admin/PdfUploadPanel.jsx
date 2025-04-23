@@ -216,8 +216,9 @@ const PdfUploadPanel = ({ refreshForms }) => {
                   onChange={(e) => setType(e.target.value)}
                   className={styles['status-dropdown']}
                 >
-                  <option value="Regular">Regular</option>
                   <option value="Request">Request</option>
+                  <option value="Memo">Memo</option>
+                  <option value="Miscellaneous">Miscellaneous</option>
                 </select>
               </div>
               
