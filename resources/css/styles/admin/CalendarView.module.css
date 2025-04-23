@@ -54,14 +54,14 @@
 .calendar-container {
     background-color: white;
     border-radius: 8px;
-    padding: 16px 16px 8px 16px;
+    padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    flex: 1;
-    max-width: 50%;
-    display: flex; /* Added this */
-    flex-direction: column; /* Added this */
-    height:500px
+    flex: 0 0 600px; /* Fixed width, no grow/shrink */
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
 }
 
 .event-details-container {
@@ -70,7 +70,6 @@
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     flex: 1;
-    max-width: 50%;
     height: 500px;
     overflow-y: auto;
 }
@@ -94,13 +93,15 @@
 .admin-days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr); /* Fixed 6 rows */
     gap: 4px;
-    width: 565px;
+    width: 100%;
+    height: 350px; /* Fixed height for the grid */
     padding: 4px;
 }
 
 .admin-day-cell {
-    aspect-ratio: 1/0.5;
+    /* No aspect-ratio, let the grid handle the sizing */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -111,7 +112,6 @@
     border: none;
     background: none;
     cursor: pointer;
-    width: 100%;
 }
 
 .admin-day-cell:hover:not(.empty) {
@@ -177,21 +177,20 @@
     background-color: #fa5252; /* Red */
 }
 .event-line.wellness {
-    background-color: #e5babf; /* Red */
+    background-color: #e5babf; /* Pink */
 }
 
 /* Event Legend */
 .event-legend {
     display: flex;
     gap: 16px;
-
     padding: 12px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-top: auto; /* Added this to push it to the bottom */
-    margin-bottom: 20px; /* Maintain 20px bottom margin */
+    margin-top: auto; /* Push to the bottom */
 }
+
 .legend-item {
     display: flex;
     align-items: center;
@@ -219,7 +218,7 @@
     background-color: #fa5252; /* Red */
 }
 .legend-indicator.wellness {
-    background-color: #e5babf; /* Red */
+    background-color: #e5babf; /* Pink */
 }
 
 /* Event Details Styling */
@@ -311,4 +310,18 @@
     background-color: #f8f9fa;
     border-radius: 8px;
     color: #6c757d;
+}
+
+/* Add loading/error message styling */
+.loading-indicator,
+.error-message {
+    padding: 12px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.error-message {
+    color: #fa5252;
 }

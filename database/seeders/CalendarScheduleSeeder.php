@@ -12,8 +12,6 @@ class CalendarScheduleSeeder extends Seeder
         $events = [
             ['date' => '2025-04-03', 'type' => 'Meeting', 'title' => 'Team Standup', 'time' => '09:00 - 09:30', 'location' => 'Conference Room A', 'description' => 'Daily team status update.'],
             ['date' => '2025-04-07', 'type' => 'Meeting', 'title' => 'Client Call', 'time' => '14:00 - 15:00', 'location' => 'Zoom', 'description' => 'Project progress review with client.'],
-            ['date' => '2025-04-14', 'type' => 'Event', 'title' => 'Pi Day', 'time' => 'All Day', 'location' => 'Office', 'description' => 'Celebration with pie for everyone!'],
-            ['date' => '2025-04-17', 'type' => 'Holiday', 'title' => 'St. Patrick\'s Day', 'time' => 'All Day', 'location' => '-', 'description' => 'Office closed for holiday.'],
             ['date' => '2025-04-24', 'type' => 'Wellness', 'title' => 'Spring Equinox', 'time' => '15:00 - 17:00', 'location' => 'Courtyard', 'description' => 'Team building activity to welcome spring.'],
             ['date' => '2025-04-23', 'type' => 'Meeting', 'title' => 'Project Review', 'time' => '11:00 - 12:00', 'location' => 'Conference Room B', 'description' => 'Quarterly review of ongoing projects.'],
             ['date' => '2025-04-03', 'type' => 'Meeting', 'title' => 'Sprint Planning', 'time' => '10:00 - 11:30', 'location' => 'Main Hall', 'description' => 'Planning session for next sprint.'],

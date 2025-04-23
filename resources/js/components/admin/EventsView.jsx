@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios'; // Make sure axios is installed
 import styles from '../../../css/styles/admin/EventsView.module.css';
+import { useAuth } from '../../hooks/useAuth'; // Update path as needed
+
 
 const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     const [eventDate, setEventDate] = useState(selectedDay);
     const [events, setEvents] = useState([]);
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         title: '',
         type: '',
@@ -13,8 +16,9 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: '',
         endTime: '',
         location: '',
+        author: user ? `${user.first_name} ${user.surname}` : '',  // Set author from user name
         description: '',
-        division: 'General' // Initialize with 'General' as default
+        division: user?.division || 'General' // Set division from user division if available
     });
     const [editingEvent, setEditingEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +35,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: false,
         endTime: false,
         location: false,
+        author: false,  // Added author validation
         description: false,
         division: false // Added division validation
     });
@@ -77,6 +82,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: !timeDisabled && !formData.startTime,
             endTime: !timeDisabled && !formData.endTime,
             location: !formData.location.trim(),
+            author: !formData.author.trim(),  // Added author validation
             description: !formData.description.trim(),
             division: !formData.division // Modified division validation
         };
@@ -113,6 +119,16 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         // Set time disabled only if it's Thursday AND type is Wellness
         setTimeDisabled(isSelectedDayThursday && formData.type === 'Wellness');
     }, [selectedDay]);
+
+    useEffect(() => {
+        if (user && !formData.author) {
+            setFormData(prev => ({
+                ...prev,
+                author: `${user.first_name} ${user.surname}`,
+                division: user.division || prev.division
+            }));
+        }
+    }, [user]);
 
     // Fetch events for a specific date
     const fetchEventsByDate = async (date) => {
@@ -227,6 +243,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: formData.startTime,
                 endTime: formData.endTime,
                 location: formData.location,
+                author: formData.author,  // Added author to payload
                 description: formData.description,
                 division: formData.division // Added division to payload
             };
@@ -256,6 +273,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: false,
                 endTime: false,
                 location: false,
+                author: false,  // Added author validation reset
                 description: false,
                 division: false
             });
@@ -277,8 +295,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         let endTime = '';
         if (event.time && event.time.includes('-')) {
             const [start, end] = event.time.split('-').map(t => t.trim());
-            startTime = start;
-            endTime = end;
+            startTime = convertTo24HourFormat(start);
+            endTime = convertTo24HourFormat(end);
         }
 
         const eventFormData = {
@@ -288,6 +306,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: startTime,
             endTime: endTime,
             location: event.location || '',
+            author: event.author || '',  // Added author field
             description: event.description || '',
             division: event.division || 'General' // Set to General if empty
         };
@@ -296,6 +315,61 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         setTimeDisabled(isThursday(event.date) && event.type === 'Wellness');
 
         setFormData(eventFormData);
+    };
+
+    // Convert 12-hour format (e.g., "9:00 AM") to 24-hour format (e.g., "09:00")
+    const convertTo24HourFormat = (timeStr) => {
+        if (!timeStr || !timeStr.trim()) return '';
+        
+        try {
+            // Check if the time already has AM/PM indicator
+            if (timeStr.toLowerCase().includes('am') || timeStr.toLowerCase().includes('pm')) {
+                const timeParts = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
+                if (!timeParts) return timeStr;
+                
+                let hours = parseInt(timeParts[1], 10);
+                const minutes = timeParts[2];
+                const period = timeParts[3].toLowerCase();
+                
+                // Convert to 24-hour format
+                if (period === 'pm' && hours < 12) {
+                    hours += 12;
+                } else if (period === 'am' && hours === 12) {
+                    hours = 0;
+                }
+                
+                return `${hours.toString().padStart(2, '0')}:${minutes}`;
+            } else {
+                // Assume it's already in 24-hour format
+                return timeStr;
+            }
+        } catch (e) {
+            console.error('Error converting time format:', e);
+            return timeStr;
+        }
+    };
+
+    // Convert 24-hour format (e.g., "09:00") to 12-hour format (e.g., "9:00 AM")
+    const formatTimeTo12Hour = (timeStr) => {
+        if (!timeStr || !timeStr.trim()) return '';
+        
+        try {
+            // Check if the time is in 24-hour format ("HH:MM")
+            const match = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+            if (match) {
+                const hours = parseInt(match[1], 10);
+                const minutes = match[2];
+                const period = hours >= 12 ? 'PM' : 'AM';
+                const displayHours = hours % 12 || 12;
+                return `${displayHours}:${minutes} ${period}`;
+            }
+            
+            // If not in 24-hour format, return as is
+            return timeStr;
+        } catch (e) {
+            console.error('Error formatting time:', e);
+            return timeStr;
+        }
     };
 
     // Delete event
@@ -317,23 +391,39 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
     };
 
     // Reset form
-    const resetForm = () => {
-        setFormData({
-            title: '',
-            type: '',
-            date: formatDateForInput(selectedDay),
-            startTime: '',
-            endTime: '',
-            location: '',
-            description: '',
-            division: 'General' // Reset division to General as default
-        });
-        setTimeDisabled(false);
-    };
+// Update resetForm function to keep author set
+const resetForm = () => {
+    setFormData({
+        title: '',
+        type: '',
+        date: formatDateForInput(selectedDay),
+        startTime: '',
+        endTime: '',
+        location: '',
+        author: user ? `${user.first_name} ${user.surname}` : '',  // Keep author set to user
+        description: '',
+        division: user?.division || 'General' // Keep user's division as default
+    });
+    setTimeDisabled(false);
+};
 
     // Format time for display (e.g., "9:00 AM - 10:00 AM")
     const formatTimeForDisplay = (timeString) => {
         if (!timeString) return '';
+        
+        // If the timeString already contains a dash (e.g., "09:00 - 10:00")
+        if (timeString.includes('-')) {
+            const [startTime, endTime] = timeString.split('-').map(t => t.trim());
+            const formattedStartTime = formatTimeTo12Hour(startTime);
+            const formattedEndTime = formatTimeTo12Hour(endTime);
+            return (
+                <>
+                    {formattedStartTime}<br />
+                    {formattedEndTime}
+                </>
+            );
+        }
+        
         return timeString;
     };
 
@@ -353,6 +443,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         setEventDate(nextDay);
         const formattedDate = formatDateForInput(nextDay);
         fetchEventsByDate(formattedDate);
+    };
+
+    // Get event type class for styling
+    const getEventTypeClass = (type) => {
+        if (!type) return '';
+        return styles[type.toLowerCase()];
     };
 
     // Check if current date is Thursday
@@ -487,7 +583,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                 </div>
                             </div>
                             
-                            {/* Third Row: Location */}
+                            {/* Third Row: Location and Author (new) */}
                             <div className={styles['form-row']}>
                                 <div className={`${styles['form-group']} ${validationErrors.location ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventLocation">Location</label>
@@ -501,6 +597,22 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                                     />
                                     {validationErrors.location && <span className={styles['error-message']}>Location is required</span>}
                                 </div>
+                                
+                                {/* New Author field */}
+                                <div className={`${styles['form-group']} ${validationErrors.author ? styles['error-field'] : ''}`}>
+        <label htmlFor="author">Author</label>
+        <input 
+            type="text" 
+            id="author" 
+            placeholder="Event author" 
+            value={formData.author}
+            onChange={handleInputChange}
+            disabled={true} // Disable the field
+            title="Automatically set to your name" // Add helpful tooltip
+            required
+        />
+        {validationErrors.author && <span className={styles['error-message']}>Author is required</span>}
+    </div>
                             </div>
                             
                             {/* Fourth Row: Start Time and End Time */}
@@ -582,14 +694,15 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                             <div className={styles['loading']}>Loading events...</div>
                         ) : events.length > 0 ? (
                             events.map(event => (
-                                <div key={event.id} className={styles['event-item']}>
+                                <div key={event.id} className={`${styles['event-item']} ${getEventTypeClass(event.type)}`}>
                                     <div className={styles['event-time']}>
                                         {formatTimeForDisplay(event.time)}
                                     </div>
                                     <div className={styles['event-content']}>
                                         <h4>{event.title}</h4>
-                                        <div className={styles['event-type']}>{event.type}</div>
-                                        {event.location && <div className={styles['event-location']}>{event.location}</div>}
+                                        <div className={`${styles['event-type']} ${getEventTypeClass(event.type)}`}>{event.type}</div>
+                                        {event.location && <div className={styles['event-location']}>Location: {event.location}</div>}
+                                        {event.author && <div className={styles['event-author']}>Author: {event.author}</div>}
                                         {event.division && <div className={styles['event-division']}>Division: {event.division}</div>}
                                         {event.description && <p>{event.description}</p>}
                                     </div>

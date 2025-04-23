@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, parse, startOfMonth } from 'date-fns';
-import axios from 'axios'; // Make sure you have axios installed
+import axios from 'axios';
 import styles from '../../../css/styles/admin/CalendarView.module.css';
 
 const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMonth }) => {
@@ -47,6 +47,29 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
         setSelectedDayEvents(filteredEvents);
     }, [selectedDay, events]);
     
+    // Convert 24-hour time format to 12-hour format with AM/PM
+    const formatTimeToAMPM = (timeString) => {
+        // If time is "All Day", return as is
+        if (timeString === 'All Day') return timeString;
+        
+        // Split into start and end times
+        const [startTime, endTime] = timeString.split(' - ');
+        
+        // Convert each time to AM/PM format
+        const convertTime = (time) => {
+            const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12; // Convert 0 to 12
+            return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        };
+        
+        const formattedStartTime = convertTime(startTime);
+        const formattedEndTime = convertTime(endTime);
+        
+        return `${formattedStartTime} - ${formattedEndTime}`;
+    };
+    
+    // Generate days for the current month
     const days = eachDayOfInterval({
         start: startOfMonth(firstDayCurrentMonth),
         end: endOfMonth(firstDayCurrentMonth),
@@ -54,8 +77,10 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
 
     const startDay = getDay(startOfMonth(firstDayCurrentMonth));
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const emptyDaysStart = Array(startDay).fill(null);
+    
+    // Always maintain a 6-row calendar (42 cells)
     const totalCells = 42; // 6 rows of 7 days
+    const emptyDaysStart = Array(startDay).fill(null);
     const emptyDaysEnd = Array(Math.max(0, totalCells - days.length - startDay)).fill(null);
 
     const getEventTypes = (day) => {
@@ -110,10 +135,12 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                     </div>
 
                     <div className={styles['admin-days-grid']}>
+                        {/* Empty days at the start of month */}
                         {emptyDaysStart.map((_, index) => (
                             <div key={`empty-start-${index}`} className={`${styles['admin-day-cell']} ${styles['empty']}`} />
                         ))}
                         
+                        {/* Actual days of the month */}
                         {days.map((day) => {
                             const eventTypes = getEventTypes(day);
                             const eventCount = getDayEventCount(day);
@@ -144,6 +171,7 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                             );
                         })}
 
+                        {/* Empty days at the end of month */}
                         {emptyDaysEnd.map((_, index) => (
                             <div key={`empty-end-${index}`} className={`${styles['admin-day-cell']} ${styles['empty']}`} />
                         ))}
@@ -177,9 +205,10 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
                     {selectedDayEvents.length > 0 ? (
                         <div className={styles['event-list']}>
                             {selectedDayEvents.map((event) => (
-                                <div key={event.id} className={`${styles['event-card']} ${styles[event.type.toLowerCase()]}`}>                                    <div className={styles['event-header']}>
+                                <div key={event.id} className={`${styles['event-card']} ${styles[event.type.toLowerCase()]}`}>
+                                    <div className={styles['event-header']}>
                                         <h5 className={styles['event-title']}>{event.title}</h5>
-                                        <span className={styles['event-time']}>{event.time}</span>
+                                        <span className={styles['event-time']}>{formatTimeToAMPM(event.time)}</span>
                                     </div>
                                     <div className={styles['event-info']}>
                                         <div className={styles['event-location']}>

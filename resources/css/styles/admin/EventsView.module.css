@@ -1,7 +1,8 @@
 .admin-events-section {
     width: 100%;
-    height: 600px;
-    overflow-y: auto;
+    height: 600px; /* Keep this height */
+    overflow: hidden; /* Change from overflow-y: auto to hidden */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .panel-sub-header {
@@ -9,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding: 0 4px;
 }
 
 .panel-sub-header h3 {
@@ -28,30 +30,38 @@
 .toggle-button {
     background-color: #11326a;
     color: white;
-    border: 1px solid #ffffff;
+    border: none;
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: auto;
 }
 
 .toggle-button:hover {
     background-color: #348cda;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-button.active {
     background-color: #348cda;
 }
 
+.toggle-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 .events-container {
     background-color: white;
-    border-radius: 8px;
-    padding: 16px;
-    overflow-y: auto;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto; /* Add overflow here */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    height: calc(100% - 70px); /* Calculate height minus header */
 }
 
 /* Event List Styles */
@@ -64,15 +74,34 @@
 .event-item {
     border-radius: 8px;
     border: 1px solid #eaeaea;
+    border-left-width: 4px;
     padding: 16px;
     display: flex;
     gap: 16px;
-    transition: box-shadow 0.2s;
+    transition: all 0.2s ease;
     background-color: #fafafa;
 }
 
 .event-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Event type color coding */
+.meeting {
+    border-left-color: #339af0 !important;
+}
+
+.event {
+    border-left-color: #20c997 !important;
+}
+
+.holiday {
+    border-left-color: #fa5252 !important;
+}
+
+.wellness {
+    border-left-color: #e5babf !important;
 }
 
 .event-time {
@@ -81,6 +110,9 @@
     font-weight: 500;
     width: 100px;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column; /* Stack times vertically */
+    gap: 4px; /* Add some spacing between times */
 }
 
 .event-content {
@@ -88,33 +120,74 @@
 }
 
 .event-content h4 {
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
     font-size: 1rem;
     color: #343a40;
+    font-weight: 600;
 }
 
 .event-type {
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #495057;
-    background-color: #e9ecef;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 6px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Event type badges */
+.event-type.meeting {
+    color: #1971c2;
+    background-color: #e7f5ff;
+}
+
+.event-type.event {
+    color: #087f5b;
+    background-color: #e6fcf5;
+}
+
+.event-type.holiday {
+    color: #c92a2a;
+    background-color: #fff5f5;
+}
+
+.event-type.wellness {
+    color: #ae3ec9;
+    background-color: #f8f0fc;
 }
 
 .event-location {
     font-size: 0.8125rem;
     color: #6c757d;
     margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.event-author {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.event-division {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
 }
 
 .event-content p {
-    margin: 0;
+    margin: 8px 0 0;
     font-size: 0.875rem;
     color: #6c757d;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .event-actions {
@@ -128,75 +201,135 @@
 .delete-button {
     background: none;
     border: 1px solid #dee2e6;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 6px 12px;
     font-size: 0.8125rem;
     cursor: pointer;
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-button {
+    color: #4263eb;
+    border-color: #dbe4ff;
 }
 
 .edit-button:hover {
-    background-color: #f8f9fa;
-    border-color: #ced4da;
+    background-color: #dbe4ff;
+    border-color: #4263eb;
+}
+
+.delete-button {
+    color: #e03131;
+    border-color: #ffe3e3;
 }
 
 .delete-button:hover {
-    background-color: #dc2626;
-    color: white;
-    border-color: #dc2626;
+    background-color: #ffe3e3;
+    border-color: #e03131;
 }
 
 .loading, 
 .no-events {
     text-align: center;
-    padding: 32px;
+    padding: 40px;
     color: #6c757d;
     font-size: 0.9375rem;
+    font-weight: 500;
 }
 
-/* Event Management Form Styles */
+/* IMPROVED Event Management Form Styles */
 .event-management-form {
     padding: 16px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .event-management-form h4 {
-    margin: 0 0 20px 0;
-    font-size: 1.125rem;
+    margin: 0 0 24px 0;
+    font-size: 1.25rem;
     color: #343a40;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.event-management-form h4:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #348cda;
+    border-radius: 2px;
 }
 
 .form-row {
     display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 20px;
+    margin-bottom: 25px; /* Increased for error message space */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .form-row .form-group {
-    flex: 1;
+    flex: 1 1 calc(50% - 20px); /* Calculate exact width accounting for gap */
+    min-width: 200px; /* Minimum width to prevent fields from becoming too narrow */
     margin-bottom: 0;
+    position: relative; /* For error positioning */
 }
 
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 25px; /* Increased for error message space */
+    position: relative;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #495057;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #ced4da;
     border-radius: 6px;
     font-size: 0.875rem;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+    background-color: #fff;
+    box-sizing: border-box; /* Make sure padding doesn't increase width */
+}
+
+/* Fix for time inputs to have consistent width */
+input[type="time"] {
+    min-width: 140px;
+}
+
+/* Fix for select elements to match other input widths */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px !important;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+    border-color: #b1b1b1;
 }
 
 .form-group input:focus,
@@ -204,32 +337,50 @@
 .form-group select:focus {
     outline: none;
     border-color: #339af0;
+    box-shadow: 0 0 0 3px rgba(51, 154, 240, 0.1);
 }
 
 .form-group textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 120px;
+    width: 100%;
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.date-picker {
+    width: 100%;
 }
 
 .date-picker input {
     cursor: pointer;
+    width: 100%;
 }
 
 .form-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 24px;
+    margin-top: 40px; /* Increased for error message space */
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
 }
 
 .cancel-button {
     background: none;
     border: 1px solid #dee2e6;
     border-radius: 6px;
-    padding: 10px 16px;
+    padding: 10px 20px;
     font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    min-width: 120px; /* Consistent button width */
+    text-align: center;
 }
 
 .cancel-button:hover {
@@ -243,43 +394,74 @@
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 10px 16px;
+    padding: 10px 20px;
     font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 120px; /* Consistent button width */
+    text-align: center;
 }
 
 .save-button-cal:hover {
     background-color: #348cda;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.save-button-cal:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .save-button-cal:disabled {
     background-color: #cbd5e1;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .date-navigation {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .date-nav-button {
-    background: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px 10px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     font-weight: bold;
+    transition: all 0.2s;
+    color: #495057;
 }
 
 .date-nav-button:hover {
-    background: #e0e0e0;
+    background: #e9ecef;
+    color: #212529;
 }
 
 .date-picker-container {
     position: relative;
     display: inline-block;
+}
+
+.date-picker-container h3 {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.date-picker-container h3:hover {
+    background-color: #f0f0f0;
 }
 
 .date-picker-input {
@@ -292,11 +474,11 @@
     cursor: pointer;
 }
 
-/* Error styling */
+/* Updated Error styling */
 .error-field input,
 .error-field select,
 .error-field textarea {
-    border-color: #dc2626;
+    border-color: #e03131;
     background-color: #fff5f5;
 }
 
@@ -304,33 +486,46 @@
 .error-field select:focus,
 .error-field textarea:focus {
     outline: none;
-    border-color: #dc2626;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    border-color: #e03131;
+    box-shadow: 0 0 0 3px rgba(224, 49, 49, 0.1);
 }
 
 .error-message {
-    color: #dc2626;
+    color: #e03131;
     font-size: 0.75rem;
-    margin-top: 4px;
+    margin-top: 6px;
     display: block;
+    font-weight: 500;
+    position: absolute;
+    top: 100%;
+    left: 0;
 }
 
-/* Info message styling */
+/* Updated Info message styling */
 .info-message {
-    background-color: #ebf5ff;
-    border-left: 4px solid #1e88e5;
-    padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+    background-color: #e7f5ff;
+    border-left: 4px solid #339af0;
+    padding: 14px 16px;
+    margin: 10px 0 20px 0;
+    border-radius: 6px;
     font-size: 0.875rem;
-    color: #0055b0;
+    color: #1864ab;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Make the form responsive */
+/* Improved responsive layout */
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
-        gap: 16px;
+        gap: 30px; /* Increased to make room for error messages */
+    }
+    
+    .form-row .form-group {
+        width: 100%;
+        flex: none;
+        margin-bottom: 10px;
     }
     
     .event-item {
@@ -342,8 +537,39 @@
     }
     
     .event-actions {
-        margin-top: 12px;
+        margin-top: 16px;
         justify-content: flex-end;
         width: 100%;
     }
+    
+    .date-navigation {
+        flex-wrap: wrap;
+    }
+    
+    .form-buttons {
+        justify-content: center; /* Center buttons on mobile */
+    }
+    
+    .cancel-button, 
+    .save-button-cal {
+        flex: 1;
+        min-width: 100px;
+    }
+}
+
+/* Style the disabled author field to look better */
+.form-group input[disabled] {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #495057;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Add a small icon or indicator for auto-filled fields */
+.form-group input[disabled] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
 }

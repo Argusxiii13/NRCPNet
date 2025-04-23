@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CalendarSchedule;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log; // Add this line
+use Illuminate\Support\Facades\Log;
 
 class CalendarScheduleController extends Controller
 {
@@ -38,9 +38,9 @@ class CalendarScheduleController extends Controller
                     ->get();
                     
                 Log::debug('Events count: ' . $events->count());
-// Just return all events to confirm data access works
-$events = CalendarSchedule::all();
-return response()->json($events);
+                // Just return all events to confirm data access works
+                $events = CalendarSchedule::all();
+                return response()->json($events);
             } catch (\Exception $e) {
                 Log::error('Date parsing error: ' . $e->getMessage());
                 return response()->json(['error' => $e->getMessage()], 500);
@@ -80,8 +80,9 @@ return response()->json($events);
                 'date' => 'required|date',
                 'time' => 'nullable|string',
                 'location' => 'nullable|string|max:255',
+                'author' => 'required|string|max:255', // Added author validation
                 'description' => 'nullable|string',
-                'division' => 'required|string|max:50', // Added division validation
+                'division' => 'required|string|max:50',
             ]);
             
             // Format the time by combining start and end times
@@ -117,8 +118,9 @@ return response()->json($events);
                 'date' => 'date',
                 'time' => 'nullable|string',
                 'location' => 'nullable|string|max:255',
+                'author' => 'string|max:255', // Added author validation
                 'description' => 'nullable|string',
-                'division' => 'string|max:50', // Added division validation
+                'division' => 'string|max:50',
             ]);
             
             // Format the time by combining start and end times
