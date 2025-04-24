@@ -28,15 +28,13 @@ class FeatureSeeder extends Seeder
             // Check if the file exists
             $fullPath = public_path($imagePath);
             if (file_exists($fullPath)) {
-                // Randomly assign status
-                $status = rand(0, 1) ? 'Active' : 'Inactive';
-
+                
                 // Insert the record first to get the ID
                 $featureId = DB::table('feature')->insertGetId([
                     'title' => basename($imagePath), // Use the filename as the title
                     'content' => '', // Initially empty, will be updated with path later
                     'author' => 'Admin',
-                    'status' => $status, // Store the random status
+                    'status' => 'Active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
