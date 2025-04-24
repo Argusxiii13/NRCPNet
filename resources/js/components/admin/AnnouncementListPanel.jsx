@@ -39,8 +39,12 @@ const AnnouncementListPanel = () => {
           status: item.status || 'Active',
           content: item.content,
           type: item.type,
-          author: item.author || 'Admin'
+          author: item.author || 'Admin',
+          division: item.division || 'General'
         }));
+        
+        // Log the current announcements data to console
+        console.log('Current announcements data:', formattedData);
         
         setAnnouncements(formattedData);
         setTotalItems(result.pagination.total);
@@ -72,7 +76,9 @@ const AnnouncementListPanel = () => {
       title: announcement.title,
       status: announcement.status,
       content: announcement.content,
-      type: announcement.type
+      type: announcement.type,
+      author: announcement.author,
+      division: announcement.division
     });
     setIsEditOpen(true);
   };
@@ -146,6 +152,32 @@ const AnnouncementListPanel = () => {
     }
   };
 
+  const renderContentPreview = (content) => {
+    if (!content) return null;
+
+    if (content.toLowerCase().endsWith('.html')) {
+      return (
+        <div className={styles['iframe-container']}>
+          <iframe 
+            src={content} 
+            frameBorder="0" 
+            width="100%" 
+            height="100%" 
+            title="Announcement Content"
+          ></iframe>
+        </div>
+      );
+    } else {
+      return (
+        <img 
+          src={content} 
+          alt="Announcement" 
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+        />
+      );
+    }
+  };
+
   return (
     <div className={styles['panel'] + ' ' + styles['announcements-list-panel']}>
       <div className={styles['panel-header']}>
@@ -174,8 +206,9 @@ const AnnouncementListPanel = () => {
                     </span>
                   </div>
                   <div className={styles['announcement-meta']}>
-                    <span className={styles['announcement-division']}>{announcement.author}</span>
-                    <span className={styles['announcement-type']}>{announcement.type}</span>
+                    <span className={styles['announcement-author']}>Author: {announcement.author}</span>
+                    <span className={styles['announcement-division']}>Division: {announcement.division}</span>
+                    <span className={styles['announcement-type']}>Type: {announcement.type}</span>
                   </div>
                   <div className={styles['announcement-actions']}>
                     <button className={styles['action-button']} title="View" onClick={(e) => {
@@ -202,32 +235,31 @@ const AnnouncementListPanel = () => {
             </div>
             
             {/* Pagination Component */}
-{/* Pagination Component */}
-<div className={styles['pagination']}>
-  <div className={styles['pagination-info']}>
-    <p>
-      {loading ? 'Loading...' :
-        `Showing ${totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalItems)} of ${totalItems} announcements`
-      }
-    </p>
-  </div>
-  <div className={styles['pagination-buttons']}>
-    <button
-      className={styles['filter-button']}
-      onClick={() => setCurrentPage(currentPage - 1)}
-      disabled={currentPage === 1 || loading}
-    >
-      Previous
-    </button>
-    <button
-      className={styles['filter-button']}
-      onClick={() => setCurrentPage(currentPage + 1)}
-      disabled={currentPage * itemsPerPage >= totalItems || loading}
-    >
-      Next
-    </button>
-  </div>
-</div>
+            <div className={styles['pagination']}>
+              <div className={styles['pagination-info']}>
+                <p>
+                  {loading ? 'Loading...' :
+                    `Showing ${totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}-${Math.min(currentPage * itemsPerPage, totalItems)} of ${totalItems} announcements`
+                  }
+                </p>
+              </div>
+              <div className={styles['pagination-buttons']}>
+                <button
+                  className={styles['filter-button']}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1 || loading}
+                >
+                  Previous
+                </button>
+                <button
+                  className={styles['filter-button']}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage * itemsPerPage >= totalItems || loading}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -254,12 +286,36 @@ const AnnouncementListPanel = () => {
       {/* Edit Modal */}
       {isEditOpen && (
         <div className={styles['modal-overlay']}>
-          <div className={styles['modal-container']}>
+          <div className={styles['modal-container-large']}>
             <div className={styles['modal-header']}>
               <h4 className={styles['modal-title']}>Edit Announcement</h4>
               <button className={styles['close-button']} onClick={() => setIsEditOpen(false)}>✖</button>
             </div>
             <div className={styles['modal-content']}>
+              {/* Display readonly details */}
+              <div className={styles['details-section']}>
+                <div className={styles['details-row']}>
+                  <div className={styles['detail-item']}>
+                    <label>Author:</label>
+                    <span>{editedAnnouncement.author}</span>
+                  </div>
+                  <div className={styles['detail-item']}>
+                    <label>Division:</label>
+                    <span>{editedAnnouncement.division}</span>
+                  </div>
+                  <div className={styles['detail-item']}>
+                    <label>Type:</label>
+                    <span>{editedAnnouncement.type}</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Content preview */}
+              <div className={styles['content-preview-large']}>
+                {renderContentPreview(editedAnnouncement.content)}
+              </div>
+              
+              {/* Editable fields */}
               <div className={styles['modal-field']}>
                 <label htmlFor="title">Title:</label>
                 <input
@@ -294,28 +350,15 @@ const AnnouncementListPanel = () => {
       {/* Image/HTML Content Viewer Modal */}
       {isImageOpen && (
         <div className={styles['modal-overlay']}>
-          <div className={styles['modal-container']} style={{ width: '1026px', maxWidth: '100vw' }}>
+          <div className={styles['modal-container-large']}>
             <div className={styles['modal-header']}>
               <h4 className={styles['modal-title']}>Announcement</h4>
               <button className={styles['close-button']} onClick={() => setIsImageOpen(false)}>✖</button>
             </div>
-            <div className={styles['modal-content']} style={{ padding: '0', height: '398px', overflow: 'hidden' }}>
-              {announcementContent && announcementContent.toLowerCase().endsWith('.html') ? (
-                <iframe 
-                  src={announcementContent} 
-                  frameBorder="0" 
-                  width="100%" 
-                  height="100%" 
-                  style={{ width: '1026px', height: '398px' }}
-                  title="Announcement Content"
-                ></iframe>
-              ) : (
-                <img 
-                  src={announcementContent} 
-                  alt="Announcement" 
-                  style={{ width: '1026px', height: '398px', objectFit: 'contain' }} 
-                />
-              )}
+            <div className={styles['modal-content']} style={{ padding: '0', overflow: 'hidden' }}>
+              <div className={styles['content-display-large']}>
+                {renderContentPreview(announcementContent)}
+              </div>
             </div>
             <div className={styles['modal-footer']}>
               <button className={styles['cancel-button']} onClick={() => setIsImageOpen(false)}>Close</button>

@@ -17,12 +17,12 @@
 
 /* Preview Container Styles */
 .preview-container {
-  width: 1030px;
-  height: 399px;
+  width: 100%; /* Change from fixed 1030px to 100% */
+  height: 600px; /* Increase from 399px to 600px for more vertical space */
   margin: 0 auto 24px;
   border: 1px solid #e1e4e8;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: auto; /* Change from 'hidden' to 'auto' to add scrollbars when needed */
   background-color: #f8f9fa;
   display: flex;
   justify-content: center;
@@ -33,6 +33,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  max-width: 100%; /* Ensures content doesn't overflow horizontally */
 }
 
 .preview-placeholder {
@@ -41,6 +42,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+iframe.preview-content {
+  border: none;
+  width: 100%;
+  height: 100%;
 }
 
 .placeholder-content {

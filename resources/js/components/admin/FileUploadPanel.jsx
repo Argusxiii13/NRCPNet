@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Image as ImageIcon, FileText } from 'lucide-react';
 import styles from '../../../css/styles/admin/FileUploadPanel.module.css';
+import { useAuth } from '../../hooks/useAuth';
 
 const FileUploadPanel = () => {
-  const [selectedDivision, setSelectedDivision] = useState('');
-  const [publishTo, setPublishTo] = useState('');
+  const { user, loading } = useAuth();
+  const [selectedDivision, setSelectedDivision] = useState('General');
   const [divisions, setDivisions] = useState([]);
   const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
   const [status, setStatus] = useState('Active');
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -109,13 +109,11 @@ const FileUploadPanel = () => {
 
   const resetForm = () => {
     setTitle('');
-    setAuthor('');
     setStatus('Active');
     setSelectedFile(null);
     setPreviewUrl('');
     setFileType('');
-    setSelectedDivision('');
-    setPublishTo('');
+    setSelectedDivision('General');
     setErrorMessage('');
   };
 
@@ -131,18 +129,8 @@ const FileUploadPanel = () => {
       return;
     }
 
-    if (!author) {
-      setErrorMessage('Please provide an author name');
-      return;
-    }
-
-    if (!publishTo) {
-      setErrorMessage('Please select a publishing option');
-      return;
-    }
-
-    if (publishTo === 'specific' && !selectedDivision) {
-      setErrorMessage('Please select a division');
+    if (!user) {
+      setErrorMessage('User authentication required');
       return;
     }
 
@@ -152,16 +140,9 @@ const FileUploadPanel = () => {
       // Create FormData object to send file and other form data
       const formData = new FormData();
       formData.append('title', title);
-      formData.append('author', author);
+      formData.append('author', `${user.first_name} ${user.surname}`);
       formData.append('status', status);
-      formData.append('publishTo', publishTo);
-      
-      if (publishTo === 'specific') {
-        // Send division code directly - this assumes selectedDivision is the division code
-        const divisionCode = selectedDivision;
-        formData.append('division', divisionCode);
-      }
-      
+      formData.append('division', selectedDivision);
       formData.append('file', selectedFile);
       
       // Try to get CSRF token if available
@@ -208,6 +189,9 @@ const FileUploadPanel = () => {
       setIsUploading(false);
     }
   };
+
+  // Format user name for display
+  const authorName = user ? `${user.first_name} ${user.surname}` : 'Loading...';
 
   return (
     <div className={styles.panel}>
@@ -292,10 +276,11 @@ const FileUploadPanel = () => {
 
               <input 
                 type="text" 
-                className={styles['text-input']} 
-                placeholder="Author *"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                className={`${styles['text-input']} ${styles['author-input']}`}
+                placeholder="Author"
+                value={authorName}
+                disabled
+                readOnly
               />
 
               <select 
@@ -308,25 +293,15 @@ const FileUploadPanel = () => {
               </select>
             </div>
 
-            {/* Second Row: Publishing Options */}
+            {/* Publishing Controls Section */}
             <div className={styles['publish-controls']}>
               <div className={styles['dropdowns-container']}>
                 <select 
                   className={styles['publish-dropdown']}
-                  value={publishTo}
-                  onChange={(e) => setPublishTo(e.target.value)}
-                >
-                  <option value="everyone">Publish To Everyone</option>
-                  <option value="specific">Publish To Specific Division</option>
-                </select>
-
-                <select 
-                  className={styles['publish-dropdown']}
-                  disabled={publishTo !== 'specific'}
                   value={selectedDivision}
                   onChange={(e) => setSelectedDivision(e.target.value)}
                 >
-                  <option value="">Select Division</option>
+                  <option value="General">General (Everyone)</option>
                   {divisions.map((division) => (
                     <option key={division.id} value={division.code}>
                       ({division.code}) {division.name}

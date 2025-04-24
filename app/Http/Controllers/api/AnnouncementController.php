@@ -120,13 +120,13 @@ class AnnouncementController extends Controller
         try {
             Log::info('Announcement upload started', $request->except('file'));
             
-            // Validate the request
+            // Updated validation - remove publishTo requirement
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:255',
                 'author' => 'required|string|max:255',
                 'status' => 'required|in:Active,Inactive',
                 'file' => 'required|file|mimes:png,html',
-                'publishTo' => 'required|string'
+                'division' => 'required|string|max:50' // Make division required instead
             ]);
     
             if ($validator->fails()) {
@@ -145,12 +145,9 @@ class AnnouncementController extends Controller
             $extension = $file->getClientOriginalExtension();
             $announcement->type = ($extension === 'png') ? 'image' : 'html';
             
-            // Handle division-specific publishing
-            if ($request->publishTo === 'specific' && $request->has('division')) {
-                $announcement->division = $request->division; // Store division code
-            } else {
-                $announcement->division = 'General'; // Use default value
-            }
+            // Simplified division handling - directly use the division field
+            // If division is 'General', it's for everyone, otherwise it's specific
+            $announcement->division = $request->division;
             
             // Save to get ID
             $announcement->save();
