@@ -167,6 +167,13 @@
   box-shadow: 0 0 0 2px rgba(52, 140, 218, 0.2);
 }
 
+/* Style for disabled input */
+.disabled-input {
+  background-color: #f8f9fa;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
 .status-select {
   max-width: 200px;
 }

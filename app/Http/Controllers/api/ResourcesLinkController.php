@@ -43,6 +43,7 @@ class ResourcesLinkController extends Controller
                 'link' => 'required|url|max:255',
                 'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
                 'status' => 'required|in:Active,Inactive',
+                'author' => 'required|string|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -57,6 +58,7 @@ class ResourcesLinkController extends Controller
                 'link' => $data['link'], // Using processed link
                 'icon' => '', // Will be updated after we get the ID
                 'status' => $data['status'],
+                'author' => $data['author'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -119,12 +121,13 @@ class ResourcesLinkController extends Controller
                 $data['link'] = 'https://' . $data['link'];
             }
 
-            // Validate request data
+            // Validate request data - making icon validation more explicit
             $validator = Validator::make($data, [
                 'name' => 'sometimes|required|string|max:255',
                 'link' => 'sometimes|required|url|max:255',
                 'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
                 'status' => 'sometimes|required|in:Active,Inactive',
+                'author' => 'sometimes|required|string|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -144,6 +147,10 @@ class ResourcesLinkController extends Controller
             
             if (isset($data['status'])) {
                 $resource->status = $data['status'];
+            }
+
+            if (isset($data['author'])) {
+                $resource->author = $data['author']; // Fixed: was setting status instead of author
             }
 
             // Check if a new icon was uploaded

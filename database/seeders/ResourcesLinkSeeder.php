@@ -54,6 +54,7 @@ class ResourcesLinkSeeder extends Seeder
                     'link' => $resourceLink,
                     'icon' => '', // Initially empty, will be updated with path later
                     'status' => 'Active',
+                    'author' => 'Edward Park',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

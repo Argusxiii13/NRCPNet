@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, Link } from 'lucide-react';
 import styles from '../../../css/styles/admin/ResourceUploadPanel.module.css';
+import { useAuth } from '../../hooks/useAuth'; // Import the useAuth hook
 
 const ResourceUploadPanel = ({ refreshResources }) => {
+  const { user, isAuthenticated, loading } = useAuth(); // Use the auth hook
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
+  const [author, setAuthor] = useState(''); // Add author state
   const [icon, setIcon] = useState(null);
   const [iconPreview, setIconPreview] = useState('');
   const [status, setStatus] = useState('Active');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  // Set author when user data is loaded
+  useEffect(() => {
+    if (user && isAuthenticated) {
+      // Format the author name using first name and surname
+      const authorName = `${user.first_name} ${user.surname}`;
+      setAuthor(authorName);
+    }
+  }, [user, isAuthenticated]);
 
   const validateUrl = (url) => {
     // Add https:// protocol if no protocol is specified
@@ -74,6 +86,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('link', processedLink); // Use the processed link
+      formData.append('author', author); // Add author to form data
       if (icon) {
         formData.append('icon', icon);
       }
@@ -102,6 +115,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
       setIcon(null);
       setIconPreview('');
       setStatus('Active');
+      // Don't reset author as it should stay the same
       setSubmitSuccess(true);
       
     } catch (error) {
@@ -202,6 +216,18 @@ const ResourceUploadPanel = ({ refreshResources }) => {
                   />
                 </div>
                 
+                {/* Author field - disabled and auto-populated */}
+                <div className={styles['form-group']}>
+                  <label htmlFor="resource-author">Author</label>
+                  <input 
+                    id="resource-author"
+                    type="text" 
+                    value={loading ? "Loading..." : author} 
+                    disabled
+                    className={`${styles['title-input']} ${styles['disabled-input']}`}
+                  />
+                </div>
+                
                 <div className={`${styles['form-group']} ${styles['status-select']}`}>
                   <label htmlFor="resource-status">Status</label>
                   <select 
@@ -232,7 +258,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
                 <button 
                   type="submit"
                   className={styles['upload-button']}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || loading}
                 >
                   {isSubmitting ? 'Adding...' : 'Add Resource'}
                 </button>

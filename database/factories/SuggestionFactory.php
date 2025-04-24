@@ -32,7 +32,6 @@ class SuggestionFactory extends Factory
             'division' => $division ? $division->code : null, // Division code
             'section' => $section ? $section->name : null, // Section name or null
             'status' => 'New', // Default status
-            'assignee' => $this->faker->name(), // Random name for assignee (can be null)
             'adminnote' => $this->faker->optional()->sentence(), // Random sentence for admin notes or null
             'created_at' => now(), // Current timestamp for created_at
             'updated_at' => now(), // Current timestamp for updated_at

@@ -22,8 +22,10 @@ const ResourcePanel = () => {
     id: null, 
     name: '', 
     link: '', 
-    status: '' 
+    status: '',
+    icon: null // Add icon field to store file
   });
+  const [previewIcon, setPreviewIcon] = useState(null); // To show icon preview
 
   // Fetch resources from the API with pagination
   const fetchResources = async () => {
@@ -68,9 +70,21 @@ const ResourcePanel = () => {
       id: resource.id,
       name: resource.name,
       link: resource.link,
-      status: resource.status
+      status: resource.status,
+      icon: null // Reset icon file
     });
+    setPreviewIcon(resource.icon); // Set current icon for preview
     setIsEditOpen(true);
+  };
+
+  const handleIconChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditedResource({ ...editedResource, icon: file });
+      // Create a preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewIcon(previewUrl);
+    }
   };
 
   const confirmDelete = async () => {
@@ -99,16 +113,24 @@ const ResourcePanel = () => {
 
   const handleEditSubmit = async () => {
     try {
+      // Use FormData to handle file uploads
+      const formData = new FormData();
+      formData.append('name', editedResource.name);
+      formData.append('link', editedResource.link);
+      formData.append('status', editedResource.status);
+      
+      // Only append icon if a new one was selected
+      if (editedResource.icon) {
+        formData.append('icon', editedResource.icon);
+      }
+      
+      // Add method spoofing for Laravel
+      formData.append('_method', 'PUT');
+
       const response = await fetch(`/api/resources/${editedResource.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: editedResource.name,
-          link: editedResource.link,
-          status: editedResource.status
-        }),
+        method: 'POST', // Using POST with _method=PUT for file uploads
+        body: formData,
+        // Don't set Content-Type header, let the browser handle it with boundary for FormData
       });
       
       if (response.ok) {
@@ -122,7 +144,8 @@ const ResourcePanel = () => {
       console.error('Error updating resource:', error);
     } finally {
       setIsEditOpen(false);
-      setEditedResource({ id: null, name: '', link: '', status: '' });
+      setEditedResource({ id: null, name: '', link: '', status: '', icon: null });
+      setPreviewIcon(null);
     }
   };
 
@@ -287,6 +310,28 @@ const ResourcePanel = () => {
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
+              </div>
+              <div className={styles['modal-field']}>
+                <label htmlFor="icon">Icon:</label>
+                {previewIcon && (
+                  <div className={styles['icon-preview']}>
+                    <img 
+                      src={previewIcon} 
+                      alt="Icon Preview" 
+                      style={{ width: '50px', height: '50px', marginBottom: '10px', objectFit: 'cover' }} 
+                    />
+                  </div>
+                )}
+                <input
+                  id="icon"
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/jpg"
+                  onChange={handleIconChange}
+                  className={styles['modal-input']}
+                />
+                <small className={styles['form-hint']}>
+                  Leave empty to keep current icon. Max size: 2MB
+                </small>
               </div>
             </div>
             <div className={styles['modal-footer']}>

@@ -14,7 +14,6 @@ class Suggestion extends Model
         'section',
         'content',
         'status',
-        'assignee',
         'adminnote',
     ];
 }

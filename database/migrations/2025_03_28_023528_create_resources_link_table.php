@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('icon');
             $table->string('link');
             $table->string('status');
+            $table->string('author');
+
             $table->timestamps();
         });
     }

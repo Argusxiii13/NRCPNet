@@ -15,6 +15,7 @@ class ResourcesLink extends Model
         'name',
         'icon',
         'link',
+        'author',
         'status'
     ];
 
