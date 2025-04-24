@@ -29,6 +29,7 @@ class FeatureController extends Controller
                 'title' => 'required|string|max:255',
                 'status' => 'required|string|in:active,inactive,Active,Inactive',
                 'file' => 'required|file|mimes:jpeg,png,jpg,pdf,doc,docx,txt|max:10240', // 10MB max
+                'author' => 'required|string|max:255',
                 'division' => 'nullable|string',
                 'publish_to' => 'nullable|string',
             ]);
@@ -38,7 +39,7 @@ class FeatureController extends Controller
                 'title' => $validatedData['title'],
                 'content' => '', // Will be updated after we get the ID
                 'status' => ucfirst(strtolower($validatedData['status'])), // Ensure consistent capitalization
-                'author' => $request->user() ? $request->user()->name : 'Admin',
+                'author' => $validatedData['author'], // Use the submitted author name from the form
                 'division' => $validatedData['division'] ?? null,
                 'publish_to' => $validatedData['publish_to'] ?? null,
             ]);

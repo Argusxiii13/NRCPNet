@@ -79,7 +79,8 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
     setEditedFeature({
         id: feature.id,
         title: feature.title, 
-        status: feature.status 
+        status: feature.status,
+        imageUrl: `http://localhost:8000${feature.content}` // Add image URL to edited feature
     });
     setIsEditOpen(true);
     setSelectedFeature(feature);
@@ -247,12 +248,17 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
       {/* Edit Modal */}
       {isEditOpen && (
         <div className={styles['modal-overlay']}>
-          <div className={styles['modal-container']}>
+          <div className={styles['modal-container']} style={{ width: '600px', maxWidth: '90vw' }}>
             <div className={styles['modal-header']}>
               <h4 className={styles['modal-title']}>Edit Feature</h4>
               <button className={styles['close-button']} onClick={() => setIsEditOpen(false)}>✖</button>
             </div>
             <div className={styles['modal-content']}>
+              {/* Image Preview */}
+              <div className={styles['modal-image-container']}>
+                <img src={editedFeature.imageUrl} alt="Feature" className={styles['edit-image-preview']} />
+              </div>
+              
               <div className={styles['modal-field']}>
                 <label htmlFor="title">Title:</label>
                 <input
@@ -287,7 +293,7 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
       {/* Image Viewer Modal */}
       {isImageOpen && (
         <div className={styles['modal-overlay']}>
-          <div className={styles['modal-container']}>
+          <div className={styles['modal-container']} style={{ width: '800px', maxWidth: '90vw' }}>
             <div className={styles['modal-header']}>
               <h4 className={styles['modal-title']}>Image Viewer</h4>
               <button className={styles['close-button']} onClick={() => setIsImageOpen(false)}>✖</button>

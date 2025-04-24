@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import '../../../css/styles/admin/PngUploadPanel.css';
+import { useAuth } from '../../hooks/useAuth'; // Import the auth hook
 
 const FileUploadPanel = ({ refreshFeatures }) => {
+  const { user } = useAuth(); // Use the auth hook to get user data
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [title, setTitle] = useState('');
@@ -10,6 +12,9 @@ const FileUploadPanel = ({ refreshFeatures }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  
+  // Generate author name from user data
+  const authorName = user ? `${user.first_name} ${user.surname}` : 'Loading...';
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -48,6 +53,7 @@ const FileUploadPanel = ({ refreshFeatures }) => {
       formData.append('file', file);
       formData.append('title', title);
       formData.append('status', status);
+      formData.append('author', authorName); // Add author name to formData
       
       const response = await fetch('/api/features', {
         method: 'POST',
@@ -129,6 +135,16 @@ const FileUploadPanel = ({ refreshFeatures }) => {
                 onChange={(e) => setTitle(e.target.value)} 
                 className="title-input"
               />
+              
+              {/* New author field - disabled and auto-populated */}
+              <input 
+                type="text" 
+                placeholder="Author" 
+                value={authorName}
+                disabled
+                className="author-input"
+              />
+              
               <select 
                 value={status} 
                 onChange={(e) => setStatus(e.target.value)} 

@@ -94,11 +94,19 @@
   gap: 10px;
 }
 
-.title-input {
+.title-input, .author-input {
   padding: 10px;
   border: 1px solid #e1e4e8;
   border-radius: 6px;
   font-size: 14px;
+}
+
+/* Disabled input styling */
+.author-input:disabled {
+  background-color: #f8f9fa;
+  color: #6b7280;
+  cursor: not-allowed;
+  border: 1px solid #e1e4e8;
 }
 
 .status-dropdown {
