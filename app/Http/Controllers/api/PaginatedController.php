@@ -108,6 +108,7 @@ class PaginatedController extends Controller
                     'id' => $suggestion->id,
                     'content' => $suggestion->content,
                     'division' => $suggestion->division,
+                    'section' => $suggestion->section,
                     'status' => $suggestion->status,
                     'assignee' => $suggestion->assignee,
                     'adminnote' => $suggestion->adminnote,
