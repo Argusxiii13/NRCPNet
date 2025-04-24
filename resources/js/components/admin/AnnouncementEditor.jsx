@@ -8,7 +8,6 @@ const AnnouncementEditor = () => {
   const [backgroundColor, setBackgroundColor] = useState('#ffffff');
 
   useEffect(() => {
-    // Load jQuery and Summernote from CDN
     const loadScripts = async () => {
       if (!window.jQuery) {
         const jqueryScript = document.createElement('script');
@@ -39,7 +38,6 @@ const AnnouncementEditor = () => {
         });
       }
 
-      // Load html2canvas for image export
       if (!window.html2canvas) {
         const html2canvasScript = document.createElement('script');
         html2canvasScript.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
@@ -51,13 +49,11 @@ const AnnouncementEditor = () => {
         });
       }
 
-      // Initialize Summernote
       initializeSummernote();
     };
 
     loadScripts();
 
-    // Cleanup function
     return () => {
       if (editorRef.current && summernoteInitialized.current) {
         const $ = window.jQuery;
@@ -67,33 +63,27 @@ const AnnouncementEditor = () => {
     };
   }, []);
 
-  // Effect to update background color when it changes
   useEffect(() => {
     if (summernoteInitialized.current && window.jQuery) {
       const $ = window.jQuery;
       $('.note-editing-area').css('background-color', backgroundColor);
-      
-      // Re-check content limits when background changes
       enforceContentLimits($);
     }
   }, [backgroundColor]);
 
-  // Function to enforce content limits (extracted to be used in multiple places)
   const enforceContentLimits = ($) => {
-    if (!$) $ = window.jQuery; // Ensure $ is defined
-    if (!$) return; // Exit if jQuery still not available
-    
+    if (!$) $ = window.jQuery;
+    if (!$) return;
+
     const $editArea = $('.note-editable');
     const $indicator = $('.content-limit-indicator');
-    
+
     if (!$editArea.length || !$indicator.length) return;
-    
-    // Check if content exceeds the visible area
+
     const scrollHeight = $editArea[0].scrollHeight;
     const clientHeight = $editArea[0].clientHeight;
-    
+
     if (scrollHeight > clientHeight) {
-      // Content exceeds visible area
       $indicator.show();
     } else {
       $indicator.hide();
@@ -102,13 +92,13 @@ const AnnouncementEditor = () => {
 
   const initializeSummernote = () => {
     if (!window.jQuery || !editorRef.current || summernoteInitialized.current) return;
-    
+
     const $ = window.jQuery;
     $(editorRef.current).summernote({
       placeholder: 'Type your announcement here...',
       tabsize: 2,
-      height: 500, // Updated height
-      width: 1120,  // Updated width
+      height: 500,
+      width: 1120,
       styleTags: ['p', 'h1', 'h2', 'h3', 'h4'],
       toolbar: [
         ['style', ['style']],
@@ -122,178 +112,190 @@ const AnnouncementEditor = () => {
       ],
       callbacks: {
         onChange: function(contents) {
-          // Enforce content limits when content changes
           setTimeout(() => enforceContentLimits($), 0);
         },
         onInit: function() {
           setTimeout(() => {
-            // Add visual overflow indicator
             const $editArea = $('.note-editable');
             const $editingArea = $('.note-editing-area');
-            
-            // Only add indicator if it doesn't exist yet
+
             if ($('.content-limit-indicator').length === 0) {
               const $indicator = $('<div class="content-limit-indicator" style="display: none; position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(255,0,0,0.1)); height: 30px; pointer-events: none; text-align: center; padding-top: 10px;"><span style="background: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #d32f2f;">Content exceeds visible area</span></div>');
               $editingArea.css('position', 'relative').append($indicator);
             }
-            
-            // Add custom clear format button if needed
+
             if (!$('.note-btn[data-event="removeFormat"]').length) {
               const $toolbar = $('.note-toolbar');
               const $clearBtn = $('<button type="button" class="note-btn btn btn-light btn-sm" title="Clear Formatting" data-event="removeFormat">' +
                                 '<i class="note-icon-eraser"></i>' +
                                 '</button>');
-              
+
               $clearBtn.on('click', function() {
                 $(editorRef.current).summernote('removeFormat');
               });
-              
+
               $toolbar.find('.note-font-group').after(
                 $('<div class="note-btn-group btn-group note-clear-group"></div>').append($clearBtn)
               );
             }
-            
-            // Add line counter to show visual representation of line limit
+
             if ($('.line-counter').length === 0) {
               const $lineCounter = $('<div class="line-counter" style="position: absolute; top: 5px; right: 5px; background: rgba(255,255,255,0.8); border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #666;"></div>');
               $editingArea.append($lineCounter);
-              
-              // Update line counter on content change
+
               $editArea.on('keyup mouseup', function() {
                 const lineCount = $editArea.html().split(/<\/p>|<br>|<br\/>/gi).length;
-                const maxLines = 12; // Updated for larger area
+                const maxLines = 12;
                 $lineCounter.html(`Lines: ${lineCount}/${maxLines}`);
-                
+
                 if (lineCount > maxLines) {
                   $lineCounter.css('color', '#d32f2f');
                 } else {
                   $lineCounter.css('color', '#666');
                 }
               });
-              
-              // Trigger initial count
+
               $editArea.trigger('keyup');
             }
-            
-            // Set initial content limits
+
             enforceContentLimits($);
           }, 100);
         }
       }
     });
-    
-    // Add custom class to editor and set initial background color and dimensions
+
     $('.note-editing-area').addClass(styles['editor-content']);
     $('.note-editing-area').css({
       'background-color': backgroundColor,
-      'width': '1120px', // Updated width
-      'height': '500px', // Updated height
-      'overflow': 'hidden' // Change from 'auto' to 'hidden' for the export view
+      'width': '1120px',
+      'height': '500px',
+      'overflow': 'hidden'
     });
-    
+
     $('.note-editable').css({
-      'height': '500px', // 500px - 20px for padding
+      'height': '500px',
       'max-height': '500px',
-      'overflow': 'auto', // Keep auto scroll for editing
-      'padding': '20px'
+      'overflow': 'auto',
+      'padding': '20px',
+      'overflow-wrap': 'break-word',
+      'white-space': 'pre-wrap',
+      'line-height': '1.5',
+      'font-size': '16px',
+      'font-family': 'Arial, sans-serif'
     });
-    
-    // Fix the editor container width
+
     $('.note-editor').css({
-      'width': '1120px', // Updated width
+      'width': '1120px',
       'margin': '0 auto'
     });
-    
+
     summernoteInitialized.current = true;
   };
 
-  // Save as HTML file
   const saveAsHTML = () => {
     const $ = window.jQuery;
     const content = $(editorRef.current).summernote('code');
-    
+
     const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Announcement</title>
-        <style>
-          /* Reset ALL default margins and paddings */
-          * {
-            margin: 0 !important;
-            padding: 0 !important;
-            box-sizing: border-box !important;
-          }
-          body {
-            font-family: Arial, sans-serif;
-          }
-          .announcement-container {
-            width: 1175px;
-            height: 532px;
-            margin: 0 auto !important;
-            padding: 20px !important;
-            background-color: ${backgroundColor};
-            overflow: hidden;
-          }
-          /* Ensure no extra spacing between elements */
-          .announcement-container p,
-          .announcement-container div,
-          .announcement-container span,
-          .announcement-container br {
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: inherit !important;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="announcement-container">
-          ${content}
-        </div>
-      </body>
-    </html>
-    `;
-    
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Announcement</title>
+    <style>
+      /* CSS Reset */
+      html, body, div, span, applet, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      a, abbr, acronym, address, big, cite, code,
+      del, dfn, em, img, ins, kbd, q, s, samp,
+      small, strike, strong, sub, sup, tt, var,
+      b, u, i, center,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, embed,
+      figure, figcaption, footer, header, hgroup,
+      menu, nav, output, ruby, section, summary,
+      time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      /* HTML5 display-role reset for older browsers */
+      article, aside, details, figcaption, figure,
+      footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol, ul {
+        list-style: none;
+      }
+      blockquote, q {
+        quotes: none;
+      }
+      blockquote:before, blockquote:after,
+      q:before, q:after {
+        content: '';
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      /* Announcement Styles */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .announcement-container {
+        width: 1120px;
+        height: 500px;
+        padding: 20px;
+        background-color: ${backgroundColor};
+        overflow: hidden;
+        box-sizing: border-box;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        line-height: 1.5;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="announcement-container">
+      ${content}
+    </div>
+  </body>
+</html>
+`;
+
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = 'announcement.html';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     setTimeout(() => URL.revokeObjectURL(url), 100);
   };
 
-  // Save as PNG image
   const saveAsImage = async () => {
     const $ = window.jQuery;
     if (!window.html2canvas) {
       alert('Image export library not loaded. Please try again.');
       return;
     }
-    
-    // Get content
+
     const content = $(editorRef.current).summernote('code');
-    
-    // Create a temporary div to get only visible content
-    const tempDiv = $('<div></div>').html(content).css({
-      'width': '1120px', // 1120px - 20px padding
-      'max-height': '500px',
-      'overflow': 'hidden',
-      'position': 'absolute',
-      'left': '-9999px',
-      'top': '-9999px'
-    }).appendTo('body');
-    
-    // Get only visible content
-    const visibleContent = tempDiv.html();
-    tempDiv.remove();
-    
-    // Create a temporary container for rendering with fixed dimensions
+
     const container = document.createElement('div');
     container.style.width = '1120px';
     container.style.height = '500px';
@@ -304,20 +306,25 @@ const AnnouncementEditor = () => {
     container.style.top = '-9999px';
     container.style.boxSizing = 'border-box';
     container.style.overflow = 'hidden';
-    container.innerHTML = visibleContent;
+    container.style.overflowWrap = 'break-word';
+    container.style.whiteSpace = 'pre-wrap';
+    container.style.lineHeight = '1.5';
+    container.style.fontSize = '16px';
+    container.style.fontFamily = 'Arial, sans-serif';
+    container.innerHTML = content;
     document.body.appendChild(container);
-    
+
     try {
-      // Convert the container to canvas with fixed dimensions
       const canvas = await window.html2canvas(container, {
         allowTaint: true,
         useCORS: true,
         backgroundColor: backgroundColor,
         width: 1120,
-        height: 500
+        height: 500,
+        logging: false,
+        scale: 1 // Important for consistent rendering
       });
-      
-      // Convert canvas to image and download
+
       const imgData = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = imgData;
@@ -329,12 +336,10 @@ const AnnouncementEditor = () => {
       console.error('Error generating image:', error);
       alert('Failed to generate image. Please try again.');
     } finally {
-      // Clean up
       document.body.removeChild(container);
     }
   };
 
-  // Handle color picker change
   const handleColorChange = (e) => {
     setBackgroundColor(e.target.value);
   };
@@ -357,24 +362,23 @@ const AnnouncementEditor = () => {
             />
           </div>
           <div className={styles['dimensions-info']}>
-            <span>Fixed size: 1175px × 530px (max 13 lines at Header1)</span>
+            <span>Fixed size: 1120px × 500px</span>
           </div>
         </div>
         <div className={styles['editor-wrapper']}>
           <div>
-            {/* This div will be replaced by Summernote */}
             <div ref={editorRef}></div>
           </div>
 
           <div className={styles['button-container']}>
-            <button 
+            <button
               className={`${styles['export-button']} ${styles['html-button']}`}
               onClick={saveAsHTML}
             >
               <FileType size={20} />
               <span>Save as HTML</span>
             </button>
-            <button 
+            <button
               className={`${styles['export-button']} ${styles['image-button']}`}
               onClick={saveAsImage}
             >
