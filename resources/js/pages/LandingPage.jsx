@@ -7,7 +7,6 @@ import FeatureCarousel from '../components/landing/FeatureCarousel';
 import AnnouncementCarousel from '../components/landing/AnnouncementCarousel';
 import Resources from '../components/landing/Resources';
 import DownloadableForms from '../components/landing/DownloadableForms';
-import SuggestionBox from '../components/landing/SuggestionBox';
 import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
 import SpecialEvents from '../components/landing/TodaysEvents';
@@ -44,22 +43,6 @@ const LandingPage = () => {
     // Handler function for ThursdayWellness content changes
     const handleWellnessContentChange = (hasContent) => {
         setHasThursdayWellnessContent(hasContent);
-    };
-
-    // Dynamically apply class names based on content availability
-    const getThursdayWellnessClassName = () => {
-        if (!hasThursdayWellnessContent) {
-            return `${styles['thursday-wellness']} ${styles['empty-container']}`;
-        }
-        return styles['thursday-wellness'];
-    };
-
-    const getSpecialEventsClassName = () => {
-        // If ThursdayWellness has no content, move SpecialEvents to ThursdayWellness position
-        if (!hasThursdayWellnessContent) {
-            return styles['thursday-wellness']; // Use ThursdayWellness grid position
-        }
-        return styles['special-events'];
     };
     
     // Display a loading indicator while auth data is being fetched
@@ -119,34 +102,28 @@ const LandingPage = () => {
                         <DownloadableForms user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
-                    {/* Only render ThursdayWellness if it has content */}
-                    {hasThursdayWellnessContent && (
-                        <div className={getThursdayWellnessClassName()}>
-                            <ThursdayWellness 
-                                onContentChange={handleWellnessContentChange} 
-                                user={user} 
-                                isAuthenticated={isAuthenticated}
-                            />
+                    {/* Container for Thursday Wellness and Special Events */}
+                    <div className={styles['wellness-events-container']}>
+                        {/* Only render ThursdayWellness if it has content */}
+                        {hasThursdayWellnessContent && (
+                            <div className={styles['thursday-wellness']}>
+                                <ThursdayWellness 
+                                    onContentChange={handleWellnessContentChange} 
+                                    user={user} 
+                                    isAuthenticated={isAuthenticated}
+                                />
+                            </div>
+                        )}
+                        
+                        {/* Special Events always renders after ThursdayWellness */}
+                        <div className={styles['special-events']}>
+                            <SpecialEvents user={user} isAuthenticated={isAuthenticated} />
                         </div>
-                    )}
-                    
-                    {/* Always render SpecialEvents but with dynamic positioning */}
-                    <div className={getSpecialEventsClassName()}>
-                        <SpecialEvents user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
-                    {/* If ThursdayWellness has no content, render a hidden container in its original place */}
-                    {!hasThursdayWellnessContent && (
-                        <div className={`${styles['special-events']} ${styles['empty-container']}`}></div>
-                    )}
-                    
-                    {/* Resources moved to Calendar's previous location */}
-                    <div className={styles['calendar']}>
+                    {/* Resources component in the right column, spans full height */}
+                    <div className={styles['resources-container']}>
                         <Resources user={user} isAuthenticated={isAuthenticated} />
-                    </div>
-                    
-                    <div className={styles['suggestion-box']}>
-                        <SuggestionBox user={user} isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
             </div>

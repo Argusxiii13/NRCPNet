@@ -50,8 +50,8 @@
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden; /* Prevent overflow */
-    
 }
+
 .feature-carousel {
     background-color: transparent;
     padding: 2rem;
@@ -63,7 +63,6 @@
     grid-template-columns: 2fr 1fr;
     margin-top: 0; /* Remove margin */
     margin-bottom: 0; /* Remove margin */
-
     background-color: #f8f9fa;
 }
 
@@ -82,13 +81,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto auto;
-    /* background-image: url('/image/HallwayBackground.png'); */
-    /* background-image: linear-gradient( #2a699c , #11326a); */
     background-color: #f8f9fa;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 2rem .3rem 2rem .3rem;
+    padding: 2rem 0.3rem 2rem 0.3rem;
 }
 
 .downloadable-forms {
@@ -96,39 +93,42 @@
     grid-row: 1 / span 2;
     background-color: transparent;
     padding: 2rem;
+}
 
+/* Container for Thursday Wellness and Special Events */
+.wellness-events-container {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
 }
 
 .thursday-wellness {
-    grid-column: 2;
-    grid-row: 1;
     background-color: transparent;
     padding: 2rem;
-    margin-bottom: 0;
-}
-
-.calendar {
-    grid-column: 3;
-    grid-row: 1;
-    background-color: transparent;
-    padding: 2rem;
+    flex-shrink: 0; /* Don't allow shrinking */
 }
 
 .special-events {
-    grid-column: 2;
-    grid-row: 2;
     background-color: transparent;
     padding: 2rem;
-    margin-top: -65%;
+    flex-shrink: 0; /* Don't allow shrinking */
+    margin-top: 0; /* Reset margin */
 }
 
-.suggestion-box {
+/* Resources container that spans both rows on right side */
+.resources-container {
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 1 / span 2;
     background-color: transparent;
     padding: 2rem;
-    margin-top: -10%;
+}
 
+/* Calendar class kept for backward compatibility */
+.calendar {
+    background-color: transparent;
+    padding: 2rem;
 }
 
 /* Footer */
@@ -158,12 +158,15 @@
     }
 
     .downloadable-forms,
-    .thursday-wellness,
-    .special-events,
-    .calendar,
-    .suggestion-box {
+    .wellness-events-container,
+    .resources-container {
         grid-column: 1;
         grid-row: auto;
+    }
+    
+    .wellness-events-container {
+        display: flex;
+        flex-direction: column;
     }
 }
 

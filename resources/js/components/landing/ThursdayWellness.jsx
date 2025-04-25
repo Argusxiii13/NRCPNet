@@ -47,31 +47,29 @@ const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
             try {
                 setIsLoading(true);
                 
-                // Only fetch if user is authenticated
-                if (isAuthenticated && user) {
-                    let url = '/api/wellness-activities';
-                    if (user.division) {
-                        url += `?division=${user.division}`;
-                    }
-                    
-                    const response = await axios.get(url);
-                    setActivities(response.data);
-                    
-                    // Notify parent component about content status
-                    if (onContentChange) {
-                        onContentChange(response.data && response.data.length > 0);
-                    }
-                } else {
-                    // If not authenticated, set empty activities
-                    setActivities([]);
-                    if (onContentChange) {
-                        onContentChange(false);
-                    }
+                // Fetch wellness activities regardless of authentication
+                let url = '/api/wellness-activities';
+                
+                // Only add division parameter if user is authenticated and has a division
+                if (isAuthenticated && user && user.division) {
+                    url += `?division=${user.division}`;
+                }
+                
+                const response = await axios.get(url);
+                setActivities(response.data);
+                
+                // Notify parent component about content status
+                if (onContentChange) {
+                    onContentChange(response.data && response.data.length > 0);
                 }
                 
                 setIsLoading(false);
             } catch (err) {
-                // Error handling code...
+                setError(err.message);
+                setIsLoading(false);
+                if (onContentChange) {
+                    onContentChange(false);
+                }
             }
         };
     

@@ -71,7 +71,6 @@ const Resources = () => {
                                     />
                                     <div className={styles['resources-item-details']}>
                                         <h4>{resource.name}</h4>
-                                        {/* Removed the hostname display */}
                                     </div>
                                 </a>
                             </div>

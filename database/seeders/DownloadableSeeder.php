@@ -37,27 +37,32 @@ class DownloadableSeeder extends Seeder
             '/downloadable/Document19.pdf',
         ];
 
-        // Form types array - our new classification
+        // Form types array - our classification
         $formTypes = ['Request', 'Memo', 'Miscellaneous'];
-
-        foreach ($files as $filePath) {
+        
+        // Create 50 downloadable items
+        for ($i = 1; $i <= 50; $i++) {
+            // Choose a random file from the array
+            $randomFileIndex = array_rand($files);
+            $filePath = $files[$randomFileIndex];
+            
             // Check if the file exists
             $fullPath = public_path($filePath);
             if (file_exists($fullPath)) {
-                // Randomly assign status
-                
-                
                 // Randomly assign one of the three form types
                 $type = $formTypes[array_rand($formTypes)];
+                
+                // Create a custom title to distinguish different entries
+                $customTitle = 'Document ' . $i . ' - ' . $type . ' (' . pathinfo(basename($filePath), PATHINFO_FILENAME) . ')';
 
                 // Insert the record first to get the ID
                 $downloadableId = DB::table('downloadable')->insertGetId([
-                    'title' => basename($filePath), // Use the filename as the title
+                    'title' => $customTitle,
                     'content' => '', // Initially empty, will be updated with path later
                     'author' => 'Admin',
-                    'type' => $type, // Add the random type from the new types
-                    'division' => 'General', // Add the random division
-                    'status' => 'Active', // Store the random status
+                    'type' => $type,
+                    'division' => 'General', // Keep division as "General" as in the original code
+                    'status' => 'Active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -72,10 +77,15 @@ class DownloadableSeeder extends Seeder
                 DB::table('downloadable')->where('id', $downloadableId)->update([
                     'content' => '/storage/' . $path, // Store the new file path
                 ]);
+                
+                $this->command->info("Created downloadable item $i: $customTitle");
             } else {
                 // Log or handle missing files
                 Log::warning("File not found: $fullPath");
+                $this->command->error("File not found: $fullPath");
             }
         }
+        
+        $this->command->info('Downloadable seeding completed! Created 50 items.');
     }
 }
