@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title'); // Column for the title
             $table->string('content'); // Column for the image path
             $table->string('author'); // Column for the author
-            $table->string('type')->default('Regular');
+            $table->string('type');
             $table->string('division')->default('General');
             $table->string('status'); // New column for status
             $table->timestamps(); // This will create the created_at and updated_at columns

@@ -271,4 +271,4 @@ const ResourceUploadPanel = ({ refreshResources }) => {
   );
 };
 
-export default ResourceUploadPanel;
+export default ResourceUploadPanel;   

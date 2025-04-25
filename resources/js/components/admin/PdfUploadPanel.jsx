@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import styles from '../../../css/styles/admin/PdfUploadPanel.module.css';
+import { useAuth } from '../../hooks/useAuth'; // Import the useAuth hook
 
 const PdfUploadPanel = ({ refreshForms }) => {
+  const { user, isAuthenticated, loading } = useAuth(); // Use the auth hook
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState('');
   const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
   const [status, setStatus] = useState('Active');
-  // New state variables for division and type
   const [division, setDivision] = useState('General');
-  const [type, setType] = useState('Regular');
+  const [type, setType] = useState('Miscellaneous'); // Change from 'Regular' to a valid type
   const [divisions, setDivisions] = useState([]);
   const [loadingDivisions, setLoadingDivisions] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+
+  // Set author from user data when authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Format author as "FirstName Surname"
+      const authorName = `${user.first_name} ${user.surname}`;
+      setAuthor(authorName);
+      
+      // If user has a division, set it as default
+      if (user.division) {
+        setDivision(user.division);
+      }
+    }
+  }, [isAuthenticated, user]);
 
   // Fetch divisions on component mount
   useEffect(() => {
@@ -65,12 +81,17 @@ const PdfUploadPanel = ({ refreshForms }) => {
       setUploadError('Please enter a title');
       return;
     }
-
+  
+    if (!author.trim()) {
+      setUploadError('Please enter an author');
+      return;
+    }
+  
     if (!division) {
       setUploadError('Please select a division');
       return;
     }
-
+  
     setIsUploading(true);
     setUploadError(null);
     
@@ -78,6 +99,7 @@ const PdfUploadPanel = ({ refreshForms }) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('title', title);
+    formData.append('author', author);
     formData.append('status', status);
     formData.append('division', division);
     formData.append('type', type);
@@ -108,13 +130,18 @@ const PdfUploadPanel = ({ refreshForms }) => {
       setUploadSuccess(true);
       console.log('Upload successful:', data);
       
-      // Reset form after success
+      // Reset form after success, but keep author from user data
       setTimeout(() => {
         setFile(null);
         setFilePreview('');
         setTitle('');
         setStatus('Active');
-        setDivision('General');
+        // Reset division to user's division or General if none
+        if (user && user.division) {
+          setDivision(user.division);
+        } else {
+          setDivision('General');
+        }
         setType('Regular');
         setUploadSuccess(false);
         
@@ -122,8 +149,13 @@ const PdfUploadPanel = ({ refreshForms }) => {
         refreshForms();
       }, 2000);
       
-    } catch (error) {
+    } // Inside your catch block in handleUpload
+    catch (error) {
       console.error('Upload error:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+      }
       setUploadError(error.message || 'Upload failed');
     } finally {
       setIsUploading(false);
@@ -144,6 +176,20 @@ const PdfUploadPanel = ({ refreshForms }) => {
       return <p className={styles['no-file-text']}>No file uploaded</p>;
     }
   };
+
+  // Show loading state while authentication is in progress
+  if (loading) {
+    return (
+      <div className={styles['panel'] + ' ' + styles['upload-panel']}>
+        <div className={styles['panel-header']}>
+          <h2 className="text-2xl font-bold">Upload PDF Form</h2>
+        </div>
+        <div className={styles['panel-content']} style={{ textAlign: 'center', padding: '40px' }}>
+          Loading user information...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles['panel'] + ' ' + styles['upload-panel']}>
@@ -184,6 +230,24 @@ const PdfUploadPanel = ({ refreshForms }) => {
                 />
               </div>
               
+              {/* Author field - pre-filled and disabled if authenticated */}
+              <div className={styles['control-group']}>
+                <label htmlFor="author-input" className={styles['control-label']}>Author:</label>
+                <input 
+                  id="author-input"
+                  type="text" 
+                  placeholder="Enter form author" 
+                  value={author} 
+                  onChange={(e) => setAuthor(e.target.value)} 
+                  className={styles['title-input']}
+                  disabled={isAuthenticated} // Disable editing if authenticated
+                  title={isAuthenticated ? "Author is automatically set to your name" : ""}
+                />
+                {isAuthenticated && (
+                  <span className={styles['field-hint']}>Automatically set from your profile</span>
+                )}
+              </div>
+              
               <div className={styles['control-group']}>
                 <label htmlFor="division-select" className={styles['control-label']}>Division:</label>
                 <select 
@@ -206,6 +270,9 @@ const PdfUploadPanel = ({ refreshForms }) => {
                     </>
                   )}
                 </select>
+                {isAuthenticated && user.division && (
+                  <span className={styles['field-hint']}>Default set to your division</span>
+                )}
               </div>
               
               <div className={styles['control-group']}>
@@ -237,13 +304,13 @@ const PdfUploadPanel = ({ refreshForms }) => {
             </div>
             
             {uploadError && (
-              <div className={styles['error-message']} style={{ color: 'red', marginTop: '10px' }}>
+              <div className={styles['error-message']}>
                 {uploadError}
               </div>
             )}
             
             {uploadSuccess && (
-              <div className={styles['success-message']} style={{ color: 'green', marginTop: '10px' }}>
+              <div className={styles['success-message']}>
                 File uploaded successfully!
               </div>
             )}

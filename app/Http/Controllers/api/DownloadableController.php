@@ -52,6 +52,7 @@ class DownloadableController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'status' => 'required|in:Active,Inactive',
+            'author' => 'sometimes|string|max:255', // Added author validation
         ]);
 
         try {
@@ -61,6 +62,11 @@ class DownloadableController extends Controller
             // Update the form data
             $downloadable->title = $request->title;
             $downloadable->status = $request->status;
+            
+            // Update author if provided
+            if ($request->has('author')) {
+                $downloadable->author = $request->author;
+            }
             
             // Save the changes
             $downloadable->save();
@@ -100,13 +106,14 @@ class DownloadableController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validate the request data - Added author validation
         $request->validate([
             'title' => 'required|string|max:255',
             'file' => 'required|file|mimes:pdf',
             'status' => 'required|in:active,inactive,Active,Inactive',
-            'type' => 'sometimes|string|in:Request,Memo,Miscellaneous', // Add optional type validation
-            'division' => 'sometimes|string|max:255', // Add optional division validation
+            'type' => 'sometimes|string|in:Request,Memo,Miscellaneous',
+            'division' => 'sometimes|string|max:255',
+            'author' => 'required|string|max:255', // Added author validation
         ]);
 
         try {
@@ -117,7 +124,7 @@ class DownloadableController extends Controller
                 // Create a new downloadable record first to get the ID
                 $downloadable = new Downloadable();
                 $downloadable->title = $request->title;
-                $downloadable->author = 'Admin'; // Set author to Admin by default
+                $downloadable->author = $request->author; // Use author from request
                 $downloadable->status = ucfirst(strtolower($request->status)); // Ensure consistent casing
                 
                 // Set type if provided, default to Miscellaneous if not
@@ -225,12 +232,13 @@ class DownloadableController extends Controller
      */
     public function updateForm(Request $request, $id)
     {
-        // Validate the request data
+        // Validate the request data - Added author validation
         $request->validate([
             'title' => 'required|string|max:255',
             'status' => 'required|in:Active,Inactive',
             'division' => 'required|string|max:255',
-            'type' => 'required|string|in:Request,Memo,Miscellaneous', // Updated valid types
+            'type' => 'required|string|in:Request,Memo,Miscellaneous',
+            'author' => 'required|string|max:255', // Added author validation
         ]);
 
         try {
@@ -242,6 +250,7 @@ class DownloadableController extends Controller
             $downloadable->status = $request->status;
             $downloadable->division = $request->division;
             $downloadable->type = $request->type;
+            $downloadable->author = $request->author; // Added author update
             
             // Save the changes
             $downloadable->save();
@@ -259,66 +268,82 @@ class DownloadableController extends Controller
         }
     }
     
-    /**
-     * Store a new downloadable form with additional metadata
-     * This is a new method that won't interfere with existing components
-     */
-    public function storeWithMetadata(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
+/**
+ * Store a new downloadable form with additional metadata
+ * This is a new method that won't interfere with existing components
+ */
+/**
+ * Store a new downloadable form with additional metadata
+ * This is a new method that won't interfere with existing components
+ */
+public function storeWithMetadata(Request $request)
+{
+    try {
+        // Validate the request data - author validation was already present
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'file' => 'required|file|mimes:pdf',
             'status' => 'required|in:active,inactive,Active,Inactive',
             'division' => 'required|string|max:255',
-            'type' => 'required|string|in:Request,Memo,Miscellaneous', // Updated valid types
+            'type' => 'required|string|in:Request,Memo,Miscellaneous', // Note: 'Regular' is not allowed
+            'author' => 'required|string|max:255',
         ]);
 
-        try {
-            // Handle file upload
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                
-                // Create a new downloadable record with all fields
-                $downloadable = new Downloadable();
-                $downloadable->title = $request->title;
-                $downloadable->author = 'Admin'; // Set author to Admin by default
-                $downloadable->status = ucfirst(strtolower($request->status)); // Ensure consistent casing
-                $downloadable->division = $request->division;
-                $downloadable->type = $request->type;
-                $downloadable->content = ''; // Temporary placeholder
-                $downloadable->save();
-                
-                // Generate a unique filename using the new ID
-                $filename = 'Downloadable' . $downloadable->id . '.' . $file->getClientOriginalExtension();
-                
-                // Store the file in the storage/app/public/downloadable directory
-                $path = $file->storeAs('downloadable', $filename, 'public');
-                
-                // Update the content field with the file path
-                $downloadable->content = '/storage/' . $path;
-                $downloadable->save();
-                
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Form with metadata uploaded successfully',
-                    'data' => $downloadable
-                ], 200);
-            }
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            
+            // Create a new downloadable record with all fields
+            $downloadable = new Downloadable();
+            $downloadable->title = $request->title;
+            $downloadable->author = $request->author; 
+            $downloadable->status = ucfirst(strtolower($request->status));
+            $downloadable->division = $request->division;
+            $downloadable->type = $request->type;
+            $downloadable->content = ''; // Temporary placeholder
+            $downloadable->save();
+            
+            // Generate a unique filename using the new ID
+            $filename = 'Downloadable' . $downloadable->id . '.' . $file->getClientOriginalExtension();
+            
+            // Store the file in the storage/app/public/downloadable directory
+            $path = $file->storeAs('downloadable', $filename, 'public');
+            
+            // Update the content field with the file path
+            $downloadable->content = '/storage/' . $path;
+            $downloadable->save();
             
             return response()->json([
-                'status' => 400,
-                'message' => 'No file was uploaded',
-            ], 400);
-            
-        } catch (\Exception $e) {
-            Log::error('Upload downloadable with metadata error: ' . $e->getMessage());
-            return response()->json([
-                'status' => 500,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
+                'status' => 200,
+                'message' => 'Form with metadata uploaded successfully',
+                'data' => $downloadable
+            ], 200);
         }
+        
+        return response()->json([
+            'status' => 400,
+            'message' => 'No file was uploaded',
+        ], 400);
+        
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Specifically handle validation errors and return them as JSON
+        Log::error('Validation error: ' . json_encode($e->errors()));
+        return response()->json([
+            'status' => 422,
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+    } catch (\Exception $e) {
+        // Log the full exception for debugging
+        Log::error('Upload downloadable with metadata error: ' . $e->getMessage());
+        Log::error('Exception stack trace: ' . $e->getTraceAsString());
+        
+        return response()->json([
+            'status' => 500,
+            'message' => 'Error: ' . $e->getMessage(),
+        ], 500);
     }
+}
     
     /**
      * Fetch forms filtered by division

@@ -18,5 +18,7 @@ class Downloadable extends Model
         'content', // This will store the image path
         'author',
         'status', // Added status to fillable properties
+        'division',
+        'type',
     ];
 }
