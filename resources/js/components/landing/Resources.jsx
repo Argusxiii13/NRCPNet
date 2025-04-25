@@ -71,9 +71,7 @@ const Resources = () => {
                                     />
                                     <div className={styles['resources-item-details']}>
                                         <h4>{resource.name}</h4>
-                                        <span className={styles['resources-item-link']}>
-                                            {new URL(resource.link).hostname}
-                                        </span>
+                                        {/* Removed the hostname display */}
                                     </div>
                                 </a>
                             </div>

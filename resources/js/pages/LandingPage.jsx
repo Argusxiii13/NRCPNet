@@ -103,13 +103,13 @@ const LandingPage = () => {
                 {/* Separator */}
                 <div className={styles['section-separator']}></div>
 
-                {/* Second Section - Announcement and Links */}
+                {/* Second Section - Announcement and Calendar (previously Resources) */}
                 <div className={styles['second-section']}>
                     <div className={styles['announcement-carousel']}>
                         <AnnouncementCarousel />
                     </div>
                     <div className={styles['resources']}>
-                        <Resources user={user} isAuthenticated={isAuthenticated} />
+                        <Calendar user={user} isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
 
@@ -140,8 +140,9 @@ const LandingPage = () => {
                         <div className={`${styles['special-events']} ${styles['empty-container']}`}></div>
                     )}
                     
+                    {/* Resources moved to Calendar's previous location */}
                     <div className={styles['calendar']}>
-                        <Calendar user={user} isAuthenticated={isAuthenticated} />
+                        <Resources user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
                     <div className={styles['suggestion-box']}>
