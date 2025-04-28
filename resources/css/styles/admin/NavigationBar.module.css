@@ -33,49 +33,6 @@
     justify-content: flex-end;
 }
 
-.department-nav {
-    display: flex;
-    gap: 0; /* Removed gap to handle our own spacing */
-    align-items: center;
-}
-
-.department-btn {
-    font-family: 'Helvetica', sans-serif;
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    color: #ffffff; 
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: 6px;
-    font-weight: bold;
-    position: relative; /* Added for divider positioning */
-    margin: 0 40px; /* Add margin instead of gap for spacing */
-}
-
-/* Add divider after each button except the last one */
-.department-btn:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -40px; /* Position in the middle of the margin */
-    top: 50%;
-    transform: translateY(-50%);
-    height: 32px; /* Increased height of the divider */
-    width: 2px; /* Increased width of the divider */
-    background-color: #94a3b8; /* Darker color for better visibility */
-    border-radius: 1px; /* Slightly rounded edges */
-}
-
-.department-btn:hover {
-    background: #f1f5f9;
-    color: #1e293b;
-}
-
-.department-btn.active {
-    background: #1e293b;
-    color: #ffffff;
-}
-
 .search-container {
     position: relative;
     width: 240px;
@@ -127,15 +84,6 @@
     .search-container {
         width: 200px;
     }
-    
-    .department-btn {
-        margin: 0 20px; /* Reduced spacing for smaller screens */
-    }
-    
-    .department-btn:not(:last-child)::after {
-        right: -20px; /* Adjust divider position */
-        height: 28px; /* Adjust divider height */
-    }
 }
 
 @media (max-width: 768px) {
@@ -153,18 +101,6 @@
 
     .search-container {
         width: 160px;
-    }
-
-    .department-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-        margin: 0 4px; /* Minimal spacing for mobile */
-    }
-    
-    .department-btn:not(:last-child)::after {
-        right: -4px; /* Adjust divider position */
-        height: 20px; /* Smaller but still visible divider for mobile */
-        width: 2px; /* Keep width consistent */
     }
 }
 

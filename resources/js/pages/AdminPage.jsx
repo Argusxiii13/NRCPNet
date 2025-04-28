@@ -12,6 +12,7 @@ import RoleManagement from '../components/admin/RoleManagement';
 import Dashboard from '../components/admin/Dashboard';
 import FormsManagement from '../components/admin/FormsManagement';
 import ResourceManagement from '../components/admin/ResourceManagement';
+import PersonalizationManagement from '../components/admin/PersonalizationManagement';
 
 import styles from '../../css/styles/admin/AdminPage.module.css';
 import '../../css/font.css'; // Keeping font.css as global import
@@ -67,6 +68,8 @@ function Layout() {
                 return <FormsManagement />;
             case 'System Links':
                 return <ResourceManagement />;
+            case 'Personalization Management':
+                return <PersonalizationManagement />;
             default:
                 return <h1>Welcome to Dashboard</h1>;
         }

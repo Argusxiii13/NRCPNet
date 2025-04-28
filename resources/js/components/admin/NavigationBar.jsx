@@ -1,15 +1,8 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import styles from '../../../css/styles/admin/NavigationBar.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Updated import path as needed
 
 const AdminHeader = () => {
-    const departments = ['OP', 'OED', 'FAD', 'RDMD', 'RIDD'];
-    const { user, isAuthenticated, loading } = useAuth();
-    
-    // Check if user is a Superadmin
-    const isSuperadmin = user?.role === 'Superadmin';
-    
     return (
         <header className={styles['admin-header']}>
             {/* Left Section */}
@@ -19,18 +12,7 @@ const AdminHeader = () => {
 
             {/* Middle Section */}
             <div className={`${styles['header-section']} ${styles['middle-section']}`}>
-                {!loading && isAuthenticated && isSuperadmin && (
-                    <nav className={styles['department-nav']}>
-                        {departments.map((dept, index) => (
-                            <button
-                                key={index}
-                                className={styles['department-btn']}
-                            >
-                                {dept}
-                            </button>
-                        ))}
-                    </nav>
-                )}
+                {/* Department buttons removed */}
             </div>
 
             {/* Right Section */}

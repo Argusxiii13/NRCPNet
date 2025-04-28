@@ -51,8 +51,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         },
         { title: "Downloadable Forms", icon: <Newspaper size={20} /> },
         { title: "User Management", icon: <UserPlus size={20} /> },
-        { title: "Profile", icon: <UserCog size={20} />, gap: true },
-        { title: "Settings", icon: <Settings size={20} /> },
+        { title: "Personalization Management", icon: <UserCog size={20} />, gap: true },
     ];
 
     const handleLogout = async () => {
