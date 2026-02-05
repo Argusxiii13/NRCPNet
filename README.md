@@ -75,7 +75,7 @@ npm run dev
 php artisan serve
 ```
 
-14. Trial Account :
+14. Tester Account :
 
 ```bash
 Email : GameMaster13@gmail.com
