@@ -16,8 +16,8 @@ class AnnouncementSeeder extends Seeder
     {
         // Sample file paths
         $announcements = [
-            '/announcement/Announcement1.png',
-            '/announcement/Announcement2.html'
+            '/announcement/Announcement1.html',
+            '/announcement/Announcement2.png'
         ];
 
         foreach ($announcements as $announcementPath) {
