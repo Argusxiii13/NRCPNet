@@ -23,7 +23,7 @@ npm install
 composer install
 ```
 
-7. Wait for a while. Watch carefully for any failed installation of modules. If any modules failed to be downloaded/installed, stop in this step.
+7. Wait for a while. Watch carefully for any failed installation of modules. If any modules failed to be downloaded/installed, stop in this step. May need to configure some access in the device.
 
 8. Once the modules have been installed, run this command on one of the terminal :
 
