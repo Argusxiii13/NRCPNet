@@ -49,7 +49,7 @@ DB_PASSWORD=
 
 10. Open Xampp Control Panel and Enable Apache and Sql
 
-11. Create Database named nrcpnet
+11. Create Database named nrcpnet in http://localhost/phpmyadmin
 
 12. then execute these commands :
 
