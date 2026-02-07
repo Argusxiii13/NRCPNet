@@ -47,25 +47,29 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-10. then execute these commands :
+10. Open Xampp Control Panel and Enable Apache and Sql
+
+11. Create Database named nrcpnet
+
+12. then execute these commands :
 
 ```bash
 php artisan config:clear
 ```
 
-11. Run these command : 
+13. Run these command : 
 
 ```bash
 php artisan app:cleanup
 ```
 
-12. Then this command : 
+14. Then this command : 
 
 ```bash
 php artisan storage:link
 ```
 
-13. After all these, run these command each at the terminal :
+15. After all these, run these command each at the terminal :
 
 ```bash
 npm run dev
@@ -75,7 +79,7 @@ npm run dev
 php artisan serve
 ```
 
-14. Tester Account :
+16. Tester Account :
 
 ```bash
 Email : GameMaster13@gmail.com
