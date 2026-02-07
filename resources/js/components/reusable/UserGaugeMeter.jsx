@@ -6,9 +6,9 @@ import {
   GaugeReferenceArc, 
   useGaugeState 
 } from '@mui/x-charts/Gauge';
-import styles from '../../../css/styles/reusable/UserGaugeMeter.module.css'; // Added module CSS import
+import styles from '../../../css/styles/reusable/UserGaugeMeter.module.css'; 
 
-// Custom gauge pointer component
+
 function GaugePointer() {
   const { valueAngle, outerRadius, cx, cy } = useGaugeState();
   
@@ -34,14 +34,14 @@ function GaugePointer() {
 }
 
 const UserGaugeMeter = ({ currentUsers, maxCapacity = 1000 }) => {
-  // Calculate percentage of users logged in
+  
   const percentage = Math.min(Math.max((currentUsers / maxCapacity) * 100, 0), 100);
   
-  // Determine color based on attendance percentage
+  
   const getGaugeColor = () => {
-    if (percentage < 30) return '#4c6ef5'; // Blue for low attendance
-    if (percentage < 70) return '#52c41a'; // Green for medium attendance
-    return '#faad14'; // Orange for high attendance (near capacity)
+    if (percentage < 30) return '#4c6ef5'; 
+    if (percentage < 70) return '#52c41a'; 
+    return '#faad14'; 
   };
 
   return (

@@ -14,7 +14,7 @@ const TodaysEvents = ({user, isAuthenticated}) => {
                 setLoading(true);
                 let url = `/api/calendar/date/${currentDate}`;
                 
-                // Add user division as a parameter if user is authenticated
+                
                 if (isAuthenticated && user && user.division) {
                     url += `?division=${user.division}`;
                 }
@@ -81,7 +81,7 @@ const TodaysEvents = ({user, isAuthenticated}) => {
         return type.toLowerCase();
     };
 
-    // Return null if no events and not loading
+    
     if (!loading && (events.length === 0 || error)) {
         return null;
     }

@@ -15,12 +15,12 @@ const RoleModal = ({ isOpen, onClose, role, onSave }) => {
     }
   });
 
-  // Initialize form data when editing existing role
+  
   useEffect(() => {
     if (role) {
       setFormData({ ...role });
     } else {
-      // Reset form for new role
+      
       setFormData({
         id: null,
         name: '',

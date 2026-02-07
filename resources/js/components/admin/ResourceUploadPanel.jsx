@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Link } from 'lucide-react';
 import styles from '../../../css/styles/admin/ResourceUploadPanel.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Import the useAuth hook
+import { useAuth } from '../../hooks/useAuth'; 
 
 const ResourceUploadPanel = ({ refreshResources }) => {
-  const { user, isAuthenticated, loading } = useAuth(); // Use the auth hook
+  const { user, isAuthenticated, loading } = useAuth(); 
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
-  const [author, setAuthor] = useState(''); // Add author state
+  const [author, setAuthor] = useState(''); 
   const [icon, setIcon] = useState(null);
   const [iconPreview, setIconPreview] = useState('');
   const [status, setStatus] = useState('Active');
@@ -15,17 +15,17 @@ const ResourceUploadPanel = ({ refreshResources }) => {
   const [submitError, setSubmitError] = useState(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // Set author when user data is loaded
+  
   useEffect(() => {
     if (user && isAuthenticated) {
-      // Format the author name using first name and surname
+      
       const authorName = `${user.first_name} ${user.surname}`;
       setAuthor(authorName);
     }
   }, [user, isAuthenticated]);
 
   const validateUrl = (url) => {
-    // Add https:// protocol if no protocol is specified
+    
     if (url && !url.match(/^[a-zA-Z]+:\/\//)) {
       url = 'https://' + url;
     }
@@ -41,14 +41,14 @@ const ResourceUploadPanel = ({ refreshResources }) => {
   const handleIconChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      // Check if the file is an image
+      
       if (selectedFile.type.startsWith('image/')) {
         setIcon(selectedFile);
         setIconPreview(URL.createObjectURL(selectedFile));
-        setSubmitError(null); // Clear any previous errors
+        setSubmitError(null); 
       } else {
         setSubmitError('Only image files are allowed.');
-        setIconPreview(''); // Clear preview for non-image files
+        setIconPreview(''); 
       }
     }
   };
@@ -56,7 +56,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validation
+    
     if (!name.trim()) {
       setSubmitError('Please enter a resource name');
       return;
@@ -72,7 +72,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
       return;
     }
 
-    // Add protocol if missing
+    
     let processedLink = link;
     if (!processedLink.match(/^[a-zA-Z]+:\/\//)) {
       processedLink = 'https://' + processedLink;
@@ -85,8 +85,8 @@ const ResourceUploadPanel = ({ refreshResources }) => {
     try {
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('link', processedLink); // Use the processed link
-      formData.append('author', author); // Add author to form data
+      formData.append('link', processedLink); 
+      formData.append('author', author); 
       if (icon) {
         formData.append('icon', icon);
       }
@@ -94,7 +94,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
       
       const response = await fetch('/api/resources', {
         method: 'POST',
-        body: formData, // Using FormData instead of JSON for file upload
+        body: formData, 
       });
       
       if (!response.ok) {
@@ -106,16 +106,16 @@ const ResourceUploadPanel = ({ refreshResources }) => {
       console.log('Resource added successfully:', result);
       
       if (refreshResources) {
-        refreshResources(); // Refresh the resources list
+        refreshResources(); 
       }
       
-      // Reset form
+      
       setName('');
       setLink('');
       setIcon(null);
       setIconPreview('');
       setStatus('Active');
-      // Don't reset author as it should stay the same
+      
       setSubmitSuccess(true);
       
     } catch (error) {

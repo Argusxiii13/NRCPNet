@@ -3,18 +3,18 @@ import { Eye, Edit2, Trash2 } from 'lucide-react';
 import styles from '../../../css/styles/admin/ResourcePanel.module.css';
 
 const ResourcePanel = () => {
-  // Feature data and loading state
+  
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Pagination state from API
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(3);
   const [totalResources, setTotalResources] = useState(0);
   const [lastPage, setLastPage] = useState(1);
 
-  // Modal states
+  
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [resourceToDelete, setResourceToDelete] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -23,11 +23,11 @@ const ResourcePanel = () => {
     name: '', 
     link: '', 
     status: '',
-    icon: null // Add icon field to store file
+    icon: null 
   });
-  const [previewIcon, setPreviewIcon] = useState(null); // To show icon preview
+  const [previewIcon, setPreviewIcon] = useState(null); 
 
-  // Fetch resources from the API with pagination
+  
   const fetchResources = async () => {
     setLoading(true);
     setError(null);
@@ -53,7 +53,7 @@ const ResourcePanel = () => {
     }
   };
 
-  // Initial fetch of resources and when page changes
+  
   useEffect(() => {
     fetchResources();
   }, [currentPage]);
@@ -71,9 +71,9 @@ const ResourcePanel = () => {
       name: resource.name,
       link: resource.link,
       status: resource.status,
-      icon: null // Reset icon file
+      icon: null 
     });
-    setPreviewIcon(resource.icon); // Set current icon for preview
+    setPreviewIcon(resource.icon); 
     setIsEditOpen(true);
   };
 
@@ -81,7 +81,7 @@ const ResourcePanel = () => {
     const file = e.target.files[0];
     if (file) {
       setEditedResource({ ...editedResource, icon: file });
-      // Create a preview URL
+      
       const previewUrl = URL.createObjectURL(file);
       setPreviewIcon(previewUrl);
     }
@@ -94,11 +94,11 @@ const ResourcePanel = () => {
       });
       if (response.ok) {
         console.log('Resource deleted successfully');
-        // If this would make the current page empty, go back a page
+        
         if (resources.length === 1 && currentPage > 1) {
           setCurrentPage(currentPage - 1);
         } else {
-          fetchResources(); // Refresh the resources list
+          fetchResources(); 
         }
       } else {
         console.error('Failed to delete resource');
@@ -113,29 +113,29 @@ const ResourcePanel = () => {
 
   const handleEditSubmit = async () => {
     try {
-      // Use FormData to handle file uploads
+      
       const formData = new FormData();
       formData.append('name', editedResource.name);
       formData.append('link', editedResource.link);
       formData.append('status', editedResource.status);
       
-      // Only append icon if a new one was selected
+      
       if (editedResource.icon) {
         formData.append('icon', editedResource.icon);
       }
       
-      // Add method spoofing for Laravel
+      
       formData.append('_method', 'PUT');
 
       const response = await fetch(`/api/resources/${editedResource.id}`, {
-        method: 'POST', // Using POST with _method=PUT for file uploads
+        method: 'POST', 
         body: formData,
-        // Don't set Content-Type header, let the browser handle it with boundary for FormData
+        
       });
       
       if (response.ok) {
         console.log('Resource updated successfully');
-        fetchResources(); // Refresh the resources list
+        fetchResources(); 
       } else {
         const errorData = await response.json();
         console.error('Failed to update resource:', errorData);

@@ -9,15 +9,15 @@ const FormsManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalForms, setTotalForms] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
 
-  // Fetch downloadable forms from the API
+  
   const fetchDownloadableForms = async () => {
     try {
-      // Updated to use 'downloadables' (plural) endpoint
+      
       const response = await fetch(`/api/downloadables?per_page=${itemsPerPage}&page=${currentPage}`);
       if (!response.ok) {
         throw new Error('Error fetching forms');

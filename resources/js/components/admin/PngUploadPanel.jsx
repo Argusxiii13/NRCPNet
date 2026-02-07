@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import '../../../css/styles/admin/PngUploadPanel.css';
-import { useAuth } from '../../hooks/useAuth'; // Import the auth hook
+import { useAuth } from '../../hooks/useAuth'; 
 
 const FileUploadPanel = ({ refreshFeatures }) => {
-  const { user } = useAuth(); // Use the auth hook to get user data
+  const { user } = useAuth(); 
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [title, setTitle] = useState('');
@@ -13,20 +13,20 @@ const FileUploadPanel = ({ refreshFeatures }) => {
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   
-  // Generate author name from user data
+  
   const authorName = user ? `${user.first_name} ${user.surname}` : 'Loading...';
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      // Check if the file is a PNG image
+      
       if (selectedFile.type === 'image/png') {
         setFile(selectedFile);
         setImagePreview(URL.createObjectURL(selectedFile));
-        setUploadError(null); // Clear any previous errors
+        setUploadError(null); 
       } else {
         setUploadError('Only PNG files are allowed.');
-        setImagePreview(''); // Clear preview for non-PNG files
+        setImagePreview(''); 
       }
     }
   };
@@ -53,7 +53,7 @@ const FileUploadPanel = ({ refreshFeatures }) => {
       formData.append('file', file);
       formData.append('title', title);
       formData.append('status', status);
-      formData.append('author', authorName); // Add author name to formData
+      formData.append('author', authorName); 
       
       const response = await fetch('/api/features', {
         method: 'POST',
@@ -68,10 +68,10 @@ const FileUploadPanel = ({ refreshFeatures }) => {
       const result = await response.json();
       console.log('Upload successful:', result);
       if (refreshFeatures) {
-        refreshFeatures(); // This refreshes the feature list
+        refreshFeatures(); 
       }
       
-      // Reset form
+      
       setFile(null);
       setImagePreview('');
       setTitle('');

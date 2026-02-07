@@ -1,12 +1,12 @@
 import React from 'react';
 import { UserCheck, MessageSquare, Megaphone } from 'lucide-react';
-import StatCard from '../reusable/StatCard'; // Adjust import path as needed
-import LineGraph from '../reusable/LineGraph'; // Adjust import path as needed
-import UserGaugeMeter from '../reusable/UserGaugeMeter'; // Import the new component
-import styles from '../../../css/styles/admin/Dashboard.module.css'; // Import the dashboard CSS
+import StatCard from '../reusable/StatCard'; 
+import LineGraph from '../reusable/LineGraph'; 
+import UserGaugeMeter from '../reusable/UserGaugeMeter'; 
+import styles from '../../../css/styles/admin/Dashboard.module.css'; 
 
 const Dashboard = () => {
-  // Sample data for stat cards
+  
   const stats = [
     {
       title: "Users Logged In",
@@ -31,8 +31,8 @@ const Dashboard = () => {
     }
   ];
 
-  // Current user attendance data
-  const currentUsers = 857; // Same as your stat card for consistency
+  
+  const currentUsers = 857; 
   const maxCapacity = 1200;
 
   return (

@@ -5,11 +5,11 @@ import axios from 'axios';
 import styles from '../../../css/styles/admin/SuggestionDetailModal.module.css';
 
 const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
-  // Use adminnote to match the database field name
+  
   const [adminNotes, setAdminNotes] = useState('');
   const [status, setStatus] = useState('new');
 
-  // Prevent scroll on body when modal is open
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -22,7 +22,7 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
     };
   }, [isOpen]);
 
-  // Update state when suggestion changes
+  
   useEffect(() => {
     if (suggestion) {
       setAdminNotes(suggestion.adminnote || '');
@@ -43,11 +43,11 @@ const SuggestionDetailModal = ({ isOpen, onClose, suggestion, onSave }) => {
         const response = await axios.put(`http://localhost:8000/api/suggestion/${suggestion.id}`, updatedSuggestion);
         console.log('Suggestion updated successfully:', response.data);
         
-        // Call onSave to trigger a refresh in the parent component
+        
         if (onSave) {
           onSave();
         } else {
-          onClose(); // Fallback to just closing if onSave isn't provided
+          onClose(); 
         }
     } catch (error) {
         console.error('Error updating suggestion:', error);

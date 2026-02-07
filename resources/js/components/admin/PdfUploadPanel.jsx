@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import styles from '../../../css/styles/admin/PdfUploadPanel.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Import the useAuth hook
+import { useAuth } from '../../hooks/useAuth'; 
 
 const PdfUploadPanel = ({ refreshForms }) => {
-  const { user, isAuthenticated, loading } = useAuth(); // Use the auth hook
+  const { user, isAuthenticated, loading } = useAuth(); 
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [status, setStatus] = useState('Active');
   const [division, setDivision] = useState('General');
-  const [type, setType] = useState('Miscellaneous'); // Change from 'Regular' to a valid type
+  const [type, setType] = useState('Miscellaneous'); 
   const [divisions, setDivisions] = useState([]);
   const [loadingDivisions, setLoadingDivisions] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-  // Set author from user data when authenticated
+  
   useEffect(() => {
     if (isAuthenticated && user) {
-      // Format author as "FirstName Surname"
+      
       const authorName = `${user.first_name} ${user.surname}`;
       setAuthor(authorName);
       
-      // If user has a division, set it as default
+      
       if (user.division) {
         setDivision(user.division);
       }
     }
   }, [isAuthenticated, user]);
 
-  // Fetch divisions on component mount
+  
   useEffect(() => {
     fetchDivisions();
   }, []);
@@ -56,14 +56,14 @@ const PdfUploadPanel = ({ refreshForms }) => {
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      // Check if the file is a PDF - just UI for now
+      
       if (selectedFile.type === 'application/pdf') {
         setFile(selectedFile);
-        setFilePreview(selectedFile.name); // For PDFs we just show the filename
-        setUploadError(null); // Clear any previous errors
+        setFilePreview(selectedFile.name); 
+        setUploadError(null); 
       } else {
         setUploadError('Only PDF files are allowed.');
-        setFilePreview(''); // Clear preview for non-PDF files
+        setFilePreview(''); 
       }
     }
   };
@@ -71,7 +71,7 @@ const PdfUploadPanel = ({ refreshForms }) => {
   const handleUpload = async (e) => {
     e.preventDefault();
     
-    // Basic form validation for UI design
+    
     if (!file) {
       setUploadError('Please select a file to upload');
       return;
@@ -95,7 +95,7 @@ const PdfUploadPanel = ({ refreshForms }) => {
     setIsUploading(true);
     setUploadError(null);
     
-    // Create form data for file upload
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('title', title);
@@ -105,22 +105,22 @@ const PdfUploadPanel = ({ refreshForms }) => {
     formData.append('type', type);
     
     try {
-      // Use the new endpoint for uploading with metadata
+      
       const response = await fetch('/api/downloadables/with-metadata', {
         method: 'POST',
         body: formData,
-        // Don't set Content-Type header when sending FormData
+        
       });
       
-      // First check if response is OK before trying to parse JSON
+      
       if (!response.ok) {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
-          // If we got JSON, parse the error
+          
           const errorData = await response.json();
           throw new Error(errorData.message || `Upload failed with status: ${response.status}`);
         } else {
-          // If not JSON (like HTML error page), just use status text
+          
           throw new Error(`Upload failed with status: ${response.status} ${response.statusText}`);
         }
       }
@@ -130,13 +130,13 @@ const PdfUploadPanel = ({ refreshForms }) => {
       setUploadSuccess(true);
       console.log('Upload successful:', data);
       
-      // Reset form after success, but keep author from user data
+      
       setTimeout(() => {
         setFile(null);
         setFilePreview('');
         setTitle('');
         setStatus('Active');
-        // Reset division to user's division or General if none
+        
         if (user && user.division) {
           setDivision(user.division);
         } else {
@@ -145,11 +145,11 @@ const PdfUploadPanel = ({ refreshForms }) => {
         setType('Regular');
         setUploadSuccess(false);
         
-        // Refresh the forms list to show the new upload
+        
         refreshForms();
       }, 2000);
       
-    } // Inside your catch block in handleUpload
+    } 
     catch (error) {
       console.error('Upload error:', error);
       if (error.response) {
@@ -177,7 +177,7 @@ const PdfUploadPanel = ({ refreshForms }) => {
     }
   };
 
-  // Show loading state while authentication is in progress
+  
   if (loading) {
     return (
       <div className={styles['panel'] + ' ' + styles['upload-panel']}>
@@ -240,7 +240,7 @@ const PdfUploadPanel = ({ refreshForms }) => {
                   value={author} 
                   onChange={(e) => setAuthor(e.target.value)} 
                   className={styles['title-input']}
-                  disabled={isAuthenticated} // Disable editing if authenticated
+                  disabled={isAuthenticated} 
                   title={isAuthenticated ? "Author is automatically set to your name" : ""}
                 />
                 {isAuthenticated && (

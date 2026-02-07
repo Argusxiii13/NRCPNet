@@ -322,7 +322,7 @@ const AnnouncementEditor = () => {
         width: 1120,
         height: 500,
         logging: false,
-        scale: 1 // Important for consistent rendering
+        scale: 1 
       });
 
       const imgData = canvas.toDataURL('image/png');

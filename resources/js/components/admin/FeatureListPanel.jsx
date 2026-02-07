@@ -6,31 +6,31 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [featureToDelete, setFeatureToDelete] = useState(null);
   
-  // Edit modal state
+  
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editedFeature, setEditedFeature] = useState({ title: '', status: '' });
 
-  // Image viewer modal state
+  
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
 
-  // Feature data and loading state
+  
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Pagination state from API
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(4); // Fixed items per page
+  const [itemsPerPage] = useState(4); 
   const [totalFeatures, setTotalFeatures] = useState(0);
   const [lastPage, setLastPage] = useState(1);
 
-  // Fetch features from the API with pagination
+  
   const fetchFeatures = async () => {
     setLoading(true);
     setError(null);
     try {
-      // Build the URL with pagination parameters only
+      
       const url = new URL('/api/paginated/features', window.location.origin);
       url.searchParams.append('page', currentPage);
       url.searchParams.append('per_page', itemsPerPage);
@@ -43,10 +43,10 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
       
       const data = await response.json();
       
-      // Set features from data.data (Laravel pagination format)
+      
       setFeatures(data.data);
       
-      // Set pagination information
+      
       setTotalFeatures(data.total);
       setCurrentPage(data.current_page);
       setLastPage(data.last_page);
@@ -59,7 +59,7 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
     }
   };
 
-  // Initial fetch of features and when page changes
+  
   useEffect(() => {
     fetchFeatures();
   }, [currentPage]);
@@ -69,25 +69,25 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
   };
 
   const openConfirmModal = (feature, e) => {
-    e.stopPropagation(); // Prevent feature selection
+    e.stopPropagation(); 
     setFeatureToDelete(feature);
     setIsConfirmOpen(true);
   };
 
   const openEditModal = (feature, e) => {
-    e.stopPropagation(); // Prevent feature selection
+    e.stopPropagation(); 
     setEditedFeature({
         id: feature.id,
         title: feature.title, 
         status: feature.status,
-        imageUrl: `http://localhost:8000${feature.content}` // Add image URL to edited feature
+        imageUrl: `http://localhost:8000${feature.content}` 
     });
     setIsEditOpen(true);
     setSelectedFeature(feature);
   };
 
   const openImageModal = (feature, e) => {
-    e.stopPropagation(); // Prevent feature selection
+    e.stopPropagation(); 
     setImageUrl(`http://localhost:8000${feature.content}`);
     setIsImageOpen(true);
   };
@@ -99,7 +99,7 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
       });
       if (response.ok) {
         console.log('Feature deleted successfully');
-        fetchFeatures(); // Refresh the features list
+        fetchFeatures(); 
       } else {
         console.error('Failed to delete feature');
       }
@@ -130,7 +130,7 @@ const FeatureListPanel = ({ selectedFeature, setSelectedFeature }) => {
         });
         if (response.ok) {
             console.log('Feature updated successfully');
-            fetchFeatures(); // Refresh the features list
+            fetchFeatures(); 
         } else {
             const errorData = await response.json();
             console.error('Failed to update feature:', errorData);

@@ -11,7 +11,7 @@ const FeatureCarousel = () => {
             try {
                 const response = await fetch('/api/features');
                 const data = await response.json();
-                // Filter to include only active features
+                
                 const activeSlides = data.filter(feature => feature.status === 'Active').map(feature => feature.content);
                 setSlides(activeSlides);
             } catch (error) {

@@ -53,7 +53,7 @@ const UserManagement = () => {
     debouncedFetch(searchTerm, currentPage, division, section);
   }, [searchTerm, currentPage, division, section, debouncedFetch]);
 
-  // Always create placeholders even during loading
+  
   const placeholderRows = Array(itemsPerPage - (loading ? 0 : users.length))
     .fill(null)
     .map((_, index) => ({ id: `placeholder-${index}` }));

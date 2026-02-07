@@ -3,14 +3,14 @@ import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isToday, p
 import axios from 'axios';
 import styles from '../../../css/styles/landing/Calendar.module.css';
 
-// Function to convert 24-hour time to 12-hour time with AM/PM
+
 const formatTime = (timeString) => {
     if (!timeString) return '';
 
-    // Split the time range if it exists
+    
     const times = timeString.split(' - ');
     
-    // Convert each time in the range
+    
     const formattedTimes = times.map(time => {
         const [hours, minutes] = time.split(':');
         const parsedHours = parseInt(hours, 10);
@@ -19,7 +19,7 @@ const formatTime = (timeString) => {
         return `${formattedHours}:${minutes} ${period}`;
     });
 
-    // Join back with ' - ' if it was a range
+    
     return formattedTimes.join(' - ');
 };
 
@@ -44,20 +44,20 @@ const Calendar = ({user, isAuthenticated}) => {
     const totalCells = 42;
     const emptyDaysEnd = Array(totalCells - days.length - startDay).fill(null);
 
-// Fetch events for the current month
+
 const fetchEvents = async () => {
     try {
         setLoading(true);
         
-        // Set up parameters
+        
         const params = { month: currentMonth };
         
-        // Add division parameter if user is authenticated
+        
         if (isAuthenticated && user && user.division) {
             params.division = user.division;
         }
         
-        // Use the new endpoint
+        
         const response = await axios.get('/api/calendar-filtered', { params });
         setEvents(response.data);
     } catch (error) {

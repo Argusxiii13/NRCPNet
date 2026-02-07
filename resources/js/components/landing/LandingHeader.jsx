@@ -1,4 +1,4 @@
-// Header.jsx
+
 import React, { useState, useEffect } from 'react';
 import styles from '../../../css/styles/landing/LandingHeader.module.css';
 import { useAuth } from '../../hooks/useAuth';

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ResourcePanel from './ResourcePanel';
-import ResourceUploadPanel from './ResourceUploadPanel'; // Import the new component
+import ResourceUploadPanel from './ResourceUploadPanel'; 
 import styles from '../../../css/styles/admin/SystemsLinkManagement.module.css';
 
 const ResourceManagement = () => {
   const [resources, setResources] = useState([]);
   
-  // Function to fetch resources from the API
+  
   const fetchResources = async () => {
     try {
       const response = await fetch('/api/resources');
@@ -19,12 +19,12 @@ const ResourceManagement = () => {
     }
   };
   
-  // Fetch resources when component mounts
+  
   useEffect(() => {
     fetchResources();
   }, []);
   
-  // This function will be passed to ResourceUploadPanel to refresh the list after adding a new resource
+  
   const refreshResources = () => {
     fetchResources();
   };

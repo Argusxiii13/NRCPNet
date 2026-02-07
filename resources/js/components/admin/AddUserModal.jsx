@@ -10,11 +10,11 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
     lastName: '',
     position: '',
     email: '',
-    password: 'NRCPNETEmployee',  // Default password
+    password: 'NRCPNETEmployee',  
     section: '',
     division: '',
     role: 'User',
-    status: 'Active',  // Default status
+    status: 'Active',  
   });
 
   const [divisions, setDivisions] = useState([]);
@@ -22,7 +22,7 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
   const [sections, setSections] = useState([]);
   const [selectedDivisionCode, setSelectedDivisionCode] = useState('');
 
-  // Fetch data when modal opens
+  
   useEffect(() => {
     if (isOpen) {
       fetchDivisions();
@@ -31,16 +31,16 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
   }, [isOpen]);
 
   const fetchDivisions = async () => {
-    const response = await fetch('/api/divisions'); // Adjust endpoint as necessary
+    const response = await fetch('/api/divisions'); 
     const data = await response.json();
     setDivisions(data);
   };
 
   const fetchRoles = async () => {
-    const response = await fetch('/api/roles'); // Adjust endpoint as necessary
+    const response = await fetch('/api/roles'); 
     const data = await response.json();
   
-    // Assuming data is an array of objects and each object has a 'name' property
+    
     const filteredRoles = data.filter(role => role.name !== 'Superadmin');
   
     setRoles(filteredRoles);
@@ -50,13 +50,13 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
     const divId = parseInt(e.target.value);
     const selectedDivision = divisions.find(div => div.id === divId);
     
-    // Store the division code instead of the ID
+    
     setSelectedDivisionCode(selectedDivision?.code || '');
     
     setFormData(prev => ({
       ...prev,
-      division: selectedDivision?.code || '', // Use division code here
-      section: '', // Reset section when division changes
+      division: selectedDivision?.code || '', 
+      section: '', 
     }));
     
     setSections(selectedDivision?.has_sections ? selectedDivision.sections : []);
@@ -168,7 +168,7 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
                   value={formData.section}
                   onChange={handleChange}
                   required
-                  disabled={sections.length === 0} // Disable if no sections are available
+                  disabled={sections.length === 0} 
                 >
                   <option value="">Select Section</option>
                   {sections.map(sec => (

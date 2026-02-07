@@ -15,7 +15,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
   const totalPages = Math.ceil(totalForms / itemsPerPage);
 
-  // Fetch divisions when edit modal opens
+  
   useEffect(() => {
     if (isEditOpen) {
       fetchDivisions();
@@ -114,7 +114,7 @@ const DownloadableFormsList = ({ forms, loading, totalForms, itemsPerPage, curre
 
   const handleEditSubmit = async () => {
     try {
-      // Check if division is valid
+      
       if (!editedForm.division) {
         console.error('Division is required');
         return;

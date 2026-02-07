@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../../../css/styles/landing/DownloadableForms.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Adjust path as needed
+import { useAuth } from '../../hooks/useAuth'; 
 
 const DownloadableForms = () => {
     const { user, isAuthenticated, loading: authLoading } = useAuth();
@@ -15,7 +15,7 @@ const DownloadableForms = () => {
     const searchInputRef = useRef(null);
     const searchContainerRef = useRef(null);
 
-    // Debounce search term so we don't make API calls on every keypress
+    
     useEffect(() => {
         const timerId = setTimeout(() => {
             setDebouncedSearchTerm(searchTerm);
@@ -27,20 +27,20 @@ const DownloadableForms = () => {
     }, [searchTerm]);
 
     useEffect(() => {
-        // Only fetch forms after authentication status is determined
+        
         if (!authLoading) {
             fetchForms();
         }
     }, [authLoading, user, debouncedSearchTerm]);
 
-    // Focus search input when expanded
+    
     useEffect(() => {
         if (searchExpanded && searchInputRef.current) {
             searchInputRef.current.focus();
         }
     }, [searchExpanded]);
 
-    // Click outside to collapse search
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchExpanded && 
@@ -62,20 +62,20 @@ const DownloadableForms = () => {
         try {
             setIsLoading(true);
             
-            // Build the API URL with or without division
+            
             let apiUrl = '/api/forms-by-division?status=Active';
             
-            // If user is authenticated and has a division, pass it to the API
+            
             if (isAuthenticated && user && user.division) {
                 apiUrl += `&division=${encodeURIComponent(user.division)}`;
             }
             
-            // Add search parameter if there's a search term
+            
             if (debouncedSearchTerm) {
                 apiUrl += `&search=${encodeURIComponent(debouncedSearchTerm)}`;
             }
             
-            // Use the endpoint that returns filtered forms
+            
             const response = await fetch(apiUrl);
             
             if (!response.ok) {
@@ -84,7 +84,7 @@ const DownloadableForms = () => {
             
             const data = await response.json();
             
-            // Set the forms directly as they're already filtered by the server
+            
             setRequestForms(data.request || []);
             setMemoForms(data.memo || []);
             setMiscForms(data.miscellaneous || []);
@@ -103,7 +103,7 @@ const DownloadableForms = () => {
     const toggleSearch = () => {
         setSearchExpanded(!searchExpanded);
         if (!searchExpanded && searchInputRef.current) {
-            // Small delay to ensure DOM is updated before focusing
+            
             setTimeout(() => {
                 searchInputRef.current.focus();
             }, 100);
@@ -111,11 +111,11 @@ const DownloadableForms = () => {
     };
 
     const handleDownload = (e, form) => {
-        // Use the link's href as is, since it points to the file's location
-        // No need to preventDefault - let the browser handle the download
+        
+        
     };
 
-    // If still checking authentication status, show loading
+    
     if (authLoading) {
         return (
             <div className={styles['downloadable-forms-container']}>

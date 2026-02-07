@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import styles from '../../../css/styles/reusable/LineGraph.module.css';
 
-// Register Chart.js components
+
 Chart.register(...registerables);
 
 const LineGraph = ({ title }) => {
@@ -10,7 +10,7 @@ const LineGraph = ({ title }) => {
   const chartInstance = useRef(null);
 
   useEffect(() => {
-    // Generate time intervals from 6:00 AM to 8:00 PM in 30-minute increments
+    
     const timeLabels = [];
     for (let hour = 6; hour <= 20; hour++) {
       timeLabels.push(`${hour}:00`);
@@ -19,27 +19,27 @@ const LineGraph = ({ title }) => {
       }
     }
     
-    // Generate sample data for each time interval
+    
     const generateSampleData = () => {
       const baseUsers = 30;
       return timeLabels.map((_, index) => {
-        // Create a realistic curve with morning increase, lunch dip, afternoon peak
-        const timeOfDay = index / 2 + 6; // Convert to hour of day
+        
+        const timeOfDay = index / 2 + 6; 
         
         if (timeOfDay < 9) {
-          // Morning ramp up (6am-9am)
+          
           return baseUsers + (index * 15);
         } else if (timeOfDay < 12) {
-          // Mid-morning peak (9am-12pm)
+          
           return baseUsers + 150 + Math.sin((timeOfDay - 9) * 0.8) * 20;
         } else if (timeOfDay < 14) {
-          // Lunch dip (12pm-2pm)
+          
           return baseUsers + 120 - ((timeOfDay - 12) * 15);
         } else if (timeOfDay < 17) {
-          // Afternoon work (2pm-5pm)
+          
           return baseUsers + 100 + Math.sin((timeOfDay - 14) * 0.6) * 30;
         } else {
-          // Evening decline (5pm-8pm)
+          
           return baseUsers + 110 - ((timeOfDay - 17) * 20);
         }
       });
@@ -48,14 +48,14 @@ const LineGraph = ({ title }) => {
     const userData = generateSampleData();
     
     if (chartRef && chartRef.current) {
-      // Destroy existing chart if it exists
+      
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
       
       const ctx = chartRef.current.getContext('2d');
       
-      // Create new chart
+      
       chartInstance.current = new Chart(ctx, {
         type: 'line',
         data: {
@@ -109,7 +109,7 @@ const LineGraph = ({ title }) => {
       });
     }
     
-    // Cleanup function
+    
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();

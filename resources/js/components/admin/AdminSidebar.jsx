@@ -20,17 +20,17 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from '../../../css/styles/admin/AdminSidebar.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Import the auth hook
+import { useAuth } from '../../hooks/useAuth'; 
 
 const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     const logo = '/image/NRCP_logo----.png';
     const profilePic = '/image/SampleProfile.jpg';
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     
-    // Use the auth hook to access user data and authentication functions
+    
     const { user, logout: authLogout } = useAuth();
     
-    // State to track which menus are expanded
+    
     const [expandedMenus, setExpandedMenus] = useState({});
 
     const menuItems = [
@@ -59,10 +59,10 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         
         setIsLoggingOut(true);
         try {
-            // Get the CSRF token
+            
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
             
-            // Send the logout request
+            
             const response = await fetch('/logout', {
                 method: 'POST',
                 headers: {
@@ -74,20 +74,20 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
                 credentials: 'include',
             });
             
-            // Call the logout function from auth hook to clear local state
+            
             authLogout();
             
             if (response.ok) {
-                // Redirect to login page after successful logout
+                
                 window.location.href = '/login';
             } else {
                 console.error('Logout failed');
-                // Still redirect to login even if server-side logout fails
+                
                 window.location.href = '/login';
             }
         } catch (error) {
             console.error('Error during logout:', error);
-            // Clear user state via auth hook and redirect to login even if there's an error
+            
             authLogout();
             window.location.href = '/login';
         } finally {
@@ -95,7 +95,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         }
     };
 
-    // Homepage navigation handler
+    
     const handleHomeNavigation = () => {
         window.location.href = '/';
     };
@@ -109,13 +109,13 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
 
     const handleMenuClick = (item) => {
         if (item.hasSubmenu) {
-            // If sidebar is collapsed and we're clicking on an item with submenu,
-            // expand the sidebar first
+            
+            
             if (!isExpanded) {
-                onToggle(); // Expand the sidebar
+                onToggle(); 
             }
             
-            // Then toggle the submenu
+            
             toggleSubmenu(item.title);
         } else {
             onMenuSelect(item.title);
@@ -123,13 +123,13 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
     };
 
     const handleSubmenuClick = (parentTitle, submenuTitle, e) => {
-        // You can either pass both the parent and submenu title or create a combined key
+        
         onMenuSelect(`${parentTitle}: ${submenuTitle}`);
-        // Stop propagation to prevent the parent menu from toggling
+        
         e.stopPropagation();
     };
     
-    // Format user's name for display
+    
     const getUserDisplayName = () => {
         if (user && user.first_name && user.surname) {
             return `${user.first_name} ${user.surname}`;
@@ -137,7 +137,7 @@ const AdminSidebar = ({ isExpanded, onToggle, activeMenu, onMenuSelect }) => {
         return "Loading...";
     };
     
-    // Get user's role
+    
     const getUserRole = () => {
         if (user && user.role) {
             return user.role;

@@ -14,13 +14,13 @@ const SuggestionInbox = () => {
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
-  // Pagination states
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
-  // Function to fetch suggestions with optional filters and pagination
+  
   const fetchSuggestions = async (filters = {}, page = 1) => {
     try {
       let url = `/api/paginated/suggestions?page=${page}&per_page=${perPage}`;
@@ -29,14 +29,14 @@ const SuggestionInbox = () => {
       
       const response = await axios.get(url);
   
-      // Log the response to debug
+      
       console.log('API Response:', response.data);
   
-      // Ensure the response structure is valid
+      
       if (response.data && response.data.data) {
         setSuggestions(response.data.data);
         
-        // Update pagination based on the nested pagination object
+        
         if (response.data.pagination) {
           setCurrentPage(response.data.pagination.current_page);
           setTotalPages(response.data.pagination.last_page);
@@ -60,13 +60,13 @@ const SuggestionInbox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch suggestions with current filters and pagination
+        
         await fetchSuggestions({
           division: selectedDivision,
           status: selectedStatus
         }, currentPage);
         
-        // Fetch divisions (only once)
+        
         if (!initialDataLoaded) {
           const divisionsResponse = await axios.get('/api/divisions');
           setDivisions(divisionsResponse.data);
@@ -80,29 +80,29 @@ const SuggestionInbox = () => {
     };
   
     fetchData();
-  }, [refreshTrigger, currentPage, perPage, selectedDivision, selectedStatus]); // Include filter states
+  }, [refreshTrigger, currentPage, perPage, selectedDivision, selectedStatus]); 
 
-  // Handler for modal opening
+  
   const handleOpenModal = (suggestion) => {
     setSelectedSuggestion(suggestion);
     setIsModalOpen(true);
   };
 
-  // Handler for modal closing with refresh support
+  
   const handleCloseModal = (refreshNeeded = false) => {
     setIsModalOpen(false);
     
-    // If changes were made, refresh the suggestions list
+    
     if (refreshNeeded) {
       setRefreshTrigger(prev => prev + 1);
     }
   };
 
-  // Handler for suggestion deletion
+  
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/api/suggestion/${id}`);
-      // Refresh the current page after deletion
+      
       await fetchSuggestions({
         division: selectedDivision,
         status: selectedStatus
@@ -112,9 +112,9 @@ const SuggestionInbox = () => {
     }
   };
 
-  // Handler for filtering
+  
   const handleFilter = async () => {
-    // Reset to page 1 when applying new filters
+    
     setCurrentPage(1);
     
     await fetchSuggestions({
@@ -123,21 +123,21 @@ const SuggestionInbox = () => {
     }, 1);
   };
 
-  // Handle pagination navigation
+  
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
     setCurrentPage(newPage);
   };
 
-  // Handle per page selection change
+  
   const handlePerPageChange = (e) => {
     const newPerPage = parseInt(e.target.value);
     setPerPage(newPerPage);
-    setCurrentPage(1); // Reset to first page when changing items per page
-    // Again, no need to call fetchSuggestions manually
+    setCurrentPage(1); 
+    
   };
 
-  // Built-in pagination component renderer
+  
   const renderPagination = () => {
     if (!initialDataLoaded || !totalItems) return null;
   
@@ -246,7 +246,7 @@ const SuggestionInbox = () => {
                     <button 
                       className={styles['delete-button']}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening the modal
+                        e.stopPropagation(); 
                         handleDelete(suggestion.id);
                       }}
                     >
@@ -273,7 +273,7 @@ const SuggestionInbox = () => {
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
         suggestion={selectedSuggestion}
-        onSave={() => handleCloseModal(true)} // Pass refreshNeeded=true when saved
+        onSave={() => handleCloseModal(true)} 
       />
     </div>
   );

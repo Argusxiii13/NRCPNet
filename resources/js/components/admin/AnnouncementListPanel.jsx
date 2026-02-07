@@ -14,12 +14,12 @@ const AnnouncementListPanel = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [announcementContent, setAnnouncementContent] = useState('');
   
-  // Pagination states
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // You can adjust this number
+  const [itemsPerPage] = useState(5); 
   const [totalItems, setTotalItems] = useState(0);
 
-  // Fetch paginated announcements from API
+  
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
@@ -32,7 +32,7 @@ const AnnouncementListPanel = () => {
         
         const result = await response.json();
         
-        // Transform the data to match our component's expected format
+        
         const formattedData = result.data.map(item => ({
           id: item.id || Math.random().toString(36).substr(2, 9),
           title: item.title || 'Untitled Announcement',
@@ -43,7 +43,7 @@ const AnnouncementListPanel = () => {
           division: item.division || 'General'
         }));
         
-        // Log the current announcements data to console
+        
         console.log('Current announcements data:', formattedData);
         
         setAnnouncements(formattedData);
@@ -92,18 +92,18 @@ const AnnouncementListPanel = () => {
     if (!announcementToDelete) return;
     
     try {
-      // Implement delete API call here
+      
       const response = await fetch(`/api/announcements/${announcementToDelete.id}`, {
         method: 'DELETE',
       });
       
       if (!response.ok) throw new Error('Failed to delete announcement');
       
-      // After successful deletion, check if we need to adjust the current page
+      
       if (announcements.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       } else {
-        // Refresh the current page
+        
         const refreshResponse = await fetch(`/api/paginated/announcements?page=${currentPage}&perPage=${itemsPerPage}`);
         if (refreshResponse.ok) {
           const result = await refreshResponse.json();
@@ -114,7 +114,7 @@ const AnnouncementListPanel = () => {
       
     } catch (err) {
       console.error('Error deleting announcement:', err);
-      // Show error message to user
+      
     } finally {
       setIsConfirmOpen(false);
       setAnnouncementToDelete(null);
@@ -125,7 +125,7 @@ const AnnouncementListPanel = () => {
     if (!editedAnnouncement.id) return;
     
     try {
-      // Implement update API call here
+      
       const response = await fetch(`/api/announcements/${editedAnnouncement.id}`, {
         method: 'PUT',
         headers: {
@@ -136,7 +136,7 @@ const AnnouncementListPanel = () => {
       
       if (!response.ok) throw new Error('Failed to update announcement');
       
-      // Refresh the current page after successful update
+      
       const refreshResponse = await fetch(`/api/paginated/announcements?page=${currentPage}&perPage=${itemsPerPage}`);
       if (refreshResponse.ok) {
         const result = await refreshResponse.json();
@@ -145,7 +145,7 @@ const AnnouncementListPanel = () => {
       
     } catch (err) {
       console.error('Error updating announcement:', err);
-      // Show error message to user
+      
     } finally {
       setIsEditOpen(false);
       setEditedAnnouncement({ id: null, title: '', status: '' });

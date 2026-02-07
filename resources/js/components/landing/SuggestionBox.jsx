@@ -9,7 +9,7 @@ const SuggestionBox = () => {
     const [availableSections, setAvailableSections] = useState([]);
     const [submitStatus, setSubmitStatus] = useState({ 
         message: '', 
-        type: '' // 'success' or 'error'
+        type: '' 
     });
     const [divisions, setDivisions] = useState([]);
 
@@ -17,7 +17,7 @@ const SuggestionBox = () => {
         const fetchDivisions = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/api/divisions');
-                setDivisions(response.data); // Assuming the response is directly the divisions array
+                setDivisions(response.data); 
             } catch (error) {
                 console.error('Error fetching divisions:', error);
             }
@@ -34,13 +34,13 @@ const SuggestionBox = () => {
         const divisionCode = e.target.value;
         setSelectedDivisionCode(divisionCode);
         
-        // Reset section when division changes
+        
         setSelectedSectionName('');
         
-        // Find the selected division
+        
         const division = divisions.find(div => div.code === divisionCode);
         
-        // Update available sections based on selected division
+        
         if (division && division.has_sections) {
             setAvailableSections(division.sections);
         } else {
@@ -58,21 +58,21 @@ const SuggestionBox = () => {
         
         const suggestionData = {
             content: suggestion,
-            division: selectedDivisionCode, // Send division code
-            section: selectedSectionName || null // Send section name
+            division: selectedDivisionCode, 
+            section: selectedSectionName || null 
         };
     
         try {
             const response = await axios.post('http://localhost:8000/api/suggestion', suggestionData);
             console.log('Suggestion submitted:', response.data);
     
-            // Show success message
+            
             setSubmitStatus({
                 message: 'Suggestion submitted successfully!',
                 type: 'success'
             });
     
-            // Clear form after submission
+            
             setSuggestion('');
             setSelectedDivisionCode('');
             setSelectedSectionName('');

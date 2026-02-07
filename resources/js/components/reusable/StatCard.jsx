@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import styles from '../../../css/styles/reusable/StatCard.module.css'; // Updated to use .module.css
+import styles from '../../../css/styles/reusable/StatCard.module.css'; 
 
 const StatCard = ({ title, count, change, isIncrease, icon }) => {
   return (

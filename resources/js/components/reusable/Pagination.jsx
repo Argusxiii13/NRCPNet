@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../css/styles/reusable/Pagination.module.css'; // Updated to use .module.css
+import styles from '../../../css/styles/reusable/Pagination.module.css'; 
 
 const Pagination = ({ loading, currentPage, setCurrentPage, totalItems, itemsPerPage }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import axios from 'axios'; // Make sure axios is installed
+import axios from 'axios'; 
 import styles from '../../../css/styles/admin/EventsView.module.css';
-import { useAuth } from '../../hooks/useAuth'; // Update path as needed
+import { useAuth } from '../../hooks/useAuth'; 
 
 
 const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
@@ -16,18 +16,18 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: '',
         endTime: '',
         location: '',
-        author: user ? `${user.first_name} ${user.surname}` : '',  // Set author from user name
+        author: user ? `${user.first_name} ${user.surname}` : '',  
         description: '',
-        division: user?.division || 'General' // Set division from user division if available
+        division: user?.division || 'General' 
     });
     const [editingEvent, setEditingEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [timeDisabled, setTimeDisabled] = useState(false);
-    const [divisions, setDivisions] = useState([]); // Added state for divisions list
-    const [loadingDivisions, setLoadingDivisions] = useState(false); // Added loading state for divisions
+    const [divisions, setDivisions] = useState([]); 
+    const [loadingDivisions, setLoadingDivisions] = useState(false); 
     
-    // Validation errors state
+    
     const [validationErrors, setValidationErrors] = useState({
         title: false,
         type: false,
@@ -35,12 +35,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         startTime: false,
         endTime: false,
         location: false,
-        author: false,  // Added author validation
+        author: false,  
         description: false,
-        division: false // Added division validation
+        division: false 
     });
 
-    // Format date for date input (YYYY-MM-DD)
+    
     function formatDateForInput(date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -48,18 +48,18 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         return `${year}-${month}-${day}`;
     }
 
-    // Check if the selected date is a Thursday
+    
     const isThursday = (date) => {
-        return new Date(date).getDay() === 4; // 0 is Sunday, 4 is Thursday
+        return new Date(date).getDay() === 4; 
     };
 
-    // Fetch divisions from API
+    
     useEffect(() => {
         const fetchDivisions = async () => {
             setLoadingDivisions(true);
             try {
                 const response = await axios.get('/api/divisions');
-                // Filter out 'General' if it exists in the API response to avoid duplicates
+                
                 const filteredDivisions = response.data.filter(div => div.code !== 'General');
                 setDivisions(filteredDivisions);
             } catch (err) {
@@ -73,7 +73,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         fetchDivisions();
     }, []);
 
-    // Validation function
+    
     const validateFields = () => {
         const newValidationErrors = {
             title: !formData.title.trim(),
@@ -82,31 +82,31 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: !timeDisabled && !formData.startTime,
             endTime: !timeDisabled && !formData.endTime,
             location: !formData.location.trim(),
-            author: !formData.author.trim(),  // Added author validation
+            author: !formData.author.trim(),  
             description: !formData.description.trim(),
-            division: !formData.division // Modified division validation
+            division: !formData.division 
         };
 
         setValidationErrors(newValidationErrors);
 
-        // Return true if all fields are valid (no errors)
+        
         return !Object.values(newValidationErrors).some(error => error);
     };
 
-    // Load events when selected day changes
+    
     useEffect(() => {
         fetchEventsByDate(formatDateForInput(selectedDay));
         setEventDate(selectedDay);
         
         const isSelectedDayThursday = isThursday(selectedDay);
         
-        // Update form data with new date
+        
         let updatedFormData = {
             ...formData,
             date: formatDateForInput(selectedDay)
         };
         
-        // If changing from Thursday to non-Thursday and type is Wellness, reset type
+        
         if (!isSelectedDayThursday && formData.type === 'Wellness') {
             updatedFormData = {
                 ...updatedFormData,
@@ -116,7 +116,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         
         setFormData(updatedFormData);
         
-        // Set time disabled only if it's Thursday AND type is Wellness
+        
         setTimeDisabled(isSelectedDayThursday && formData.type === 'Wellness');
     }, [selectedDay]);
 
@@ -130,12 +130,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     }, [user]);
 
-    // Fetch events for a specific date
+    
     const fetchEventsByDate = async (date) => {
         setIsLoading(true);
         setError(null);
         try {
-            // Updated to match the Laravel route
+            
             const response = await axios.get(`/api/calendar/date/${date}`);
             setEvents(response.data);
         } catch (err) {
@@ -146,10 +146,10 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     };
 
-    // Handle input changes
+    
     const handleInputChange = (e) => {
         const { id, value } = e.target;
-        // Remove the 'event' prefix and convert to lowercase if present
+        
         const fieldName = id.startsWith('event') ? id.replace('event', '').toLowerCase() : id;
         
         let updatedFormData = {
@@ -157,13 +157,13 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             [fieldName]: value
         };
         
-        // Clear validation error for this field
+        
         setValidationErrors(prev => ({
             ...prev,
             [fieldName]: !value.trim()
         }));
         
-        // If event type changes to Wellness, set the specific time
+        
         if (fieldName === 'type' && value === 'Wellness' && isThursday(formData.date)) {
             updatedFormData = {
                 ...updatedFormData,
@@ -172,7 +172,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             };
             setTimeDisabled(true);
         } 
-        // If changing from Wellness to another type, enable time fields
+        
         else if (fieldName === 'type' && formData.type === 'Wellness' && value !== 'Wellness') {
             setTimeDisabled(false);
         }
@@ -180,7 +180,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         setFormData(updatedFormData);
     };
 
-    // Handle date change
+    
     const handleDateChange = (e) => {
         const newDate = new Date(e.target.value);
         setEventDate(newDate);
@@ -192,7 +192,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             date: e.target.value
         };
         
-        // If changing from Thursday to non-Thursday and type is Wellness, reset type
+        
         if (!isNewDateThursday && formData.type === 'Wellness') {
             updatedFormData = {
                 ...updatedFormData,
@@ -202,7 +202,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             };
             setTimeDisabled(false);
         }
-        // If changing to Thursday and type is already set to Wellness, lock time to 3PM-5PM
+        
         else if (isNewDateThursday && formData.type === 'Wellness') {
             updatedFormData = {
                 ...updatedFormData,
@@ -214,26 +214,26 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         
         setFormData(updatedFormData);
         
-        // If we're in view mode, fetch events for the new date
+        
         if (!isManageMode) {
             fetchEventsByDate(e.target.value);
         }
     };
 
-    // Save event (create or update)
+    
     const handleSaveEvent = async (e) => {
         e.preventDefault();
         
-        // Validate fields first
+        
         if (!validateFields()) {
-            return; // Stop if validation fails
+            return; 
         }
 
         setIsLoading(true);
         setError(null);
 
         try {
-            // Debugging - log the form data
+            
             console.log("Saving event with data:", formData);
             
             const payload = {
@@ -243,29 +243,29 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: formData.startTime,
                 endTime: formData.endTime,
                 location: formData.location,
-                author: formData.author,  // Added author to payload
+                author: formData.author,  
                 description: formData.description,
-                division: formData.division // Added division to payload
+                division: formData.division 
             };
 
             let response;
             if (editingEvent) {
-                // Update existing event
+                
                 response = await axios.put(`/api/calendar/${editingEvent.id}`, payload);
             } else {
-                // Create new event
+                
                 response = await axios.post('/api/calendar', payload);
             }
 
-            // Refresh events list
+            
             fetchEventsByDate(formData.date);
             
-            // Reset form
+            
             resetForm();
             setEditingEvent(null);
             setIsManageMode(false);
             
-            // Reset validation errors
+            
             setValidationErrors({
                 title: false,
                 type: false,
@@ -273,7 +273,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 startTime: false,
                 endTime: false,
                 location: false,
-                author: false,  // Added author validation reset
+                author: false,  
                 description: false,
                 division: false
             });
@@ -285,12 +285,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     };
 
-    // Edit event
+    
     const handleEditEvent = (event) => {
         setEditingEvent(event);
         setIsManageMode(true);
         
-        // Parse time if it's in "startTime - endTime" format
+        
         let startTime = '';
         let endTime = '';
         if (event.time && event.time.includes('-')) {
@@ -306,23 +306,23 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
             startTime: startTime,
             endTime: endTime,
             location: event.location || '',
-            author: event.author || '',  // Added author field
+            author: event.author || '',  
             description: event.description || '',
-            division: event.division || 'General' // Set to General if empty
+            division: event.division || 'General' 
         };
 
-        // Set time disabled based on event type and day
+        
         setTimeDisabled(isThursday(event.date) && event.type === 'Wellness');
 
         setFormData(eventFormData);
     };
 
-    // Convert 12-hour format (e.g., "9:00 AM") to 24-hour format (e.g., "09:00")
+    
     const convertTo24HourFormat = (timeStr) => {
         if (!timeStr || !timeStr.trim()) return '';
         
         try {
-            // Check if the time already has AM/PM indicator
+            
             if (timeStr.toLowerCase().includes('am') || timeStr.toLowerCase().includes('pm')) {
                 const timeParts = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
                 if (!timeParts) return timeStr;
@@ -331,7 +331,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 const minutes = timeParts[2];
                 const period = timeParts[3].toLowerCase();
                 
-                // Convert to 24-hour format
+                
                 if (period === 'pm' && hours < 12) {
                     hours += 12;
                 } else if (period === 'am' && hours === 12) {
@@ -340,7 +340,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 
                 return `${hours.toString().padStart(2, '0')}:${minutes}`;
             } else {
-                // Assume it's already in 24-hour format
+                
                 return timeStr;
             }
         } catch (e) {
@@ -349,12 +349,12 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     };
 
-    // Convert 24-hour format (e.g., "09:00") to 12-hour format (e.g., "9:00 AM")
+    
     const formatTimeTo12Hour = (timeStr) => {
         if (!timeStr || !timeStr.trim()) return '';
         
         try {
-            // Check if the time is in 24-hour format ("HH:MM")
+            
             const match = timeStr.match(/^(\d{1,2}):(\d{2})$/);
             if (match) {
                 const hours = parseInt(match[1], 10);
@@ -364,7 +364,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
                 return `${displayHours}:${minutes} ${period}`;
             }
             
-            // If not in 24-hour format, return as is
+            
             return timeStr;
         } catch (e) {
             console.error('Error formatting time:', e);
@@ -372,7 +372,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     };
 
-    // Delete event
+    
     const handleDeleteEvent = async (id) => {
         if (!confirm('Are you sure you want to delete this event?')) return;
         
@@ -380,7 +380,7 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         setError(null);
         try {
             await axios.delete(`/api/calendar/${id}`);
-            // Refresh events list
+            
             fetchEventsByDate(formatDateForInput(eventDate));
         } catch (err) {
             setError('Failed to delete event. Please try again.');
@@ -390,8 +390,8 @@ const EventsView = ({ selectedDay, isManageMode, setIsManageMode }) => {
         }
     };
 
-    // Reset form
-// Update resetForm function to keep author set
+    
+
 const resetForm = () => {
     setFormData({
         title: '',
@@ -400,18 +400,18 @@ const resetForm = () => {
         startTime: '',
         endTime: '',
         location: '',
-        author: user ? `${user.first_name} ${user.surname}` : '',  // Keep author set to user
+        author: user ? `${user.first_name} ${user.surname}` : '',  
         description: '',
-        division: user?.division || 'General' // Keep user's division as default
+        division: user?.division || 'General' 
     });
     setTimeDisabled(false);
 };
 
-    // Format time for display (e.g., "9:00 AM - 10:00 AM")
+    
     const formatTimeForDisplay = (timeString) => {
         if (!timeString) return '';
         
-        // If the timeString already contains a dash (e.g., "09:00 - 10:00")
+        
         if (timeString.includes('-')) {
             const [startTime, endTime] = timeString.split('-').map(t => t.trim());
             const formattedStartTime = formatTimeTo12Hour(startTime);
@@ -427,7 +427,7 @@ const resetForm = () => {
         return timeString;
     };
 
-    // Navigate to the previous day
+    
     const goToPreviousDay = () => {
         const prevDay = new Date(eventDate);
         prevDay.setDate(prevDay.getDate() - 1);
@@ -436,7 +436,7 @@ const resetForm = () => {
         fetchEventsByDate(formattedDate);
     };
 
-    // Navigate to the next day
+    
     const goToNextDay = () => {
         const nextDay = new Date(eventDate);
         nextDay.setDate(nextDay.getDate() + 1);
@@ -445,13 +445,13 @@ const resetForm = () => {
         fetchEventsByDate(formattedDate);
     };
 
-    // Get event type class for styling
+    
     const getEventTypeClass = (type) => {
         if (!type) return '';
         return styles[type.toLowerCase()];
     };
 
-    // Check if current date is Thursday
+    
     const isCurrentDateThursday = isThursday(formData.date);
 
     return (
@@ -562,7 +562,7 @@ const resetForm = () => {
                                     <label htmlFor="division">Division</label>
                                     <select 
                                         id="division"
-                                        value={formData.division} // Use the value from state, which defaults to 'General'
+                                        value={formData.division} 
                                         onChange={handleInputChange}
                                         required
                                         disabled={loadingDivisions}
@@ -607,8 +607,8 @@ const resetForm = () => {
             placeholder="Event author" 
             value={formData.author}
             onChange={handleInputChange}
-            disabled={true} // Disable the field
-            title="Automatically set to your name" // Add helpful tooltip
+            disabled={true} 
+            title="Automatically set to your name" 
             required
         />
         {validationErrors.author && <span className={styles['error-message']}>Author is required</span>}

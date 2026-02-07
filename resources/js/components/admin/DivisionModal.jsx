@@ -1,4 +1,4 @@
-// ... other imports
+
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
@@ -50,7 +50,7 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
         ...formData,
         sections: [
           ...formData.sections,
-          { id: Date.now(), name: newSection.trim() } // Temporary ID
+          { id: Date.now(), name: newSection.trim() } 
         ]
       });
       setNewSection('');
@@ -67,7 +67,7 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare data for submission
+    
     const submissionData = {
         code: formData.code,
         name: formData.name,
@@ -81,8 +81,8 @@ const DivisionModal = ({ isOpen, onClose, division, onDivisionUpdated }) => {
             : await axios.post('/api/divisions', submissionData);
 
         console.log('Success:', response.data);
-        onDivisionUpdated(); // Call this to refresh the divisions
-        onClose(); // Close modal after success
+        onDivisionUpdated(); 
+        onClose(); 
     } catch (error) {
         console.error('Error submitting:', error.response.data);
     }

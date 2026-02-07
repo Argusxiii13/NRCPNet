@@ -18,7 +18,7 @@ const FileUploadPanel = () => {
   
   const fileInputRef = useRef(null);
 
-  // Fetch divisions from the server when the component mounts
+  
   useEffect(() => {
     const fetchDivisions = async () => {
       try {
@@ -33,7 +33,7 @@ const FileUploadPanel = () => {
     fetchDivisions();
   }, []);
 
-  // Cleanup URL objects when component unmounts or file changes
+  
   useEffect(() => {
     return () => {
       if (previewUrl) {
@@ -47,7 +47,7 @@ const FileUploadPanel = () => {
     
     if (!file) return;
     
-    // Check if file type is PNG or HTML
+    
     if (file.type !== 'image/png' && file.type !== 'text/html') {
       setErrorMessage('Only PNG and HTML files are supported');
       setSelectedFile(null);
@@ -60,11 +60,11 @@ const FileUploadPanel = () => {
     setSelectedFile(file);
     setFileType(file.type);
     
-    // Create preview URL
+    
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
     
-    // Set title to filename if title is empty
+    
     if (!title) {
       setTitle(file.name.split('.')[0]);
     }
@@ -86,7 +86,7 @@ const FileUploadPanel = () => {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
       
-      // Check if file type is PNG or HTML
+      
       if (file.type !== 'image/png' && file.type !== 'text/html') {
         setErrorMessage('Only PNG and HTML files are supported');
         return;
@@ -96,11 +96,11 @@ const FileUploadPanel = () => {
       setSelectedFile(file);
       setFileType(file.type);
       
-      // Create preview URL
+      
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
       
-      // Set title to filename if title is empty
+      
       if (!title) {
         setTitle(file.name.split('.')[0]);
       }
@@ -118,7 +118,7 @@ const FileUploadPanel = () => {
   };
 
   const handleUpload = async () => {
-    // Validate form data
+    
     if (!selectedFile) {
       setErrorMessage('Please select a file to upload');
       return;
@@ -137,7 +137,7 @@ const FileUploadPanel = () => {
     try {
       setIsUploading(true);
       
-      // Create FormData object to send file and other form data
+      
       const formData = new FormData();
       formData.append('title', title);
       formData.append('author', `${user.first_name} ${user.surname}`);
@@ -145,10 +145,10 @@ const FileUploadPanel = () => {
       formData.append('division', selectedDivision);
       formData.append('file', selectedFile);
       
-      // Try to get CSRF token if available
+      
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
       
-      // Make the API call
+      
       const response = await fetch('/api/announcements', {
         method: 'POST',
         headers: csrfToken ? {
@@ -157,7 +157,7 @@ const FileUploadPanel = () => {
         body: formData,
       });
       
-      // First check if response is HTML (error page)
+      
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.indexOf("text/html") !== -1) {
         const htmlText = await response.text();
@@ -165,18 +165,18 @@ const FileUploadPanel = () => {
         throw new Error("Server error occurred. Check server logs for details.");
       }
 
-      // Try to parse response as JSON
+      
       const data = await response.json();
       
       if (!response.ok) {
         throw new Error(data.message || 'Failed to upload file');
       }
       
-      // Handle successful upload
+      
       setUploadSuccess(true);
       setErrorMessage('');
       
-      // Reset the form after 2 seconds
+      
       setTimeout(() => {
         resetForm();
         setUploadSuccess(false);
@@ -190,7 +190,7 @@ const FileUploadPanel = () => {
     }
   };
 
-  // Format user name for display
+  
   const authorName = user ? `${user.first_name} ${user.surname}` : 'Loading...';
 
   return (

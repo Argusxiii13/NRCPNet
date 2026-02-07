@@ -8,7 +8,7 @@ const ResourceDetailModal = ({ isOpen, onClose, resourceItem, onSave }) => {
   const [resourceStatus, setResourceStatus] = useState('Active');
   const [iconFileToUpload, setIconFileToUpload] = useState(null);
 
-  // Prevent scroll on body when modal is open
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -21,7 +21,7 @@ const ResourceDetailModal = ({ isOpen, onClose, resourceItem, onSave }) => {
     };
   }, [isOpen]);
 
-  // Update state when resourceItem changes
+  
   useEffect(() => {
     if (resourceItem) {
       setEditedResourceData({
@@ -53,7 +53,7 @@ const ResourceDetailModal = ({ isOpen, onClose, resourceItem, onSave }) => {
   };
 
   const handleSaveResourceChanges = () => {
-    // Prepare the full updated resource item object
+    
     const updatedResourceItemData = {
       id: resourceItem.id,
       name: editedResourceData.name,
@@ -63,7 +63,7 @@ const ResourceDetailModal = ({ isOpen, onClose, resourceItem, onSave }) => {
       icon: editedResourceData.icon
     };
   
-    // Call the onSave method from the parent component
+    
     onSave(updatedResourceItemData, iconFileToUpload);
   };
 

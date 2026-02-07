@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { startOfToday } from 'date-fns';
-import CalendarView from './CalendarView.jsx'; // Add the file extension
-import EventsView from './EventsView.jsx'; // Add the file extension
+import CalendarView from './CalendarView.jsx'; 
+import EventsView from './EventsView.jsx'; 
 import styles from '../../../css/styles/admin/CalendarManagement.module.css';
 
 const CalendarManagement = () => {

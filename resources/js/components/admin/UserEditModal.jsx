@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
-import styles from '../../../css/styles/admin/AddUserModal.module.css'; // Reusing the same styles
+import styles from '../../../css/styles/admin/AddUserModal.module.css'; 
 
 const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
   const [roles, setRoles] = useState([]);
   const [sections, setSections] = useState([]);
 
-  // Prefill form data when userData changes
+  
   useEffect(() => {
     if (userData) {
       setFormData({
@@ -30,14 +30,14 @@ const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
         position: userData.position || '',
         email: userData.email || '',
         section: userData.section || '',
-        division: userData.division || '', // This should be the division code
+        division: userData.division || '', 
         role: userData.role || 'User',
         status: userData.status || 'Active',
       });
     }
   }, [userData]);
 
-  // Fetch data when modal opens
+  
   useEffect(() => {
     if (isOpen) {
       fetchDivisions();
@@ -45,7 +45,7 @@ const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
     }
   }, [isOpen]);
 
-  // Update sections when form data changes
+  
   useEffect(() => {
     if (formData.division && divisions.length > 0) {
       const selectedDivision = divisions.find(div => div.code === formData.division);
@@ -67,7 +67,7 @@ const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
     const response = await fetch('/api/roles');
     const data = await response.json();
     
-    // Filter out Superadmin role
+    
     const filteredRoles = data.filter(role => role.name !== 'Superadmin');
     
     setRoles(filteredRoles);
@@ -79,8 +79,8 @@ const UserEditModal = ({ isOpen, onClose, onSave, userData }) => {
     
     setFormData(prev => ({
       ...prev,
-      division: selectedDivision?.code || '', // Store division code
-      section: '', // Reset section when division changes
+      division: selectedDivision?.code || '', 
+      section: '', 
     }));
     
     setSections(selectedDivision?.has_sections ? selectedDivision.sections : []);

@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 const UserProfilePanel = () => {
   const { user, loading, logout } = useAuth();
   
-  // Hardcoded session and activity data
+  
   const sessionData = {
     last_login: '2025-04-26T14:30:22',
     created_at: '2024-08-15T09:45:32',
@@ -32,7 +32,7 @@ const UserProfilePanel = () => {
 
   const closePasswordModal = () => {
     setIsPasswordModalOpen(false);
-    // Reset form state when closing
+    
     setPasswordForm({
       currentPassword: '',
       newPassword: '',
@@ -53,7 +53,7 @@ const UserProfilePanel = () => {
       [name]: value
     });
     
-    // Clear error when user starts typing
+    
     if (formErrors[name]) {
       setFormErrors({
         ...formErrors,
@@ -100,7 +100,7 @@ const UserProfilePanel = () => {
     });
     
     try {
-      // Get CSRF token
+      
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
       
       const response = await fetch('/api/user/change-password', {
@@ -128,7 +128,7 @@ const UserProfilePanel = () => {
           error: null
         });
         
-        // Close modal after a short delay to show success message
+        
         setTimeout(() => {
           closePasswordModal();
         }, 1500);
@@ -149,7 +149,7 @@ const UserProfilePanel = () => {
     }
   };
 
-  // Show loading state while fetching user data
+  
   if (loading) {
     return (
       <div className={styles.panel}>
@@ -160,7 +160,7 @@ const UserProfilePanel = () => {
     );
   }
 
-  // Show error if no user data is available
+  
   if (!user) {
     return (
       <div className={styles.panel}>

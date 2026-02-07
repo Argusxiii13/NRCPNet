@@ -1,16 +1,16 @@
-// ThursdayWellness.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../../css/styles/landing/ThursdayWellness.module.css';
 
 const formatTime = (timeString) => {
-    // If time is already in AM/PM format, return as is
+    
     if (/[AP]M/.test(timeString)) return timeString;
 
-    // Split the time string into start and end times
+    
     const [startTime, endTime] = timeString.split(' - ');
 
-    // Helper function to convert 24-hour time to 12-hour AM/PM format
+    
     const convert24To12 = (time) => {
         if (!time) return '';
         
@@ -27,14 +27,14 @@ const formatTime = (timeString) => {
         }
     };
 
-    // Convert both start and end times
+    
     const formattedStartTime = convert24To12(startTime);
     const formattedEndTime = convert24To12(endTime);
 
     return `${formattedStartTime} - ${formattedEndTime}`;
 };
 
-// Modified to accept and use onContentChange prop
+
 const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
     const [activities, setActivities] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -47,10 +47,10 @@ const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
             try {
                 setIsLoading(true);
                 
-                // Fetch wellness activities regardless of authentication
+                
                 let url = '/api/wellness-activities';
                 
-                // Only add division parameter if user is authenticated and has a division
+                
                 if (isAuthenticated && user && user.division) {
                     url += `?division=${user.division}`;
                 }
@@ -58,7 +58,7 @@ const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
                 const response = await axios.get(url);
                 setActivities(response.data);
                 
-                // Notify parent component about content status
+                
                 if (onContentChange) {
                     onContentChange(response.data && response.data.length > 0);
                 }
@@ -76,12 +76,12 @@ const ThursdayWellness = ({ user, isAuthenticated, onContentChange }) => {
         fetchWellnessActivities();
     }, [onContentChange, isAuthenticated, user]);
 
-    // Return null if no activities and not loading
+    
     if (!isLoading && (activities.length === 0 || error)) {
         return null;
     }
 
-    // If loading, return null
+    
     if (isLoading) {
         return null;
     }

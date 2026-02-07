@@ -4,12 +4,12 @@ import axios from 'axios';
 import styles from '../../../css/styles/admin/CalendarView.module.css';
 
 const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMonth }) => {
-    // State for events
+    
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
-    // Get selected day's events
+    
     const [selectedDayEvents, setSelectedDayEvents] = useState([]);
     
     const firstDayCurrentMonth = typeof currentMonth === 'string' 
@@ -18,7 +18,7 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
     
     const formattedMonth = format(firstDayCurrentMonth, 'MMM-yyyy');
     
-    // Fetch events for the current month
+    
     useEffect(() => {
         const fetchEvents = async () => {
             setLoading(true);
@@ -40,26 +40,26 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
         fetchEvents();
     }, [formattedMonth]);
     
-    // Filter events for selected day
+    
     useEffect(() => {
         const dateString = format(selectedDay, 'yyyy-MM-dd');
         const filteredEvents = events.filter(event => event.date === dateString);
         setSelectedDayEvents(filteredEvents);
     }, [selectedDay, events]);
     
-    // Convert 24-hour time format to 12-hour format with AM/PM
+    
     const formatTimeToAMPM = (timeString) => {
-        // If time is "All Day", return as is
+        
         if (timeString === 'All Day') return timeString;
         
-        // Split into start and end times
+        
         const [startTime, endTime] = timeString.split(' - ');
         
-        // Convert each time to AM/PM format
+        
         const convertTime = (time) => {
             const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
             const period = hours >= 12 ? 'PM' : 'AM';
-            const formattedHours = hours % 12 || 12; // Convert 0 to 12
+            const formattedHours = hours % 12 || 12; 
             return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
         };
         
@@ -69,7 +69,7 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
         return `${formattedStartTime} - ${formattedEndTime}`;
     };
     
-    // Generate days for the current month
+    
     const days = eachDayOfInterval({
         start: startOfMonth(firstDayCurrentMonth),
         end: endOfMonth(firstDayCurrentMonth),
@@ -78,15 +78,15 @@ const CalendarView = ({ selectedDay, setSelectedDay, currentMonth, setCurrentMon
     const startDay = getDay(startOfMonth(firstDayCurrentMonth));
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     
-    // Always maintain a 6-row calendar (42 cells)
-    const totalCells = 42; // 6 rows of 7 days
+    
+    const totalCells = 42; 
     const emptyDaysStart = Array(startDay).fill(null);
     const emptyDaysEnd = Array(Math.max(0, totalCells - days.length - startDay)).fill(null);
 
     const getEventTypes = (day) => {
         const dateString = format(day, 'yyyy-MM-dd');
         const dayEvents = events.filter(event => event.date === dateString);
-        // Get unique event types, convert to lowercase
+        
         return [...new Set(dayEvents.map(event => event.type.toLowerCase()))];
     };
 

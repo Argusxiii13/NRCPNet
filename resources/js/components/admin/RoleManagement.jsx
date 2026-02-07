@@ -14,7 +14,7 @@ const RoleManagement = () => {
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch roles from API
+  
   const fetchRoles = async () => {
     setIsLoading(true);
     try {
@@ -34,7 +34,7 @@ const RoleManagement = () => {
     }
   };
 
-  // Fetch roles on component mount
+  
   useEffect(() => {
     fetchRoles();
   }, []);
@@ -93,7 +93,7 @@ const RoleManagement = () => {
     }
   };
 
-  // Generate placeholder cards when loading
+  
   const renderPlaceholderCards = () => {
     return Array(3).fill(0).map((_, index) => (
       <div key={`placeholder-${index}`} className={`${styles['role-card']} ${styles['placeholder-card']}`}>

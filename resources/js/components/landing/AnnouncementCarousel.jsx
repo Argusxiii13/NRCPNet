@@ -9,13 +9,13 @@ const AnnouncementCarousel = () => {
     const [htmlContent, setHtmlContent] = useState(null);
     const [htmlBackgroundColor, setHtmlBackgroundColor] = useState(null);
 
-    // Fetch announcements after we know the user's status
+    
     useEffect(() => {
         const fetchAnnouncements = async () => {
-            if (loading) return; // Wait until auth check completes
+            if (loading) return; 
             
             try {
-                // Add division as query parameter if user is logged in
+                
                 let url = '/api/active-announcements';
                 if (user && user.division) {
                     url += `?division=${encodeURIComponent(user.division)}`;
@@ -37,7 +37,7 @@ const AnnouncementCarousel = () => {
         fetchAnnouncements();
     }, [user, loading]);
 
-    // Fetch HTML content when needed
+    
     useEffect(() => {
         const fetchHtmlContent = async () => {
             if (announcements.length > 0 && announcements[currentIndex].type === 'html') {
@@ -46,19 +46,19 @@ const AnnouncementCarousel = () => {
                     const htmlText = await response.text();
                     setHtmlContent(htmlText);
 
-                    // Parse the HTML to extract background color
+                    
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     
-                    // Look for .announcement-container
+                    
                     const announcementContainer = doc.querySelector('.announcement-container');
                     
                     if (announcementContainer) {
-                        // Extract background color from inline style or CSS
+                        
                         const inlineStyle = announcementContainer.getAttribute('style');
                         let backgroundColor = null;
 
-                        // Check inline style first
+                        
                         if (inlineStyle) {
                             const backgroundMatch = inlineStyle.match(/background-color:\s*([^;]+)/i);
                             if (backgroundMatch) {
@@ -66,7 +66,7 @@ const AnnouncementCarousel = () => {
                             }
                         }
 
-                        // If no inline style, check <style> tag
+                        
                         if (!backgroundColor) {
                             const styleTag = doc.querySelector('style');
                             if (styleTag) {
@@ -78,7 +78,7 @@ const AnnouncementCarousel = () => {
                             }
                         }
 
-                        // Set background color if found
+                        
                         if (backgroundColor && 
                             backgroundColor !== 'transparent' && 
                             backgroundColor !== 'rgba(0, 0, 0, 0)') {
@@ -100,7 +100,7 @@ const AnnouncementCarousel = () => {
         fetchHtmlContent();
     }, [currentIndex, announcements]);
 
-    // Auto-rotate carousel
+    
     useEffect(() => {
         if (announcements.length === 0) return;
 
@@ -111,7 +111,7 @@ const AnnouncementCarousel = () => {
         return () => clearInterval(interval);
     }, [announcements.length]);
 
-    // Function to navigate to a specific slide when an indicator is clicked
+    
     const goToSlide = (index) => {
         setCurrentIndex(index);
     };
@@ -148,7 +148,7 @@ const AnnouncementCarousel = () => {
         }
     };
 
-    // Determine container style based on HTML background
+    
     const containerStyle = htmlBackgroundColor 
         ? { backgroundColor: htmlBackgroundColor }
         : { 
