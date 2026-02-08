@@ -153,24 +153,58 @@
     transition: all 0.2s ease;
 }
 
-.modal-button.cancel {
+/* Legacy modifier-style classes mapped to the specific class names used in JSX */
+.modal-button.cancel,
+.modal-button-cancel {
     background-color: #f3f4f6;
     border: 1px solid #e1e4e8;
     color: #4b5563;
 }
 
-.modal-button.cancel:hover {
+.modal-button.cancel:hover,
+.modal-button-cancel:hover {
     background-color: #e5e7eb;
 }
 
-.modal-button.submit {
+.modal-button.submit,
+.modal-button-submit {
     background-color: #2a388f;
     border: 1px solid #0ea5e9;
     color: white;
 }
 
-.modal-button.submit:hover {
+.modal-button.submit:hover,
+.modal-button-submit:hover {
     background-color: #5aa6f8;
+}
+
+/* Add explicit cancel/save button classes to match RoleModal styles */
+.cancel-button {
+    padding: 8px 16px;
+    background-color: #f1f5f9;
+    color: #4b5563;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+    background-color: #e2e8f0;
+}
+
+.save-button {
+    padding: 8px 16px;
+    background-color: #11326a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.save-button:hover {
+    background-color: #348cda;
 }
 
 /* Responsive Adjustments */

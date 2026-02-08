@@ -6,7 +6,6 @@ import '../../css/font.css';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberPassword, setRememberPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [csrfToken, setCsrfToken] = useState('');
@@ -42,8 +41,7 @@ const LoginPage = () => {
         credentials: 'include',
         body: JSON.stringify({ 
           email, 
-          password,
-          remember: rememberPassword 
+          password
         }),
       });
 
@@ -117,18 +115,6 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className={styles['remember-password']}>
-              <input
-                type="checkbox"
-                id="remember"
-                checked={rememberPassword}
-                onChange={(e) => setRememberPassword(e.target.checked)}
-              />
-              <label htmlFor="remember">
-                Remember Password
-              </label>
-            </div>
-
             <button 
               type="submit" 
               className={styles['sign-in-button']}
@@ -145,9 +131,9 @@ const LoginPage = () => {
             </button>
 
             <div className={styles['forgot-password-link']}>
-              <a href="/forgot-password" className={styles['forgot-password']}>
-                Forgot Password?
-              </a>
+              <p className={styles['forgot-password-message']}>
+                If you forgot your password, please contact the MIS department for assistance.
+              </p>
             </div>
           </form>
         </div>

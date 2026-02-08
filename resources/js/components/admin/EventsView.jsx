@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios'; 
 import styles from '../../../css/styles/admin/EventsView.module.css';
+import btns from '../../../css/styles/reusable/Buttons.module.css';
 import { useAuth } from '../../hooks/useAuth'; 
 
 
@@ -547,34 +548,32 @@ const resetForm = () => {
                             <div className={styles['form-row']}>
                                 <div className={`${styles['form-group']} ${validationErrors.date ? styles['error-field'] : ''}`}>
                                     <label htmlFor="eventDate">Event Date</label>
-                                    <div className={styles['date-picker']}>
-                                        <input 
-                                            type="date" 
-                                            id="eventDate" 
-                                            value={formData.date}
-                                            onChange={handleDateChange}
-                                            required
-                                        />
-                                    </div>
+                                    <input
+                                        type="date"
+                                        id="eventDate"
+                                        value={formData.date}
+                                        onChange={handleDateChange}
+                                        required
+                                    />
                                     {validationErrors.date && <span className={styles['error-message']}>Date is required</span>}
                                 </div>
+
                                 <div className={`${styles['form-group']} ${validationErrors.division ? styles['error-field'] : ''}`}>
                                     <label htmlFor="division">Division</label>
-                                    <select 
+                                    <select
                                         id="division"
-                                        value={formData.division} 
+                                        value={formData.division}
                                         onChange={handleInputChange}
                                         required
                                         disabled={loadingDivisions}
                                     >
                                         <option value="General">General</option>
-                                        {/* Render all divisions from API */}
                                         {loadingDivisions ? (
                                             <option value="" disabled>Loading divisions...</option>
                                         ) : (
                                             divisions.map(division => (
                                                 <option key={division.id} value={division.code}>
-                                                    {division.code}
+                                                    {division.name}
                                                 </option>
                                             ))
                                         )}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, Edit2, Trash2 } from 'lucide-react';
 import styles from '../../../css/styles/admin/ResourcePanel.module.css';
+import btns from '../../../css/styles/reusable/Buttons.module.css';
 
 const ResourcePanel = () => {
   
@@ -263,8 +264,8 @@ const ResourcePanel = () => {
               <p>Are you sure you want to delete this resource? This action cannot be undone.</p>
             </div>
             <div className={styles['modal-footer']}>
-              <button className={styles['cancel-button']} onClick={() => setIsConfirmOpen(false)}>Cancel</button>
-              <button className={styles['save-button']} onClick={confirmDelete}>Delete</button>
+              <button className={`${styles['cancel-button']} ${btns['btn--secondary']} ${btns['btn']}`} onClick={() => setIsConfirmOpen(false)}>Cancel</button>
+              <button className={`${styles['save-button']} ${btns['btn--danger']} ${btns['btn']}`} onClick={confirmDelete}>Delete</button>
             </div>
           </div>
         </div>
@@ -335,8 +336,8 @@ const ResourcePanel = () => {
               </div>
             </div>
             <div className={styles['modal-footer']}>
-              <button className={styles['cancel-button']} onClick={() => setIsEditOpen(false)}>Cancel</button>
-              <button className={styles['save-button']} onClick={handleEditSubmit}>Save Changes</button>
+              <button className={`${styles['cancel-button']} ${btns['btn--secondary']} ${btns['btn']}`} onClick={() => setIsEditOpen(false)}>Cancel</button>
+              <button className={`${styles['save-button']} ${btns['btn--primary']} ${btns['btn']}`} onClick={handleEditSubmit}>Save Changes</button>
             </div>
           </div>
         </div>

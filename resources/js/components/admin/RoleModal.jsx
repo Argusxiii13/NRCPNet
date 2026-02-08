@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import styles from '../../../css/styles/admin/RoleModal.module.css';
+import btns from '../../../css/styles/reusable/Buttons.module.css';
 
 const RoleModal = ({ isOpen, onClose, role, onSave }) => {
   const [formData, setFormData] = useState({
@@ -142,10 +143,10 @@ const RoleModal = ({ isOpen, onClose, role, onSave }) => {
           </div>
           
           <div className={styles['modal-footer']}>
-            <button type="button" className={styles['cancel-button']} onClick={onClose}>
+            <button type="button" className={`${styles['cancel-button']} ${btns['btn--secondary']} ${btns['btn']}`} onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className={styles['save-button']}>
+            <button type="submit" className={`${styles['save-button']} ${btns['btn--primary']} ${btns['btn']}`}>
               {role ? 'Update Role' : 'Create Role'}
             </button>
           </div>

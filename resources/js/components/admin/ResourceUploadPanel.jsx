@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Link } from 'lucide-react';
 import styles from '../../../css/styles/admin/ResourceUploadPanel.module.css';
+import btns from '../../../css/styles/reusable/Buttons.module.css';
 import { useAuth } from '../../hooks/useAuth'; 
 
 const ResourceUploadPanel = ({ refreshResources }) => {
@@ -257,7 +258,7 @@ const ResourceUploadPanel = ({ refreshResources }) => {
               <div className={styles['publish-controls']}>
                 <button 
                   type="submit"
-                  className={styles['upload-button']}
+                  className={`${styles['upload-button']} ${btns['btn--primary']} ${btns['btn']}`}
                   disabled={isSubmitting || loading}
                 >
                   {isSubmitting ? 'Adding...' : 'Add Resource'}

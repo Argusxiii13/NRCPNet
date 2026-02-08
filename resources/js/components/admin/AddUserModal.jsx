@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import ReactDOM from 'react-dom';
 import styles from '../../../css/styles/admin/AddUserModal.module.css';
+import btns from '../../../css/styles/reusable/Buttons.module.css';
 
 const AddUserModal = ({ isOpen, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -248,10 +249,10 @@ const AddUserModal = ({ isOpen, onClose, onSave }) => {
           </div>
 
           <div className={styles['modal-footer']}>
-            <button type="button" className={styles['modal-button-cancel']} onClick={onClose}>
+            <button type="button" className={`${styles['cancel-button']} ${btns['btn--secondary']} ${btns['btn']}`} onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className={styles['modal-button-submit']}>
+            <button type="submit" className={`${styles['save-button']} ${btns['btn--primary']} ${btns['btn']}`}>
               Save User
             </button>
           </div>
