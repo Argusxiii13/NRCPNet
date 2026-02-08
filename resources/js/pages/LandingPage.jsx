@@ -10,6 +10,7 @@ import DownloadableForms from '../components/landing/DownloadableForms';
 import Calendar from '../components/landing/Calendar';
 import ThursdayWellness from '../components/landing/ThursdayWellness';
 import SpecialEvents from '../components/landing/TodaysEvents';
+import SuggestionBox from '../components/landing/SuggestionBox';
 import Footer from '../components/landing/Footer';
 import TimeDisplay from '../components/landing/TimeDisplay';
 import styles from '../../css/styles/landing/LandingPage.module.css';
@@ -102,6 +103,10 @@ const LandingPage = () => {
                         <DownloadableForms user={user} isAuthenticated={isAuthenticated} />
                     </div>
                     
+                    <div className={styles['suggestion-box']}>
+                        <SuggestionBox />
+                    </div>
+                    
                     {/* Container for Thursday Wellness and Special Events */}
                     <div className={styles['wellness-events-container']}>
                         {/* Only render ThursdayWellness if it has content */}
@@ -126,6 +131,7 @@ const LandingPage = () => {
                         <Resources user={user} isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
+
             </div>
 
             <div className={styles['footer']}>

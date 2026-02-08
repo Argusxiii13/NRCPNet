@@ -80,7 +80,7 @@
 .third-section {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     background-color: #f8f9fa;
     background-size: cover;
     background-position: center;
@@ -90,7 +90,14 @@
 
 .downloadable-forms {
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 1;
+    background-color: transparent;
+    padding: 2rem;
+}
+
+.suggestion-box {
+    grid-column: 1;
+    grid-row: 2;
     background-color: transparent;
     padding: 2rem;
 }
@@ -98,7 +105,7 @@
 /* Container for Thursday Wellness and Special Events */
 .wellness-events-container {
     grid-column: 2;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 3;
     display: flex;
     flex-direction: column;
     background-color: transparent;
@@ -120,7 +127,7 @@
 /* Resources container that spans both rows on right side */
 .resources-container {
     grid-column: 3;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 3;
     background-color: transparent;
     padding: 2rem;
 }
@@ -158,6 +165,7 @@
     }
 
     .downloadable-forms,
+    .suggestion-box,
     .wellness-events-container,
     .resources-container {
         grid-column: 1;
